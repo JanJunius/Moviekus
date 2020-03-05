@@ -7,22 +7,41 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Xamarin.Forms;
 
-namespace Moviekus.ViewModels
+namespace Moviekus.ViewModels.Sources
 {
     public class SourcesViewModel : BaseViewModel
     {
-        public ISourceService<Source> DataStore => DependencyService.Get<ISourceService<Source>>();
+        private ISourceService<Source> SourceService;
 
         public ObservableCollection<Source> Sources { get; set; }
-        public Command LoadSourcesCommand { get; set; }
+        
+        //public Command LoadSourcesCommand { get; set; }
 
-        public SourcesViewModel()
+        public ICommand LoadSourcesCommand => new Command(async () =>
+        {
+            await LoadSources();
+        });
+
+        public ICommand AddSourceCommand => new Command(async () =>
+        {
+            var sourceDetailView = Resolver.Resolve<SourceDetailPage>();
+            var viewModel = sourceDetailView.BindingContext as SourceDetailViewModel;
+            viewModel.Source = Source.CreateNewModel<Source>(); // Setzt IsNew=true
+            viewModel.Title = "Neue Quelle erfassen";           
+            
+            await Navigation.PushAsync(sourceDetailView);
+        });
+
+        public SourcesViewModel(SourceService sourceService)
         {
             Title = "Quellen";
             Sources = new ObservableCollection<Source>();
-            LoadSourcesCommand = new Command(async () => await ExecuteLoadSourcesCommand());
+            SourceService = sourceService;
+            
+            //LoadSourcesCommand = new Command(async () => await ExecuteLoadSourcesCommand());
 
             /*
             MessagingCenter.Subscribe<SourceDetailPage, Source>(this, "Neu", async (obj, source) =>
@@ -34,7 +53,7 @@ namespace Moviekus.ViewModels
             */
         }
 
-        async Task ExecuteLoadSourcesCommand()
+        private async Task LoadSources()
         {
             if (IsBusy)
                 return;
@@ -44,7 +63,7 @@ namespace Moviekus.ViewModels
             try
             {
                 Sources.Clear();
-                var sources = await DataStore.GetSourcesAsync(true);
+                var sources = await SourceService.GetSourcesAsync();
                 foreach (var source in sources)
                 {
                     Sources.Add(source);

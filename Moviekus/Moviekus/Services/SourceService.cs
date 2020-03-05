@@ -13,9 +13,9 @@ namespace Moviekus.Services
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Source>> GetSourcesAsync(bool forceRefresh = false)
+        public async Task<IEnumerable<Source>> GetSourcesAsync()
         {
-            throw new NotImplementedException();
+            return await GetAsync();
         }
 
         public async Task AddSourceAsync(Source source)

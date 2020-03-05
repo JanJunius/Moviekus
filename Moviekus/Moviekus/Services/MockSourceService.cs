@@ -49,7 +49,7 @@ namespace Moviekus.Services
             return await Task.FromResult(sources.FirstOrDefault(s => s.Id == id));
         }
 
-        public async Task<IEnumerable<Source>> GetSourcesAsync(bool forceRefresh = false)
+        public async Task<IEnumerable<Source>> GetSourcesAsync()
         {
             return await Task.FromResult(sources);
         }

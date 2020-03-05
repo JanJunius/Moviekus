@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Moviekus.ViewModels
+namespace Moviekus.ViewModels.Movies
 {
     // ViewModel für ein Element aus der ListView mit den Movies
     public class MoviesItemViewModel : BaseViewModel

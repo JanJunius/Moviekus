@@ -1,5 +1,4 @@
-﻿using Moviekus.ViewModels;
-using Moviekus.ViewModels.Sources;
+﻿using Moviekus.ViewModels.Sources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,25 +11,16 @@ using Xamarin.Forms.Xaml;
 namespace Moviekus.Views.Sources
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class SourcesPage : ContentPage
+    public partial class SourceDetailPage : ContentPage
     {
-        SourcesViewModel viewModel;
+        private SourceDetailViewModel viewModel;
 
-        public SourcesPage(SourcesViewModel viewModel)
+        public SourceDetailPage(SourceDetailViewModel viewModel)
         {
             InitializeComponent();
 
             BindingContext = this.viewModel = viewModel;
             viewModel.Navigation = Navigation;
         }
-
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-
-            if (viewModel.Sources.Count == 0)
-                viewModel.LoadSourcesCommand.Execute(null);
-        }
-
     }
 }

@@ -2,13 +2,14 @@
 using SQLite;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Moviekus.Services
 {
-    public class BaseService<T> where T : BaseModel
+    public class BaseService<T> where T : BaseModel, new()
     {
         public event EventHandler<T> OnModelInserted;
         public event EventHandler<T> OnModelUpdated;
@@ -27,21 +28,35 @@ namespace Moviekus.Services
 
             connection = new SQLiteAsyncConnection(databasePath);
 
-            await connection.CreateTableAsync(typeof(T));
+            await connection.CreateTableAsync<T>();
+        }
+
+        public async Task<IEnumerable<T>> GetAsync()
+        {
+            await CreateConnection();
+            return await connection.Table<T>().ToListAsync();
         }
 
         protected virtual async Task InsertAsync(T model)
         {
             await CreateConnection();
-            await connection.InsertAsync(model);
-            OnModelInserted?.Invoke(this, model);
+            if (model.IsNew)
+            {
+                await connection.InsertAsync(model);
+                OnModelInserted?.Invoke(this, model);
+            }
+            else await UpdateAsync(model);
         }
 
         protected virtual async Task UpdateAsync(T model)
         {
             await CreateConnection();
-            await connection.UpdateAsync(model);
-            OnModelUpdated?.Invoke(this, model);
+            if (!model.IsNew)
+            {
+                await connection.UpdateAsync(model);
+                OnModelUpdated?.Invoke(this, model);
+            }
+            else await InsertAsync(model);
         }
 
         protected virtual async Task DeleteAsync(T model)

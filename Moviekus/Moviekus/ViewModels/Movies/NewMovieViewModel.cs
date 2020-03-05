@@ -1,6 +1,6 @@
 ﻿using Moviekus.Models;
 
-namespace Moviekus.ViewModels
+namespace Moviekus.ViewModels.Movies
 {
     public class NewMovieViewModel : BaseViewModel
     {

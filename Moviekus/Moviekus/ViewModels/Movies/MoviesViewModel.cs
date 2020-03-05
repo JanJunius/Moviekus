@@ -10,7 +10,7 @@ using Moviekus.Views.Movies;
 using Moviekus.Services;
 using System.Linq;
 
-namespace Moviekus.ViewModels
+namespace Moviekus.ViewModels.Movies
 {
     public class MoviesViewModel : BaseViewModel
     {

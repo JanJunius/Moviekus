@@ -11,6 +11,6 @@ namespace Moviekus.Services
         Task UpdateSourceAsync(T source);
         Task DeleteSourceAsync(T source);
         Task<T> GetSourceAsync(string id);
-        Task<IEnumerable<T>> GetSourcesAsync(bool forceRefresh = false);
+        Task<IEnumerable<T>> GetSourcesAsync();
     }
 }

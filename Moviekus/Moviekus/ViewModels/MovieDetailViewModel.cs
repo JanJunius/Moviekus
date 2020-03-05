@@ -1,16 +1,13 @@
-﻿using System;
-
-using Moviekus.Models;
+﻿using Moviekus.Models;
 
 namespace Moviekus.ViewModels
 {
     public class MovieDetailViewModel : BaseViewModel
     {
-        public Movie Item { get; set; }
-        public MovieDetailViewModel(Movie item = null)
+        public Movie Movie { get; set; }
+        
+        public MovieDetailViewModel()
         {
-            Title = item?.Text;
-            Item = item;
         }
     }
 }

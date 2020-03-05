@@ -7,9 +7,9 @@ namespace Moviekus.Services
 {
     public interface ISourceService<T>
     {
-        Task<bool> AddSourceAsync(T source);
-        Task<bool> UpdateSourceAsync(T source);
-        Task<bool> DeleteSourceAsync(string id);
+        Task AddSourceAsync(T source);
+        Task UpdateSourceAsync(T source);
+        Task DeleteSourceAsync(T source);
         Task<T> GetSourceAsync(string id);
         Task<IEnumerable<T>> GetSourcesAsync(bool forceRefresh = false);
     }

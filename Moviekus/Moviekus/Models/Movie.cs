@@ -2,9 +2,8 @@
 
 namespace Moviekus.Models
 {
-    public class Movie
+    public class Movie : BaseModel
     {
-        public string Id { get; set; }
         public string Text { get; set; }
         public string Description { get; set; }
     }

@@ -20,20 +20,8 @@ namespace Moviekus.Views.Movies
             InitializeComponent();
 
             BindingContext = this.viewModel = viewModel;
+            viewModel.Navigation = Navigation;
         }
 
-        public MovieDetailPage()
-        {
-            InitializeComponent();
-
-            var item = new Movie
-            {
-                Text = "Item 1",
-                Description = "This is an item description."
-            };
-
-            viewModel = new MovieDetailViewModel(item);
-            BindingContext = viewModel;
-        }
     }
 }

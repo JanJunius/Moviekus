@@ -20,28 +20,28 @@ namespace Moviekus.Services
             };
         }
 
-        public async Task<bool> AddSourceAsync(Source source)
+        public async Task AddSourceAsync(Source source)
         {
             sources.Add(source);
 
-            return await Task.FromResult(true);
+            await Task.FromResult(true);
         }
 
-        public async Task<bool> UpdateSourceAsync(Source source)
+        public async Task UpdateSourceAsync(Source source)
         {
             var oldSource = sources.Where((Source arg) => arg.Id == source.Id).FirstOrDefault();
             sources.Remove(oldSource);
             sources.Add(source);
 
-            return await Task.FromResult(true);
+            await Task.FromResult(true);
         }
 
-        public async Task<bool> DeleteSourceAsync(string id)
+        public async Task DeleteSourceAsync(Source source)
         {
-            var oldSource = sources.Where((Source arg) => arg.Id == id).FirstOrDefault();
+            var oldSource = sources.Where((Source arg) => arg.Id == source.Id).FirstOrDefault();
             sources.Remove(oldSource);
 
-            return await Task.FromResult(true);
+            await Task.FromResult(true);
         }
 
         public async Task<Source> GetSourceAsync(string id)

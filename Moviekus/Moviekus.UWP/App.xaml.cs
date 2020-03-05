@@ -54,6 +54,8 @@ namespace Moviekus.UWP
 
                 Xamarin.Forms.Forms.Init(e);
 
+                Bootstrapper.Init();
+
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
                     //TODO: Load state from previously suspended application

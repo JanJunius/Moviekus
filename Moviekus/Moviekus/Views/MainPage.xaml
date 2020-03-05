@@ -19,9 +19,11 @@
                     <On Platform="iOS" Value="tab_feed.png"/>
                 </OnPlatform>
             </NavigationPage.Icon>
+            <!--
             <x:Arguments>
-                <movieViews:MoviesPage />
+                <views:AboutPage />
             </x:Arguments>
+            -->
         </NavigationPage>
     </MasterDetailPage.Detail>
     

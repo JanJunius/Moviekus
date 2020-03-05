@@ -24,12 +24,14 @@ namespace Moviekus.ViewModels
             Sources = new ObservableCollection<Source>();
             LoadSourcesCommand = new Command(async () => await ExecuteLoadSourcesCommand());
 
+            /*
             MessagingCenter.Subscribe<SourceDetailPage, Source>(this, "Neu", async (obj, source) =>
             {
                 var newSource = source as Source;
                 Sources.Add(newSource);
                 await DataStore.AddSourceAsync(newSource);
             });
+            */
         }
 
         async Task ExecuteLoadSourcesCommand()

@@ -3,6 +3,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Moviekus.Services;
 using Moviekus.Views;
+using Moviekus.Views.Movies;
 
 namespace Moviekus
 {
@@ -14,7 +15,7 @@ namespace Moviekus
             InitializeComponent();
 
             DependencyService.Register<MockMovieService>();
-            DependencyService.Register<MockSourceService>();
+            DependencyService.Register<SourceService>();
 
             MainPage = new MainPage();
         }

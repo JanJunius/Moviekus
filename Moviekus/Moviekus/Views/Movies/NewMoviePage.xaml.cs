@@ -5,6 +5,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 using Moviekus.Models;
+using Moviekus.ViewModels;
 
 namespace Moviekus.Views.Movies
 {
@@ -13,24 +14,19 @@ namespace Moviekus.Views.Movies
     [DesignTimeVisible(false)]
     public partial class NewMoviePage : ContentPage
     {
-        public Movie Item { get; set; }
+        private NewMovieViewModel viewModel;
 
-        public NewMoviePage()
+        public NewMoviePage(NewMovieViewModel viewModel)
         {
             InitializeComponent();
 
-            Item = new Movie
-            {
-                Text = "Item name",
-                Description = "This is an item description."
-            };
-
-            BindingContext = this;
+            BindingContext = this.viewModel = viewModel;
+            viewModel.Navigation = Navigation;
         }
 
         async void Save_Clicked(object sender, EventArgs e)
         {
-            MessagingCenter.Send(this, "AddItem", Item);
+            MessagingCenter.Send(this, "AddItem", viewModel.Movie);
             await Navigation.PopModalAsync();
         }
 

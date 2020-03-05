@@ -24,7 +24,9 @@ namespace Moviekus.Views
 
             MasterBehavior = MasterBehavior.Popover;
 
-            MenuPages.Add((int)MenuItemType.Movies, (NavigationPage)Detail);
+            Detail = new NavigationPage(Resolver.Resolve<MoviesPage>());
+
+            //MenuPages.Add((int)MenuItemType.Movies, (NavigationPage)Detail);
         }
 
         public async Task NavigateFromMenu(int id)
@@ -34,13 +36,13 @@ namespace Moviekus.Views
                 switch (id)
                 {
                     case (int)MenuItemType.Movies:
-                        MenuPages.Add(id, new NavigationPage(new MoviesPage()));
+                        MenuPages.Add(id, new NavigationPage(Resolver.Resolve<MoviesPage>()));
                         break;
                     case (int)MenuItemType.Genres:
                         MenuPages.Add(id, new NavigationPage(new GenresPage()));
                         break;
                     case (int)MenuItemType.Sources:
-                        MenuPages.Add(id, new NavigationPage(new SourcesPage()));
+                        MenuPages.Add(id, new NavigationPage(Resolver.Resolve<SourcesPage>()));
                         break;
                     case (int)MenuItemType.About:
                         MenuPages.Add(id, new NavigationPage(new AboutPage()));

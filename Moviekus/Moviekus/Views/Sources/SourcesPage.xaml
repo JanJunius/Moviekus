@@ -10,7 +10,7 @@
         <!--TODO: Icon einbinden -->
         <ToolbarItem
                 Text="Neu" 
-                Command="{Binding AddItem}"
+                Command="{Binding AddSourceCommand}"
                 IconImageSource="add.png">
         </ToolbarItem>
     </ContentPage.ToolbarItems>

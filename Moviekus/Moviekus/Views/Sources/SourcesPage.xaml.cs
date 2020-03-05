@@ -15,12 +15,12 @@ namespace Moviekus.Views.Sources
     {
         SourcesViewModel viewModel;
 
-        public SourcesPage()
+        public SourcesPage(SourcesViewModel viewModel)
         {
             InitializeComponent();
 
-            BindingContext = viewModel = new SourcesViewModel();
-
+            BindingContext = this.viewModel = viewModel;
+            viewModel.Navigation = Navigation;
         }
 
         protected override void OnAppearing()

@@ -12,7 +12,7 @@ namespace Moviekus.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        
+        public INavigation Navigation { get; set; }
 
         bool isBusy = false;
         public bool IsBusy
@@ -37,20 +37,19 @@ namespace Moviekus.ViewModels
 
             backingStore = value;
             onChanged?.Invoke();
-            OnPropertyChanged(propertyName);
+            RaisePropertyChanged(propertyName);
             return true;
         }
 
         #region INotifyPropertyChanged
+        
         public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        
+        protected void RaisePropertyChanged(string propertyName)
         {
-            var changed = PropertyChanged;
-            if (changed == null)
-                return;
-
-            changed.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        
         #endregion
     }
 }

@@ -18,38 +18,23 @@ namespace Moviekus.Views.Movies
     [DesignTimeVisible(false)]
     public partial class MoviesPage : ContentPage
     {
-        MoviesViewModel viewModel;
+        private readonly MoviesViewModel viewModel;
 
-        public MoviesPage()
+        public MoviesPage(MoviesViewModel viewModel)
         {
             InitializeComponent();
 
-            BindingContext = viewModel = new MoviesViewModel();
+            BindingContext = viewModel;
+            viewModel.Navigation = Navigation;
+
+            this.viewModel = viewModel;
         }
 
-        async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
-        {
-            var item = args.SelectedItem as Movie;
-            if (item == null)
-                return;
-
-            await Navigation.PushAsync(new MovieDetailPage(new MovieDetailViewModel(item)));
-
-            // Manually deselect item.
-            MoviesListView.SelectedItem = null;
-        }
 
         async void AddItem_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushModalAsync(new NavigationPage(new NewMoviePage()));
+            await Navigation.PushModalAsync(new NavigationPage(Resolver.Resolve<NewMoviePage>()));
         }
 
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-
-            if (viewModel.Movies.Count == 0)
-                viewModel.LoadMoviesCommand.Execute(null);
-        }
     }
 }

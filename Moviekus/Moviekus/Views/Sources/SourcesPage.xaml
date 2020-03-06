@@ -13,12 +13,12 @@
                 Command="{Binding AddSourceCommand}"
                 IconImageSource="add.png">
         </ToolbarItem>
+
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
         <ListView x:Name="SourcesListView"
                   RowHeight="60"
-                  
                   ItemsSource="{Binding Sources}"
                   RefreshCommand="{Binding LoadSourcesCommand}"
                   IsPullToRefreshEnabled="true"
@@ -35,10 +35,14 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
+                            <Image 
+                                Grid.Column="0"
+                                Source="{Binding ImageUri}" />
                             <Label 
                                 Grid.Column="1"
-                                Text="{Binding Name}"
+                                Text="{Binding Source.Name}"
                                 FontSize="Medium" />
+
                         </Grid>
                     </ViewCell>
                 </DataTemplate>

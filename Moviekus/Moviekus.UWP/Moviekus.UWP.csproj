@@ -108,7 +108,11 @@
     <Content Include="Assets\add.png" />
     <Content Include="Assets\delete.png" />
     <Content Include="Assets\filter.png" />
+    <Content Include="Assets\local.png" />
+    <Content Include="Assets\netflix.png" />
+    <Content Include="Assets\prime.png" />
     <Content Include="Assets\save.png" />
+    <Content Include="Assets\sources.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LargeTile.scale-100.png" />
     <Content Include="Assets\LargeTile.scale-200.png" />

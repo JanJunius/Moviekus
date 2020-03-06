@@ -17,7 +17,7 @@ namespace Moviekus.ViewModels.Sources
     {
         private ISourceService<Source> SourceService;
 
-        public ObservableCollection<Source> Sources { get; set; }
+        public ObservableCollection<SourcesItemViewModel> Sources { get; set; }
         
         public ICommand LoadSourcesCommand => new Command(async () =>
         {
@@ -37,35 +37,35 @@ namespace Moviekus.ViewModels.Sources
         public SourcesViewModel(SourceService sourceService)
         {
             Title = "Quellen";
-            Sources = new ObservableCollection<Source>();
+            Sources = new ObservableCollection<SourcesItemViewModel>();
             SourceService = sourceService;
 
             // Wiederspiegeln der Datenbankänderungen in der Liste
-            sourceService.OnModelInserted += (sender, source) => Sources.Add(source);
+            sourceService.OnModelInserted += (sender, source) => Sources.Add(CreateSourcesItemViewModel(source));
             sourceService.OnModelUpdated += async (sender, source) => await LoadSources();
-            sourceService.OnModelDeleted +=  (sender, source) => Sources.Remove(source);
+            sourceService.OnModelDeleted +=  (sender, source) => Sources.Remove(CreateSourcesItemViewModel(source));
         }
 
         // Dient lediglich dazu, auf die Auswahl einer Quelle zu reagieren
         // Angesteuert über Binding in der Page
-        public Source SelectedItem
+        public SourcesItemViewModel SelectedItem
         {
             get { return null; }
             set
             {
                 if (value != null)
                 {
-                    Device.BeginInvokeOnMainThread(async () => await OpenDetalPage(value));
+                    Device.BeginInvokeOnMainThread(async () => await OpenDetailPage(value));
                     RaisePropertyChanged(nameof(SelectedItem));
                 }
             }
         }
 
-        private async Task OpenDetalPage(Source source)
+        private async Task OpenDetailPage(SourcesItemViewModel siViewModel)
         {
             var detailView = Resolver.Resolve<SourceDetailPage>();
             var viewModel = detailView.BindingContext as SourceDetailViewModel;
-            viewModel.Source = source;
+            viewModel.Source = siViewModel.Source;
 
             await Navigation.PushAsync(detailView);
         }
@@ -81,10 +81,9 @@ namespace Moviekus.ViewModels.Sources
             {
                 Sources.Clear();
                 var sources = await SourceService.GetSourcesAsync();
-                foreach (var source in sources)
-                {
-                    Sources.Add(source);
-                }
+
+                var itemViewModels = sources.Select(m => CreateSourcesItemViewModel(m));
+                Sources = new ObservableCollection<SourcesItemViewModel>(itemViewModels);
             }
             catch (Exception ex)
             {
@@ -95,5 +94,12 @@ namespace Moviekus.ViewModels.Sources
                 IsBusy = false;
             }
         }
+
+        private SourcesItemViewModel CreateSourcesItemViewModel(Source source)
+        {
+            var sourcesItemViewModel = new SourcesItemViewModel(source);
+            return sourcesItemViewModel;
+        }
+
     }
 }

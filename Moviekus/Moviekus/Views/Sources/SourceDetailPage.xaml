@@ -4,7 +4,7 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             Title="{Binding Title}"
+             Title="Quelle bearbeiten"
              x:Class="Moviekus.Views.Sources.SourceDetailPage">
 
     <ContentPage.ToolbarItems>
@@ -17,6 +17,15 @@
         <StackLayout Padding="14">
             <Label Text="Name" />
             <Entry Text="{Binding Source.Name}"/>
+            <Label Text="Art der Quelle" />
+            <Label Text="{Binding Source.SourceTypeName}" FontSize="Medium"/>
+            <Picker Title="-- Andere Art wählen --"
+                    FontSize="Small"
+                    TitleColor="Blue"                    
+                    ItemsSource="{Binding SourceTypes}"
+                    ItemDisplayBinding="{Binding Name}"                     
+                    SelectedItem="{Binding SelectedSourceType, Mode=TwoWay}"/>
+            
         </StackLayout>
 
     </ContentPage.Content>

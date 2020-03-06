@@ -22,6 +22,10 @@ namespace Moviekus.Views.Sources
 
             BindingContext = this.viewModel = viewModel;
             viewModel.Navigation = Navigation;
+
+            // Zurücksetzen der Selektion einer Quelle, damit man sie direkt nochmal selektieren kann
+            // (andernfalls müsste man erst eine andere Quelle wählen und dann wieder zurück)
+            SourcesListView.ItemSelected += (sender, args) => SourcesListView.SelectedItem = null;
         }
 
         protected override void OnAppearing()

@@ -25,5 +25,12 @@ namespace Moviekus.ViewModels.Sources
             await SourceService.UpdateSourceAsync(Source);
             await Navigation.PopAsync();
         });
+
+        public ICommand DeleteCommand => new Command(async () =>
+        {
+            await SourceService.DeleteSourceAsync(Source);
+            await Navigation.PopAsync();
+        });
+
     }
 }

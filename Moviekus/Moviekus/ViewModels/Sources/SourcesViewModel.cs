@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -18,8 +19,6 @@ namespace Moviekus.ViewModels.Sources
 
         public ObservableCollection<Source> Sources { get; set; }
         
-        //public Command LoadSourcesCommand { get; set; }
-
         public ICommand LoadSourcesCommand => new Command(async () =>
         {
             await LoadSources();
@@ -40,17 +39,35 @@ namespace Moviekus.ViewModels.Sources
             Title = "Quellen";
             Sources = new ObservableCollection<Source>();
             SourceService = sourceService;
-            
-            //LoadSourcesCommand = new Command(async () => await ExecuteLoadSourcesCommand());
 
-            /*
-            MessagingCenter.Subscribe<SourceDetailPage, Source>(this, "Neu", async (obj, source) =>
+            // Wiederspiegeln der Datenbankänderungen in der Liste
+            sourceService.OnModelInserted += (sender, source) => Sources.Add(source);
+            sourceService.OnModelUpdated += async (sender, source) => await LoadSources();
+            sourceService.OnModelDeleted +=  (sender, source) => Sources.Remove(source);
+        }
+
+        // Dient lediglich dazu, auf die Auswahl einer Quelle zu reagieren
+        // Angesteuert über Binding in der Page
+        public Source SelectedItem
+        {
+            get { return null; }
+            set
             {
-                var newSource = source as Source;
-                Sources.Add(newSource);
-                await DataStore.AddSourceAsync(newSource);
-            });
-            */
+                if (value != null)
+                {
+                    Device.BeginInvokeOnMainThread(async () => await OpenDetalPage(value));
+                    RaisePropertyChanged(nameof(SelectedItem));
+                }
+            }
+        }
+
+        private async Task OpenDetalPage(Source source)
+        {
+            var detailView = Resolver.Resolve<SourceDetailPage>();
+            var viewModel = detailView.BindingContext as SourceDetailViewModel;
+            viewModel.Source = source;
+
+            await Navigation.PushAsync(detailView);
         }
 
         private async Task LoadSources()

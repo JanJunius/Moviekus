@@ -22,5 +22,6 @@ namespace Moviekus.Views.Sources
             BindingContext = this.viewModel = viewModel;
             viewModel.Navigation = Navigation;
         }
+
     }
 }

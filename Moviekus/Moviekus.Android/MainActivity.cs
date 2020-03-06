@@ -6,6 +6,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using Acr.UserDialogs;
 
 namespace Moviekus.Droid
 {
@@ -23,6 +24,7 @@ namespace Moviekus.Droid
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
 
             Bootstrapper.Init();
+            UserDialogs.Init(this);
 
             LoadApplication(new App());
         }

@@ -8,7 +8,6 @@
              x:Class="Moviekus.Views.Sources.SourcesPage">
 
     <ContentPage.ToolbarItems>
-        <!--TODO: Icon einbinden -->
         <ToolbarItem
                 Text="Neu" 
                 Command="{Binding AddSourceCommand}"
@@ -18,7 +17,8 @@
 
     <ContentPage.Content>
         <ListView x:Name="SourcesListView"
-                  RowHeight="70"
+                  RowHeight="60"
+                  
                   ItemsSource="{Binding Sources}"
                   RefreshCommand="{Binding LoadSourcesCommand}"
                   IsPullToRefreshEnabled="true"
@@ -29,9 +29,17 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <Label 
-                            Text="{Binding Name}"
-                            FontSize="Medium" />
+                        <Grid Padding="15,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label 
+                                Grid.Column="1"
+                                Text="{Binding Name}"
+                                FontSize="Medium" />
+                        </Grid>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>

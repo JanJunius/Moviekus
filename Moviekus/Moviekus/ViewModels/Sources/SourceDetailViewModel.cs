@@ -1,4 +1,5 @@
-﻿using Moviekus.Models;
+﻿using Acr.UserDialogs;
+using Moviekus.Models;
 using Moviekus.Services;
 using Moviekus.ViewModels;
 using System;
@@ -28,8 +29,17 @@ namespace Moviekus.ViewModels.Sources
 
         public ICommand DeleteCommand => new Command(async () =>
         {
-            await SourceService.DeleteSourceAsync(Source);
-            await Navigation.PopAsync();
+            var result = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig
+            { 
+                Message = "Diese Quelle wirklich löschen?",
+                OkText = "Ja",
+                CancelText = "Nein"
+            });
+            if (result)
+            {
+                await SourceService.DeleteSourceAsync(Source);
+                await Navigation.PopAsync();
+            }
         });
 
     }

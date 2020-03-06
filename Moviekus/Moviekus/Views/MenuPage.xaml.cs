@@ -23,7 +23,7 @@ namespace Moviekus.Views
                 new HomeMenuItem {Id = MenuItemType.Movies, Title="Filme" },
                 new HomeMenuItem {Id = MenuItemType.Genres, Title="Genres" },
                 new HomeMenuItem {Id = MenuItemType.Sources, Title="Quellen" },
-                new HomeMenuItem {Id = MenuItemType.About, Title="About" }
+                new HomeMenuItem {Id = MenuItemType.About, Title="Über Moviekus" }
             };
 
             ListViewMenu.ItemsSource = menuItems;

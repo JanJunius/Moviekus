@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Acr.UserDialogs;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -20,6 +21,8 @@ namespace Moviekus.UWP
         public MainPage()
         {
             this.InitializeComponent();
+
+            Bootstrapper.Init();
 
             LoadApplication(new Moviekus.App());
         }

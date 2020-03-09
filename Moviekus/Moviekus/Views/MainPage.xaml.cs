@@ -12,8 +12,6 @@ using Moviekus.Views.Sources;
 
 namespace Moviekus.Views
 {
-    // Learn more about making custom code visible in the Xamarin.Forms previewer
-    // by visiting https://aka.ms/xamarinforms-previewer
     [DesignTimeVisible(false)]
     public partial class MainPage : MasterDetailPage
     {
@@ -39,7 +37,7 @@ namespace Moviekus.Views
                         MenuPages.Add(id, new NavigationPage(Resolver.Resolve<MoviesPage>()));
                         break;
                     case (int)MenuItemType.Genres:
-                        MenuPages.Add(id, new NavigationPage(new GenresPage()));
+                        MenuPages.Add(id, new NavigationPage(Resolver.Resolve<GenresPage>()));
                         break;
                     case (int)MenuItemType.Sources:
                         MenuPages.Add(id, new NavigationPage(Resolver.Resolve<SourcesPage>()));

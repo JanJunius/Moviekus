@@ -4,12 +4,38 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
+             Title="{Binding Title}"
              x:Class="Moviekus.Views.Genres.GenresPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem
+                Text="Neu" 
+                Command="{Binding AddGenreCommand}"
+                IconImageSource="add.png">
+        </ToolbarItem>
+
+    </ContentPage.ToolbarItems>
+
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Genres"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <ListView x:Name="GenresListView"
+                  RowHeight="60"
+                  ItemsSource="{Binding Genres}"
+                  RefreshCommand="{Binding LoadGenresCommand}"
+                  IsPullToRefreshEnabled="true"
+                  IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                  CachingStrategy="RecycleElement"
+                  SelectedItem="{Binding SelectedItem}">
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Label 
+                            Text="{Binding Genre.Name}"
+                            Padding="14"
+                            FontSize="Medium" />
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+
+        </ListView>
     </ContentPage.Content>
 </ContentPage>

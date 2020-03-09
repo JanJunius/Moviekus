@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             Title="Genre bearbeiten"
+             x:Class="Moviekus.Views.Genres.GenreDetailPage">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Löschen" IconImageSource="delete.png" Command="{Binding DeleteCommand}" />
+        <ToolbarItem Text="Speichern" IconImageSource="save.png" Command="{Binding SaveCommand}" />
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+
+        <StackLayout Padding="14">
+            <Label Text="Name" />
+            <Entry Text="{Binding Genre.Name}"/>
+        </StackLayout>
+
+    </ContentPage.Content>
+</ContentPage>

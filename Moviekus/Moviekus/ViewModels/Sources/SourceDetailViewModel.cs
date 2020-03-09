@@ -13,7 +13,7 @@ namespace Moviekus.ViewModels.Sources
 {
     public class SourceDetailViewModel : BaseViewModel
     {
-        private ISourceService<Source> SourceService;
+        private IService<Source> SourceService;
 
         public Source Source { get; set; }
 
@@ -24,7 +24,7 @@ namespace Moviekus.ViewModels.Sources
 
         public ICommand SaveCommand => new Command(async () =>
         {
-            await SourceService.UpdateSourceAsync(Source);
+            await SourceService.UpdateAsync(Source);
             await Navigation.PopAsync();
         });
 
@@ -38,7 +38,7 @@ namespace Moviekus.ViewModels.Sources
             });
             if (result)
             {
-                await SourceService.DeleteSourceAsync(Source);
+                await SourceService.DeleteAsync(Source);
                 await Navigation.PopAsync();
             }
         });

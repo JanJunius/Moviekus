@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace Moviekus.Services
 {
-    public class SourceService : BaseService<Source>
+    public class GenreService : BaseService<Genre>
     {
-
     }
 }

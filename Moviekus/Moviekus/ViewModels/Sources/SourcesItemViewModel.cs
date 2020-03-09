@@ -24,5 +24,20 @@ namespace Moviekus.ViewModels.Sources
         {
             Source = source;
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj is SourcesItemViewModel model &&
+                   EqualityComparer<Source>.Default.Equals(Source, model.Source) &&
+                   ImageUri == model.ImageUri;
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = -811082444;
+            hashCode = hashCode * -1521134295 + EqualityComparer<Source>.Default.GetHashCode(Source);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(ImageUri);
+            return hashCode;
+        }
     }
 }

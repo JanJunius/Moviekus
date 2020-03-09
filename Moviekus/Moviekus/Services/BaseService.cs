@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Moviekus.Services
 {
-    public class BaseService<T> where T : BaseModel, new()
+    public class BaseService<T> : IService<T> where T : BaseModel, new()
     {
         public event EventHandler<T> OnModelInserted;
         public event EventHandler<T> OnModelUpdated;
@@ -37,18 +37,25 @@ namespace Moviekus.Services
             return await connection.Table<T>().ToListAsync();
         }
 
-        protected virtual async Task InsertAsync(T model)
+        public async Task<T> GetAsync(string id)
+        {
+            await CreateConnection();
+            return await connection.Table<T>().Where(x => x.Id == id).FirstOrDefaultAsync();
+        }
+
+        public virtual async Task InsertAsync(T model)
         {
             await CreateConnection();
             if (model.IsNew)
             {
                 await connection.InsertAsync(model);
+                model.IsNew = false;
                 OnModelInserted?.Invoke(this, model);
             }
             else await UpdateAsync(model);
         }
 
-        protected virtual async Task UpdateAsync(T model)
+        public virtual async Task UpdateAsync(T model)
         {
             await CreateConnection();
             if (!model.IsNew)
@@ -59,7 +66,7 @@ namespace Moviekus.Services
             else await InsertAsync(model);
         }
 
-        protected virtual async Task DeleteAsync(T model)
+        public virtual async Task DeleteAsync(T model)
         {
             await CreateConnection();
             await connection.DeleteAsync(model);

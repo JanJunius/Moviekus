@@ -15,7 +15,7 @@ namespace Moviekus.ViewModels.Sources
 {
     public class SourcesViewModel : BaseViewModel
     {
-        private ISourceService<Source> SourceService;
+        private IService<Source> SourceService;
 
         public ObservableCollection<SourcesItemViewModel> Sources { get; set; }
         
@@ -80,7 +80,7 @@ namespace Moviekus.ViewModels.Sources
             try
             {
                 Sources.Clear();
-                var sources = await SourceService.GetSourcesAsync();
+                var sources = await SourceService.GetAsync();
 
                 var itemViewModels = sources.Select(m => CreateSourcesItemViewModel(m));
                 Sources = new ObservableCollection<SourcesItemViewModel>(itemViewModels);

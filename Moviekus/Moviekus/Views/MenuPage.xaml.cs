@@ -7,8 +7,6 @@ using Xamarin.Forms.Xaml;
 
 namespace Moviekus.Views
 {
-    // Learn more about making custom code visible in the Xamarin.Forms previewer
-    // by visiting https://aka.ms/xamarinforms-previewer
     [DesignTimeVisible(false)]
     public partial class MenuPage : ContentPage
     {
@@ -20,10 +18,10 @@ namespace Moviekus.Views
 
             menuItems = new List<HomeMenuItem>
             {
-                new HomeMenuItem {Id = MenuItemType.Movies, Title="Filme" },
-                new HomeMenuItem {Id = MenuItemType.Genres, Title="Genres" },
-                new HomeMenuItem {Id = MenuItemType.Sources, Title="Quellen" },
-                new HomeMenuItem {Id = MenuItemType.About, Title="Über Moviekus" }
+                new HomeMenuItem {Id = MenuItemType.Movies, Title="Filme", ImageSource="movie.png" },
+                new HomeMenuItem {Id = MenuItemType.Genres, Title="Genres", ImageSource="genres.png" },
+                new HomeMenuItem {Id = MenuItemType.Sources, Title="Quellen", ImageSource="sources.png" },
+                new HomeMenuItem {Id = MenuItemType.About, Title="Über Moviekus", ImageSource="moviekus.png" }
             };
 
             ListViewMenu.ItemsSource = menuItems;

@@ -16,5 +16,7 @@ namespace Moviekus.Models
         public MenuItemType Id { get; set; }
 
         public string Title { get; set; }
+
+        public string ImageSource { get; set; }
     }
 }

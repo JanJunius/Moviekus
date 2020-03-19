@@ -9,6 +9,7 @@ using Moviekus.Models;
 using Moviekus.Views.Movies;
 using Moviekus.Views.Genres;
 using Moviekus.Views.Sources;
+using Moviekus.EntityFramework;
 
 namespace Moviekus.Views
 {
@@ -58,6 +59,17 @@ namespace Moviekus.Views
                     await Task.Delay(100);
 
                 IsPresented = false;
+            }
+        }
+
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+
+            using (var context = new MoviekusDbContext())
+            {
+                DatabaseInitializer.RecreateDatabase(context);
+                await DatabaseInitializer.InitializeData(context);
             }
         }
     }

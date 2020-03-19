@@ -1,30 +1,22 @@
-﻿using SQLite;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Moviekus.Models
 {
     public class BaseModel
     {
-        [PrimaryKey]
+        [Key]
         public string Id { get; set; }
 
-        [Ignore]
+        [NotMapped]
         public bool IsNew { get; set; }
 
         public BaseModel()
         {
             Id = Guid.NewGuid().ToString();
-            IsNew = false;
-        }
-
-        public static T CreateNewModel<T>() where T : BaseModel, new()
-        {
-            var newModel = new T
-            {
-                IsNew = true
-            };
-            return newModel;
+            IsNew = true;
         }
 
         public override bool Equals(object obj)

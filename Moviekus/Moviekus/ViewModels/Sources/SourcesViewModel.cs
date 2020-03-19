@@ -28,7 +28,7 @@ namespace Moviekus.ViewModels.Sources
         {
             var sourceDetailView = Resolver.Resolve<SourceDetailPage>();
             var viewModel = sourceDetailView.BindingContext as SourceDetailViewModel;
-            viewModel.Source = Source.CreateNewModel<Source>(); // Setzt IsNew=true
+            viewModel.Source = new Source();
             viewModel.Title = "Neue Quelle erfassen";           
             
             await Navigation.PushAsync(sourceDetailView);

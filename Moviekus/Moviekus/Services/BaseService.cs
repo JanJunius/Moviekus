@@ -8,45 +8,42 @@ using System.Threading.Tasks;
 
 namespace Moviekus.Services
 {
-    public class BaseService<T> : IDisposable, IService<T> where T : BaseModel, new()
+    public class BaseService<T> : IService<T> where T : BaseModel, new()
     {
         public event EventHandler<T> OnModelInserted;
         public event EventHandler<T> OnModelUpdated;
         public event EventHandler<T> OnModelDeleted;
         
-        protected readonly DbSet<T> table;
-
-        protected readonly MoviekusDbContext db;
-
-        protected MoviekusDbContext Context => db;
-
-        public BaseService() : this(new MoviekusDbContext())
+        public BaseService() 
         {
-        }
-
-        public BaseService(MoviekusDbContext context)
-        {
-            db = context;
-            table = db.Set<T>();
         }
 
         public async Task<IEnumerable<T>> GetAsync()
         {
-            return await table.ToListAsync();
+            using (var context = new MoviekusDbContext())
+            {
+                return await context.Set<T>().ToListAsync();
+            }                
         }
 
         public async Task<T> GetAsync(string id)
         {
-            return await table.FindAsync(id);
+            using (var context = new MoviekusDbContext())
+            {
+                return await context.Set<T>().FindAsync(id);
+            }             
         }
 
         public virtual async Task InsertAsync(T model)
         {
             if (model.IsNew)
             {
-                await table.AddAsync(model);
-                await db.SaveChangesAsync();
-                model.IsNew = false;
+                using (var context = new MoviekusDbContext())
+                {
+                    await context.Set<T>().AddAsync(model);
+                    await context.SaveChangesAsync();
+                    model.IsNew = false;
+                }
                 OnModelInserted?.Invoke(this, model);
             }
             else await UpdateAsync(model);
@@ -56,13 +53,15 @@ namespace Moviekus.Services
         {
             if (!model.IsNew)
             {
-                T m = table.Find(model.Id);
-                if (m != null)
+                using (var context = new MoviekusDbContext())
                 {
-                    m = model;
-                    await db.SaveChangesAsync();
+                    T m = context.Set<T>().Find(model.Id);
+                    if (m != null)
+                    {
+                        m = model;
+                        await context.SaveChangesAsync();
+                    }
                 }
-                    
                 OnModelUpdated?.Invoke(this, model);
             }
             else await InsertAsync(model);
@@ -70,16 +69,14 @@ namespace Moviekus.Services
 
         public virtual async Task DeleteAsync(T model)
         {
-            table.Remove(model);
-            //table.Attach(model);
-            await db.SaveChangesAsync();
-
+            using (var context = new MoviekusDbContext())
+            {
+                context.Set<T>().Remove(model);
+                //table.Attach(model);
+                await context.SaveChangesAsync();
+            }
             OnModelDeleted?.Invoke(this, model);
         }
 
-        public void Dispose()
-        {
-            db?.Dispose();
-        }
     }
 }

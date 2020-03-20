@@ -1,8 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Moviekus.EntityFramework;
 using Moviekus.Models;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Moviekus.Services
@@ -11,7 +10,11 @@ namespace Moviekus.Services
     {
         public async Task<IEnumerable<Movie>> GetWithSourceAsync()
         {
-            return await db.Movies.Include(m => m.Source).ToListAsync();
+            using (var context = new MoviekusDbContext())
+            {
+                return await context.Movies.Include(m => m.Source).ToListAsync();
+            }
+            
         }
     }
 }

@@ -14,9 +14,9 @@ namespace Moviekus.Services
         public event EventHandler<T> OnModelUpdated;
         public event EventHandler<T> OnModelDeleted;
         
-        private readonly DbSet<T> table;
+        protected readonly DbSet<T> table;
 
-        private readonly MoviekusDbContext db;
+        protected readonly MoviekusDbContext db;
 
         protected MoviekusDbContext Context => db;
 

@@ -1,16 +1,13 @@
-﻿using System;
+﻿using Moviekus.Models;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Moviekus.Services
 {
-    public interface IMovieService<T>
+    public interface IMovieService : IService<Movie>
     {
-        Task<bool> AddMovieAsync(T movie);
-        Task<bool> UpdateMovieAsync(T movie);
-        Task<bool> DeleteMovieAsync(string id);
-        Task<T> GetMovieAsync(string id);
-        Task<IEnumerable<T>> GetMoviesAsync(bool forceRefresh = false);
+        Task<IEnumerable<Movie>> GetWithSourceAsync();
 
     }
 }

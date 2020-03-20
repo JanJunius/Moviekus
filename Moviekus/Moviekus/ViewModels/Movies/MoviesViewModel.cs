@@ -15,7 +15,7 @@ namespace Moviekus.ViewModels.Movies
 {
     public class MoviesViewModel : BaseViewModel
     {
-        private IService<Movie> MoviesService;
+        private IMovieService MoviesService;
 
         public ObservableCollection<MoviesItemViewModel> Movies { get; set; }
 
@@ -82,7 +82,8 @@ namespace Moviekus.ViewModels.Movies
             try
             {
                 Movies.Clear();
-                var movies = await MoviesService.GetAsync();
+                //var movies = await MoviesService.GetAsync();
+                var movies = await MoviesService.GetWithSourceAsync();
 
                 var itemViewModels = movies.Select(m => CreateMoviesItemViewModel(m));
                 Movies = new ObservableCollection<MoviesItemViewModel>(itemViewModels);
@@ -140,7 +141,8 @@ namespace Moviekus.ViewModels.Movies
             {
                 /* Abspeichern der Änderung auf 2 Varianten möglich:
                  * 1. a) Diese Methode als sync kennzeichnen
-                 *    b) await repository.UpdateItem(tdiViewModel.Item);
+                 0*0410+
+                 41444444474444b) await repository.UpdateItem(tdiViewModel.Item);
                  * 2. Asynchrones Ausführen der Aktion in einem neuen Task, siehe unten   
                  *    Dann muss diese Methode nicht mit async gekennzeichnet werden
                 */

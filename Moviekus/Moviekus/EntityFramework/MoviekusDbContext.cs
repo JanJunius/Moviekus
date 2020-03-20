@@ -9,9 +9,11 @@ namespace Moviekus.EntityFramework
 {
     public class MoviekusDbContext : DbContext
     {
-        public DbSet<Genre> Genres { get; set; }
-        public DbSet<Movie> Movies { get; set; }
-        public DbSet<Source> Sources { get; set; }
+        // Für jede von EF zu verwaltende Entity ist hier ein DbSet anzulegen
+
+        public virtual DbSet<Genre> Genres { get; set; }
+        public virtual DbSet<Movie> Movies { get; set; }
+        public virtual DbSet<Source> Sources { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -23,6 +25,11 @@ namespace Moviekus.EntityFramework
                 optionsBuilder.UseSqlite($"Filename={databasePath}");
             }
 
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

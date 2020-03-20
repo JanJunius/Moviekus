@@ -4,7 +4,10 @@ namespace Moviekus.Models
 {
     public class Movie : BaseModel
     {
-        public string Text { get; set; }
-        public string Description { get; set; }
+        public string Title { get; set; }
+        
+        public string SourceId { get; set; }
+
+        public Source Source { get; set; }
     }
 }

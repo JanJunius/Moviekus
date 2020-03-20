@@ -13,10 +13,6 @@ namespace Moviekus
         public App()
         {
             InitializeComponent();
-
-            DependencyService.Register<MockMovieService>();
-            //DependencyService.Register<SourceService>();
-
             MainPage = new MainPage();
         }
 

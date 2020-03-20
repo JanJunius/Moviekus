@@ -26,6 +26,14 @@ namespace Moviekus.Views.Movies
             this.viewModel = viewModel;
         }
 
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            if (viewModel.Movies.Count == 0)
+                viewModel.LoadMoviesCommand.Execute(null);
+
+        }
 
         async void AddItem_Clicked(object sender, EventArgs e)
         {

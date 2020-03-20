@@ -21,15 +21,14 @@
                 IsPullToRefreshEnabled="true"
                 IsRefreshing="{Binding IsBusy, Mode=OneWay}"
                 CachingStrategy="RecycleElement"
+                RefreshCommand="{Binding LoadMoviesCommand}"
                 SelectedItem="{Binding SelectedItem}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
                         <StackLayout Padding="10">
-                            <Label Text="{Binding Movie.Text}" 
+                            <Label Text="{Binding Movie.Title}" 
                                 FontSize="16" />
-                            <Label Text="{Binding Movie.Description}" 
-                                FontSize="13" />
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>

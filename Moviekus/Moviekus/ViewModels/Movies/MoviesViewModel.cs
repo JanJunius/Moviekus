@@ -9,36 +9,41 @@ using Moviekus.Models;
 using Moviekus.Views.Movies;
 using Moviekus.Services;
 using System.Linq;
+using System.Windows.Input;
 
 namespace Moviekus.ViewModels.Movies
 {
     public class MoviesViewModel : BaseViewModel
     {
-        //public IMovieService<Movie> DataStore => DependencyService.Get<IMovieService<Movie>>();
+        private IService<Movie> MoviesService;
 
         public ObservableCollection<MoviesItemViewModel> Movies { get; set; }
-        public Command LoadMoviesCommand { get; set; }
 
-        private readonly IMovieService<Movie> DataStore;
+        public ICommand LoadMoviesCommand => new Command(async () =>
+        {
+            await LoadMovies();
+        });
 
-        public MoviesViewModel(MockMovieService moviesService)
+        public ICommand AddMovieCommand => new Command(async () =>
+        {
+            var movieDetailView = Resolver.Resolve<MovieDetailPage>();
+            var viewModel = movieDetailView.BindingContext as MovieDetailViewModel;
+            viewModel.Movie = new Movie();
+            viewModel.Title = "Neuen Film erfassen";
+
+            await Navigation.PushAsync(movieDetailView);
+        });
+
+        public MoviesViewModel(MovieService moviesService)
         {
             Title = "Filme";
             Movies = new ObservableCollection<MoviesItemViewModel>();
-            DataStore = moviesService;
+            MoviesService = moviesService;
             
-            Task.Run(async () => await LoadData());
-
-            //LoadMoviesCommand = new Command(async () => await ExecuteLoadMoviesCommand());
-
-            /*
-            MessagingCenter.Subscribe<NewMoviePage, Movie>(this, "AddItem", async (obj, movie) =>
-            {
-                var newMovie = movie as Movie;
-                Movies.Add(newMovie);
-                await DataStore.AddMovieAsync(newMovie);
-            });
-            */
+            // Wiederspiegeln der Datenbankänderungen in der Liste
+            moviesService.OnModelInserted += (sender, movie) => Movies.Add(CreateMoviesItemViewModel(movie));
+            moviesService.OnModelUpdated += async (sender, movie) => await LoadMovies();
+            moviesService.OnModelDeleted += (sender, movie) => Movies.Remove(CreateMoviesItemViewModel(movie));
         }
 
         public MoviesItemViewModel SelectedItem
@@ -66,7 +71,33 @@ namespace Moviekus.ViewModels.Movies
 
             await Navigation.PushAsync(detailView);
         }
-        
+
+        private async Task LoadMovies()
+        {
+            if (IsBusy)
+                return;
+
+            IsBusy = true;
+
+            try
+            {
+                Movies.Clear();
+                var movies = await MoviesService.GetAsync();
+
+                var itemViewModels = movies.Select(m => CreateMoviesItemViewModel(m));
+                Movies = new ObservableCollection<MoviesItemViewModel>(itemViewModels);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+        /*
         private async Task LoadData()
         {
             if (IsBusy)
@@ -94,6 +125,7 @@ namespace Moviekus.ViewModels.Movies
                 IsBusy = false;
             }
         }
+        */
 
         private MoviesItemViewModel CreateMoviesItemViewModel(Movie movie)
         {

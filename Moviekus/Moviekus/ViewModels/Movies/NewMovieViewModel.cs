@@ -10,8 +10,7 @@ namespace Moviekus.ViewModels.Movies
         {
             Movie = new Movie()
             {
-                Text = "Neu",
-                Description = "Beschreibung"
+                Title = "Neuer Film"
             };
         }
     }

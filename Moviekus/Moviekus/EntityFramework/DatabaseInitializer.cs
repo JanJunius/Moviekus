@@ -31,6 +31,15 @@ namespace Moviekus.EntityFramework
 
             sources.ForEach(s => context.Add(s));
             await context.SaveChangesAsync();
+
+            var movies = new List<Movie>()
+            {
+                new Movie { Title = "Mein erster Film von Netflix", Source = sources[1] },
+                new Movie { Title = "Mein erster Film von Amazon", Source = sources[2] }
+            };
+
+            movies.ForEach(m => context.Add(m));
+            await context.SaveChangesAsync();
         }
 
         public static void RecreateDatabase(MoviekusDbContext context)

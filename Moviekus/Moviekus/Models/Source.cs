@@ -16,6 +16,8 @@ namespace Moviekus.Models
                    SourceTypeName == source.SourceTypeName;
         }
 
+        public ICollection<Movie> Movies { get; set; }
+
         public override int GetHashCode()
         {
             var hashCode = 890389916;

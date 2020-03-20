@@ -83,7 +83,8 @@ namespace Moviekus.ViewModels.Movies
             {
                 Movies.Clear();
                 //var movies = await MoviesService.GetAsync();
-                var movies = await MoviesService.GetWithSourceAsync();
+                //var movies = await MoviesService.GetWithSourceAsync();
+                var movies = await MoviesService.GetWithGenresAsync();
 
                 var itemViewModels = movies.Select(m => CreateMoviesItemViewModel(m));
                 Movies = new ObservableCollection<MoviesItemViewModel>(itemViewModels);

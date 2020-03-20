@@ -8,6 +8,8 @@ namespace Moviekus.Models
     {
         public string Name { get; set; }
 
+        public virtual ICollection<MovieGenre> MovieGenres { get; set; }
+
         public override bool Equals(object obj)
         {
             return obj is Genre genre &&

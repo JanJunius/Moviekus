@@ -15,6 +15,8 @@ namespace Moviekus.EntityFramework
         public virtual DbSet<Movie> Movies { get; set; }
         public virtual DbSet<Source> Sources { get; set; }
 
+        public virtual DbSet<MovieGenre> MovieGenres { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)

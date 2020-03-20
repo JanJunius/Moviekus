@@ -40,6 +40,20 @@ namespace Moviekus.EntityFramework
 
             movies.ForEach(m => context.Add(m));
             await context.SaveChangesAsync();
+
+            movies[0].MovieGenres = new List<MovieGenre>
+            {
+                new MovieGenre() { Genre = genres[1], Movie = movies[0] }
+            };
+            await context.SaveChangesAsync();
+
+            movies[1].MovieGenres = new List<MovieGenre>
+            {
+                new MovieGenre() { Genre = genres[1], Movie = movies[1] },
+                new MovieGenre() { Genre = genres[2], Movie = movies[1] }
+            };
+            await context.SaveChangesAsync();
+
         }
 
         public static void RecreateDatabase(MoviekusDbContext context)

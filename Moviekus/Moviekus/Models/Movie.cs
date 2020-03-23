@@ -13,5 +13,12 @@ namespace Moviekus.Models
         public Source Source { get; set; }
 
         public virtual ICollection<MovieGenre> MovieGenres { get; set; }
+
+        public Movie()
+        {
+            Source = CreateNew<Source>();
+            MovieGenres = new List<MovieGenre>();
+        }
+
     }
 }

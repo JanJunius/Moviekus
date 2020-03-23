@@ -9,7 +9,7 @@
              x:Name="BrowseMoviesPage">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Neu" Clicked="AddItem_Clicked" IconImageSource="add.png"/>
+        <ToolbarItem Text="Neu" Command="{Binding AddMovieCommand}" IconImageSource="add.png"/>
 
     </ContentPage.ToolbarItems>
 

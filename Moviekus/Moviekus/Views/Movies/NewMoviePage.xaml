@@ -16,8 +16,13 @@
         <StackLayout Spacing="20" Padding="15">
             <Label Text="Titel" FontSize="Medium" />
             <Entry Text="{Binding Movie.Title}" d:Text="Name des Films" FontSize="Small" />
-            <Label Text="Description" FontSize="Medium" />
-            <Editor Text="{Binding Item.Description}" d:Text="Item description" FontSize="Small" Margin="0" />
+            <Label Text="Verfügbar bei" />
+            <Picker Title="-- Anbieter des Films wählen --"
+                    FontSize="Small"
+                    TitleColor="Blue"                    
+                    ItemsSource="{Binding Sources}"
+                    ItemDisplayBinding="{Binding Name}"                     
+                    SelectedItem="{Binding SelectedSource, Mode=TwoWay}"/>
         </StackLayout>
     </ContentPage.Content>
     

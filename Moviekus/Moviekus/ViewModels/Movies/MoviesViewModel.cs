@@ -26,12 +26,12 @@ namespace Moviekus.ViewModels.Movies
 
         public ICommand AddMovieCommand => new Command(async () =>
         {
-            var movieDetailView = Resolver.Resolve<MovieDetailPage>();
-            var viewModel = movieDetailView.BindingContext as MovieDetailViewModel;
+            var newMovieView = Resolver.Resolve<NewMoviePage>();
+            var viewModel = newMovieView.BindingContext as NewMovieViewModel;
             viewModel.Movie = Movie.CreateNew<Movie>();
             viewModel.Title = "Neuen Film erfassen";
 
-            await Navigation.PushAsync(movieDetailView);
+            await Navigation.PushAsync(newMovieView);
         });
 
         public MoviesViewModel(MovieService moviesService)
@@ -84,7 +84,7 @@ namespace Moviekus.ViewModels.Movies
                 Movies.Clear();
                 //var movies = await MoviesService.GetAsync();
                 //var movies = await MoviesService.GetWithSourceAsync();
-                var movies = await MoviesService.GetWithGenresAsync();
+                var movies = await MoviesService.GetWithGenresAndSourcesAsync();
 
                 var itemViewModels = movies.Select(m => CreateMoviesItemViewModel(m));
                 Movies = new ObservableCollection<MoviesItemViewModel>(itemViewModels);

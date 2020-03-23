@@ -7,11 +7,18 @@
              x:Class="Moviekus.Views.Movies.MovieDetailPage"
              Title="{Binding Title}">
 
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Löschen" IconImageSource="delete.png" Command="{Binding DeleteCommand}" />
+        <ToolbarItem Text="Ändern" IconImageSource="edit.png" Command="{Binding EditCommand}" />
+    </ContentPage.ToolbarItems>
+
     <StackLayout Spacing="20" Padding="15">
         <Label Text="Titel:" FontSize="Medium" />
         <Label Text="{Binding Movie.Title}" d:Text="Name des Films" FontSize="Small"/>
         <Label Text="Quelle" />
         <Label Text="{Binding Movie.Source.Name}" FontSize="Medium"/>
+        <Label Text="Genres" />
+        <Label Text="{Binding Genres}" FontSize="Medium"/>
 
     </StackLayout>
     

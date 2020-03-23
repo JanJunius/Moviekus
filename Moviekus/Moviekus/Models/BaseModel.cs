@@ -29,6 +29,7 @@ namespace Moviekus.Models
             };
             return model;
         }
+
         public override bool Equals(object obj)
         {
             return obj is BaseModel model &&

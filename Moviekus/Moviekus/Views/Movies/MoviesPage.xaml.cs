@@ -35,10 +35,5 @@ namespace Moviekus.Views.Movies
 
         }
 
-        async void AddItem_Clicked(object sender, EventArgs e)
-        {
-            await Navigation.PushModalAsync(new NavigationPage(Resolver.Resolve<NewMoviePage>()));
-        }
-
     }
 }

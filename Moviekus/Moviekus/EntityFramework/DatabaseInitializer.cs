@@ -18,7 +18,7 @@ namespace Moviekus.EntityFramework
                 new Genre { Name = "Komödie" },
                 new Genre { Name = "Drama" }
             };
-
+            genres.ForEach(g => g.IsNew = true);
             genres.ForEach(g => context.Add(g));
             await context.SaveChangesAsync();
 
@@ -28,7 +28,7 @@ namespace Moviekus.EntityFramework
                 new Source { Name = "Netflix", SourceTypeName = "Netflix"},
                 new Source { Name = "Amazon Prime", SourceTypeName = "Amazon Prime"}
             };
-
+            sources.ForEach(s => s.IsNew = true);
             sources.ForEach(s => context.Add(s));
             await context.SaveChangesAsync();
 
@@ -37,7 +37,7 @@ namespace Moviekus.EntityFramework
                 new Movie { Title = "Mein erster Film von Netflix", Source = sources[1] },
                 new Movie { Title = "Mein erster Film von Amazon", Source = sources[2] }
             };
-
+            movies.ForEach(m => m.IsNew = true);
             movies.ForEach(m => context.Add(m));
             await context.SaveChangesAsync();
 

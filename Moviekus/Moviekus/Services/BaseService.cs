@@ -34,37 +34,34 @@ namespace Moviekus.Services
             }             
         }
 
-        public virtual async Task InsertAsync(T model)
+        public virtual async Task<T> SaveChangesAsync(T model)
         {
             if (model.IsNew)
-            {
-                using (var context = new MoviekusDbContext())
-                {
-                    await context.Set<T>().AddAsync(model);
-                    await context.SaveChangesAsync();
-                    model.IsNew = false;
-                }
-                OnModelInserted?.Invoke(this, model);
-            }
-            else await UpdateAsync(model);
+                return await InsertAsync(model);
+            return await UpdateAsync(model);
         }
 
-        public virtual async Task UpdateAsync(T model)
+        private async Task<T> InsertAsync(T model)
         {
-            if (!model.IsNew)
+            using (var context = new MoviekusDbContext())
             {
-                using (var context = new MoviekusDbContext())
-                {
-                    T m = context.Set<T>().Find(model.Id);
-                    if (m != null)
-                    {
-                        m = model;
-                        await context.SaveChangesAsync();
-                    }
-                }
-                OnModelUpdated?.Invoke(this, model);
+                await context.Set<T>().AddAsync(model);
+                await context.SaveChangesAsync();
+                model.IsNew = false;
             }
-            else await InsertAsync(model);
+            OnModelInserted?.Invoke(this, model);
+            return model;
+        }
+
+        private async Task<T> UpdateAsync(T model)
+        {
+            using (var context = new MoviekusDbContext())
+            {
+                context.Entry(model).State = EntityState.Modified;
+                await context.SaveChangesAsync();
+            }
+            OnModelUpdated?.Invoke(this, model);
+            return model;
         }
 
         public virtual async Task DeleteAsync(T model)

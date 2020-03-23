@@ -20,7 +20,7 @@ namespace Moviekus.ViewModels.Genres
 
         public ICommand SaveCommand => new Command(async () =>
         {
-            await GenreService.UpdateAsync(Genre);
+            await GenreService.SaveChangesAsync(Genre);
             await Navigation.PopAsync();
         });
 

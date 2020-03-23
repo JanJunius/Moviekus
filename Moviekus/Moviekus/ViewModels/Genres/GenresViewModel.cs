@@ -28,7 +28,7 @@ namespace Moviekus.ViewModels.Genres
         {
             var genreDetailView = Resolver.Resolve<GenreDetailPage>();
             var viewModel = genreDetailView.BindingContext as GenreDetailViewModel;
-            viewModel.Genre = new Genre();
+            viewModel.Genre = Genre.CreateNew<Genre>();
             viewModel.Title = "Neues Genre erfassen";
 
             await Navigation.PushAsync(genreDetailView);

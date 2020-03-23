@@ -16,9 +16,19 @@ namespace Moviekus.Models
         public BaseModel()
         {
             Id = Guid.NewGuid().ToString();
-            IsNew = true;
+            // Es ist effizienter, IsNew mit false zu belegen, denn dies gilt für alle geladenen Objekte
+            // Für neu erzeugte Models muss es explizit auf true gesetzt werden => CreateNew aufrufen
+            IsNew = false;
         }
 
+        public static T CreateNew<T>() where T : BaseModel, new()
+        {
+            T model = new T
+            {
+                IsNew = true
+            };
+            return model;
+        }
         public override bool Equals(object obj)
         {
             return obj is BaseModel model &&

@@ -28,7 +28,7 @@ namespace Moviekus.ViewModels.Movies
         {
             var movieDetailView = Resolver.Resolve<MovieDetailPage>();
             var viewModel = movieDetailView.BindingContext as MovieDetailViewModel;
-            viewModel.Movie = new Movie();
+            viewModel.Movie = Movie.CreateNew<Movie>();
             viewModel.Title = "Neuen Film erfassen";
 
             await Navigation.PushAsync(movieDetailView);

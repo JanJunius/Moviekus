@@ -8,10 +8,8 @@ namespace Moviekus.ViewModels.Movies
 
         public NewMovieViewModel()
         {
-            Movie = new Movie()
-            {
-                Title = "Neuer Film"
-            };
+            Movie = Movie.CreateNew<Movie>();
+            Movie.Title = "Neuer Film";
         }
     }
 }

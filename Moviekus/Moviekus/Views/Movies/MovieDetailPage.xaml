@@ -8,10 +8,11 @@
              Title="{Binding Title}">
 
     <StackLayout Spacing="20" Padding="15">
-        <Label Text="Text:" FontSize="Medium" />
-        <Label Text="{Binding Movie.Text}" d:Text="Item name" FontSize="Small"/>
-        <Label Text="Description:" FontSize="Medium" />
-        <Label Text="{Binding Movie.Description}" d:Text="Beschreibung des Films" FontSize="Small"/>
+        <Label Text="Titel:" FontSize="Medium" />
+        <Label Text="{Binding Movie.Title}" d:Text="Name des Films" FontSize="Small"/>
+        <Label Text="Quelle" />
+        <Label Text="{Binding Movie.Source.Name}" FontSize="Medium"/>
+
     </StackLayout>
     
 </ContentPage>

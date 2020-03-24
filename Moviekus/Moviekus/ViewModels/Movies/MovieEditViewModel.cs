@@ -9,8 +9,11 @@ using Xamarin.Forms;
 
 namespace Moviekus.ViewModels.Movies
 {
-    public class NewMovieViewModel : BaseViewModel
+    public class MovieEditViewModel : BaseViewModel
     {
+        public delegate void MovieChanged(object sender, Movie movie);
+        public event MovieChanged OnMovieChanged;
+
         private Movie _movie;
         public Movie Movie 
         {
@@ -27,6 +30,8 @@ namespace Moviekus.ViewModels.Movies
         {
             await MovieService.SaveMovieAsync(Movie);
             await Navigation.PopAsync();
+
+            OnMovieChanged?.Invoke(this, Movie);
         });
 
         private List<Source> _sources;
@@ -52,7 +57,7 @@ namespace Moviekus.ViewModels.Movies
             }
         }
 
-        public NewMovieViewModel(MovieService movieService)
+        public MovieEditViewModel(MovieService movieService)
         {
             _sources = new List<Source>(new SourceService().Get());
 

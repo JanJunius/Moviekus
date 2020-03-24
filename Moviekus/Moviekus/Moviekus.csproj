@@ -27,8 +27,8 @@
     <Compile Update="Views\Movies\MoviesPage.xaml.cs">
       <DependentUpon>MoviesPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\Movies\NewMoviePage.xaml.cs">
-      <DependentUpon>NewMoviePage.xaml</DependentUpon>
+    <Compile Update="Views\Movies\MovieEditPage.xaml.cs">
+      <DependentUpon>MovieEditPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 

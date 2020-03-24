@@ -35,11 +35,16 @@ namespace Moviekus.ViewModels.Movies
 
         public ICommand EditCommand => new Command(async () =>
         {
-            var newMovieView = Resolver.Resolve<NewMoviePage>();
-            var viewModel = newMovieView.BindingContext as NewMovieViewModel;
+            var movieEditView = Resolver.Resolve<MovieEditPage>();
+            var viewModel = movieEditView.BindingContext as MovieEditViewModel;
             viewModel.Movie = Movie;
 
-            await Navigation.PushAsync(newMovieView);
+            viewModel.OnMovieChanged += (object sender, Movie movie) => {
+                Movie = movie;
+                RaisePropertyChanged(nameof(Movie));
+            };
+
+            await Navigation.PushAsync(movieEditView);
         });
 
         public MovieDetailViewModel()

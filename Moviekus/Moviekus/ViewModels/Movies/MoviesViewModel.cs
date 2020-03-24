@@ -26,12 +26,12 @@ namespace Moviekus.ViewModels.Movies
 
         public ICommand AddMovieCommand => new Command(async () =>
         {
-            var newMovieView = Resolver.Resolve<NewMoviePage>();
-            var viewModel = newMovieView.BindingContext as NewMovieViewModel;
+            var movieEditView = Resolver.Resolve<MovieEditPage>();
+            var viewModel = movieEditView.BindingContext as MovieEditViewModel;
             viewModel.Movie = Movie.CreateNew<Movie>();
             viewModel.Title = "Neuen Film erfassen";
 
-            await Navigation.PushAsync(newMovieView);
+            await Navigation.PushAsync(movieEditView);
         });
 
         public MoviesViewModel(MovieService moviesService)

@@ -47,5 +47,13 @@ namespace Moviekus.Services
             // Um dies zu verhindern, muss der Status der Source hier manuell umgesetzt werden
             context.Entry(movie.Source).State = EntityState.Unchanged;
         }
+
+        protected override void UpdateAsync(MoviekusDbContext context, Movie movie)
+        {
+            base.UpdateAsync(context, movie);
+
+            // Stellt sicher, dass der ForeignKey aktualisiert wird, falls sich die Quelle geändert hat
+            context.Entry(movie.Source).State = EntityState.Modified;
+        }
     }
 }

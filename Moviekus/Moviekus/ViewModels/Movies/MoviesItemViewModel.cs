@@ -12,7 +12,16 @@ namespace Moviekus.ViewModels.Movies
 
         public Movie Movie { get; set; }
 
-        //public event EventHandler MovieStatusChanged;
+        public override bool Equals(object obj)
+        {
+            return obj is MoviesItemViewModel model &&
+                   EqualityComparer<Movie>.Default.Equals(Movie, model.Movie);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Movie);
+        }
 
     }
 }

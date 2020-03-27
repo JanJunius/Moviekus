@@ -8,8 +8,8 @@
              Title="{Binding Title}">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Löschen" IconImageSource="delete.png" Command="{Binding DeleteCommand}" />
-        <ToolbarItem Text="Ändern" IconImageSource="edit.png" Command="{Binding EditCommand}" />
+        <ToolbarItem Text="Löschen" Command="{Binding DeleteCommand}" IconImageSource="delete.png" />
+        <ToolbarItem Text="Ändern" Command="{Binding EditCommand}" IconImageSource="edit.png" />
     </ContentPage.ToolbarItems>
 
     <StackLayout Spacing="20" Padding="15">

@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Moviekus.Models
@@ -22,5 +24,19 @@ namespace Moviekus.Models
 
         [NotMapped]
         public bool IsDeleted { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is MovieGenre genre &&
+                   base.Equals(obj) &&
+                   EqualityComparer<Movie>.Default.Equals(Movie, genre.Movie) &&
+                   EqualityComparer<Genre>.Default.Equals(Genre, genre.Genre) &&
+                   IsDeleted == genre.IsDeleted;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(base.GetHashCode(), Movie, Genre, IsDeleted);
+        }
     }
 }

@@ -99,56 +99,11 @@ namespace Moviekus.ViewModels.Movies
             }
         }
 
-        /*
-        private async Task LoadData()
-        {
-            if (IsBusy)
-                return;
-
-            IsBusy = true;
-
-            try
-            {
-                Movies.Clear();
-                var movies = await DataStore.GetMoviesAsync(true);
-
-                // Aus der DB wird eine Liste von Movies geliefert, die einzelnen Elemente der Filmliste haben aber
-                // ihr eigenes ViewModel, um z.B. eigene Commands oder Texte daran binden zu können
-                // Daher wird aus der Liste der Movies eine Liste mit MoviesItemViewModels gemacht
-                var itemViewModels = movies.Select(m => CreateMoviesItemViewModel(m));
-                Movies = new ObservableCollection<MoviesItemViewModel>(itemViewModels);
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-        }
-        */
-
         private MoviesItemViewModel CreateMoviesItemViewModel(Movie movie)
         {
             var moviesItemViewModel = new MoviesItemViewModel(movie);
             //moviesItemViewModel.MovieStatusChanged += MovieStatusChanged;
             return moviesItemViewModel;
-        }
-
-        private void MovieStatusChanged(object sender, EventArgs e)
-        {
-            if (sender is MoviesItemViewModel miViewModel)
-            {
-                /* Abspeichern der Änderung auf 2 Varianten möglich:
-                 * 1. a) Diese Methode als sync kennzeichnen
-                 0*0410+
-                 41444444474444b) await repository.UpdateItem(tdiViewModel.Item);
-                 * 2. Asynchrones Ausführen der Aktion in einem neuen Task, siehe unten   
-                 *    Dann muss diese Methode nicht mit async gekennzeichnet werden
-                */
-                //Task.Run(async () => await repository.UpdateItem(tdiViewModel.Item));
-            }
         }
 
     }

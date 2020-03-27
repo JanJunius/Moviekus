@@ -1,4 +1,6 @@
-﻿using Moviekus.Models;
+﻿using Acr.UserDialogs;
+using Moviekus.Models;
+using Moviekus.Services;
 using Moviekus.Views.Movies;
 using System.Linq;
 using System.Windows.Input;
@@ -8,7 +10,9 @@ using Xamarin.Forms.Internals;
 namespace Moviekus.ViewModels.Movies
 {
     public class MovieDetailViewModel : BaseViewModel
-    {       
+    {
+        MovieService MovieService;
+
         public string Genres
         {
             get
@@ -49,8 +53,25 @@ namespace Moviekus.ViewModels.Movies
             await Navigation.PushAsync(movieEditView);
         });
 
-        public MovieDetailViewModel()
+        public ICommand DeleteCommand => new Command(async () =>
         {
+            var result = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig
+            {
+                Message = "Diesen Film wirklich löschen?",
+                OkText = "Ja",
+                CancelText = "Nein"
+            });
+            if (result)
+            {
+                await MovieService.DeleteAsync(Movie);
+                RaisePropertyChanged(nameof(Movie));
+                await Navigation.PopAsync();
+            }
+        });
+
+        public MovieDetailViewModel(MovieService movieService)
+        {
+            MovieService = movieService;
         }
     }
 }

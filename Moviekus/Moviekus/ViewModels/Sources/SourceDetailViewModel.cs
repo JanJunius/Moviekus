@@ -24,7 +24,7 @@ namespace Moviekus.ViewModels.Sources
 
         public ICommand SaveCommand => new Command(async () =>
         {
-            await SourceService.UpdateAsync(Source);
+            await SourceService.SaveChangesAsync(Source);
             await Navigation.PopAsync();
         });
 

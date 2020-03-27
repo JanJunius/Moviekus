@@ -1,30 +1,33 @@
-﻿using SQLite;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Moviekus.Models
 {
     public class BaseModel
     {
-        [PrimaryKey]
+        [Key]
         public string Id { get; set; }
 
-        [Ignore]
+        [NotMapped]
         public bool IsNew { get; set; }
 
         public BaseModel()
         {
             Id = Guid.NewGuid().ToString();
+            // Es ist effizienter, IsNew mit false zu belegen, denn dies gilt für alle geladenen Objekte
+            // Für neu erzeugte Models muss es explizit auf true gesetzt werden => CreateNew aufrufen
             IsNew = false;
         }
 
-        public static T CreateNewModel<T>() where T : BaseModel, new()
+        public static T CreateNew<T>() where T : BaseModel, new()
         {
-            var newModel = new T
+            T model = new T
             {
                 IsNew = true
             };
-            return newModel;
+            return model;
         }
 
         public override bool Equals(object obj)

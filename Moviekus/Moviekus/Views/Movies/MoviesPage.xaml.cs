@@ -26,10 +26,13 @@ namespace Moviekus.Views.Movies
             this.viewModel = viewModel;
         }
 
-
-        async void AddItem_Clicked(object sender, EventArgs e)
+        protected override void OnAppearing()
         {
-            await Navigation.PushModalAsync(new NavigationPage(Resolver.Resolve<NewMoviePage>()));
+            base.OnAppearing();
+
+            if (viewModel.Movies.Count == 0)
+                viewModel.LoadMoviesCommand.Execute(null);
+
         }
 
     }

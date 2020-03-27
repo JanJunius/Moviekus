@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="Moviekus.Views.Movies.MovieEditPage"
+             Title="Neuer Film">
+    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Löschen" IconImageSource="delete.png" Command="{Binding DeleteCommand}" />
+        <ToolbarItem Text="Speichern" IconImageSource="save.png" Command="{Binding SaveCommand}" />
+    </ContentPage.ToolbarItems>
+    
+    <ContentPage.Content>
+        <StackLayout Spacing="20" Padding="15">
+            <Label Text="Titel" FontSize="Medium" />
+            <Entry Text="{Binding Movie.Title}" d:Text="Name des Films" FontSize="Small" />
+            <Label Text="Genres" />
+            <StackLayout Orientation="Horizontal" Padding="5">
+                <Label Text="{Binding Genres}" FontSize="Medium"/>
+                <Button Text="..." WidthRequest="40" HorizontalOptions="EndAndExpand" Command="{Binding GenreEditButtonClicked}"></Button>
+            </StackLayout>
+            <Label Text="Verfügbar bei" />
+            <Picker Title="-- Anbieter des Films wählen --"
+                    FontSize="Small"
+                    TitleColor="Blue"                    
+                    ItemsSource="{Binding Sources}"
+                    ItemDisplayBinding="{Binding Name}"                     
+                    SelectedItem="{Binding SelectedSource, Mode=TwoWay}"/>
+        </StackLayout>
+    </ContentPage.Content>
+    
+</ContentPage>

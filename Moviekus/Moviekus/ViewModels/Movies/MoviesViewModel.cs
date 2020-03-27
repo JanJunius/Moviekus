@@ -9,36 +9,41 @@ using Moviekus.Models;
 using Moviekus.Views.Movies;
 using Moviekus.Services;
 using System.Linq;
+using System.Windows.Input;
 
 namespace Moviekus.ViewModels.Movies
 {
     public class MoviesViewModel : BaseViewModel
     {
-        //public IMovieService<Movie> DataStore => DependencyService.Get<IMovieService<Movie>>();
+        private IMovieService MoviesService;
 
         public ObservableCollection<MoviesItemViewModel> Movies { get; set; }
-        public Command LoadMoviesCommand { get; set; }
 
-        private readonly IMovieService<Movie> DataStore;
+        public ICommand LoadMoviesCommand => new Command(async () =>
+        {
+            await LoadMovies();
+        });
 
-        public MoviesViewModel(MockMovieService moviesService)
+        public ICommand AddMovieCommand => new Command(async () =>
+        {
+            var movieEditView = Resolver.Resolve<MovieEditPage>();
+            var viewModel = movieEditView.BindingContext as MovieEditViewModel;
+            viewModel.Movie = Movie.CreateNew<Movie>();
+            viewModel.Title = "Neuen Film erfassen";
+
+            await Navigation.PushAsync(movieEditView);
+        });
+
+        public MoviesViewModel(MovieService moviesService)
         {
             Title = "Filme";
             Movies = new ObservableCollection<MoviesItemViewModel>();
-            DataStore = moviesService;
+            MoviesService = moviesService;
             
-            Task.Run(async () => await LoadData());
-
-            //LoadMoviesCommand = new Command(async () => await ExecuteLoadMoviesCommand());
-
-            /*
-            MessagingCenter.Subscribe<NewMoviePage, Movie>(this, "AddItem", async (obj, movie) =>
-            {
-                var newMovie = movie as Movie;
-                Movies.Add(newMovie);
-                await DataStore.AddMovieAsync(newMovie);
-            });
-            */
+            // Wiederspiegeln der Datenbankänderungen in der Liste
+            moviesService.OnModelInserted += (sender, movie) => Movies.Add(CreateMoviesItemViewModel(movie));
+            moviesService.OnModelUpdated += async (sender, movie) => await LoadMovies();
+            moviesService.OnModelDeleted += (sender, movie) => Movies.Remove(CreateMoviesItemViewModel(movie));
         }
 
         public MoviesItemViewModel SelectedItem
@@ -66,7 +71,35 @@ namespace Moviekus.ViewModels.Movies
 
             await Navigation.PushAsync(detailView);
         }
-        
+
+        private async Task LoadMovies()
+        {
+            if (IsBusy)
+                return;
+
+            IsBusy = true;
+
+            try
+            {
+                Movies.Clear();
+                //var movies = await MoviesService.GetAsync();
+                //var movies = await MoviesService.GetWithSourceAsync();
+                var movies = await MoviesService.GetWithGenresAndSourcesAsync();
+
+                var itemViewModels = movies.Select(m => CreateMoviesItemViewModel(m));
+                Movies = new ObservableCollection<MoviesItemViewModel>(itemViewModels);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+        /*
         private async Task LoadData()
         {
             if (IsBusy)
@@ -94,6 +127,7 @@ namespace Moviekus.ViewModels.Movies
                 IsBusy = false;
             }
         }
+        */
 
         private MoviesItemViewModel CreateMoviesItemViewModel(Movie movie)
         {
@@ -108,7 +142,8 @@ namespace Moviekus.ViewModels.Movies
             {
                 /* Abspeichern der Änderung auf 2 Varianten möglich:
                  * 1. a) Diese Methode als sync kennzeichnen
-                 *    b) await repository.UpdateItem(tdiViewModel.Item);
+                 0*0410+
+                 41444444474444b) await repository.UpdateItem(tdiViewModel.Item);
                  * 2. Asynchrones Ausführen der Aktion in einem neuen Task, siehe unten   
                  *    Dann muss diese Methode nicht mit async gekennzeichnet werden
                 */

@@ -11,11 +11,11 @@ using Moviekus.ViewModels.Movies;
 namespace Moviekus.Views.Movies
 {
     [DesignTimeVisible(false)]
-    public partial class NewMoviePage : ContentPage
+    public partial class MovieEditPage : ContentPage
     {
-        private NewMovieViewModel viewModel;
+        private MovieEditViewModel viewModel;
 
-        public NewMoviePage(NewMovieViewModel viewModel)
+        public MovieEditPage(MovieEditViewModel viewModel)
         {
             InitializeComponent();
 

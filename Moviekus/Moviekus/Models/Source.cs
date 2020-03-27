@@ -1,7 +1,4 @@
-﻿using SQLite;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Moviekus.Models
 {
@@ -18,6 +15,8 @@ namespace Moviekus.Models
                    Name == source.Name && 
                    SourceTypeName == source.SourceTypeName;
         }
+
+        public ICollection<Movie> Movies { get; set; }
 
         public override int GetHashCode()
         {

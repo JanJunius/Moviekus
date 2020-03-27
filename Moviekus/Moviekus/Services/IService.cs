@@ -7,10 +7,14 @@ namespace Moviekus.Services
 {
     public interface IService<T>
     {
-        Task InsertAsync(T source);
-        Task UpdateAsync(T source);
-        Task DeleteAsync(T source);
+        Task<T> SaveChangesAsync(T model);
+        
+        Task DeleteAsync(T model);
+        
+        IEnumerable<T> Get();
+        
         Task<T> GetAsync(string id);
+        
         Task<IEnumerable<T>> GetAsync();
     }
 }

@@ -13,8 +13,9 @@
   <ItemGroup>
     <PackageReference Include="Acr.UserDialogs" Version="7.1.0.440" />
     <PackageReference Include="Autofac" Version="5.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.2" />
     <PackageReference Include="PropertyChanged.Fody" Version="3.2.6" />
-    <PackageReference Include="sqlite-net-pcl" Version="1.6.292" />
     <PackageReference Include="Xamarin.Forms" Version="4.5.0.356" />  
     <PackageReference Include="Xamarin.Essentials" Version="1.5.0" />
   </ItemGroup>
@@ -26,13 +27,16 @@
     <Compile Update="Views\Movies\MoviesPage.xaml.cs">
       <DependentUpon>MoviesPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\Movies\NewMoviePage.xaml.cs">
-      <DependentUpon>NewMoviePage.xaml</DependentUpon>
+    <Compile Update="Views\Movies\MovieEditPage.xaml.cs">
+      <DependentUpon>MovieEditPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Update="Views\Genres\GenreDetailPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Genres\GenreSelectionPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\Genres\GenresPage.xaml">

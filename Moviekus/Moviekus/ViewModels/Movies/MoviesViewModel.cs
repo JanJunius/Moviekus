@@ -28,11 +28,18 @@ namespace Moviekus.ViewModels.Movies
         {
             var movieEditView = Resolver.Resolve<MovieEditPage>();
             var viewModel = movieEditView.BindingContext as MovieEditViewModel;
-            viewModel.Movie = Movie.CreateNew<Movie>();
-            viewModel.Title = "Neuen Film erfassen";
+
+            viewModel.Movie = CreateNewMovie();
 
             await Navigation.PushAsync(movieEditView);
         });
+
+        private Movie CreateNewMovie()
+        {
+            Movie movie = Movie.CreateNew<Movie>();
+            movie.Source = SourceService.GetDefaultSource();
+            return movie;
+        }
 
         public MoviesViewModel(MovieService moviesService)
         {

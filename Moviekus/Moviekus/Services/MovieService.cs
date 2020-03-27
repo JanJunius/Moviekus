@@ -47,6 +47,14 @@ namespace Moviekus.Services
             // Die Standard-Implementierung würde auch die Source als Added kennzeichnen und damit auch dort ein Insert ausführen
             // Um dies zu verhindern, muss der Status der Source hier manuell umgesetzt werden
             context.Entry(movie.Source).State = EntityState.Unchanged;
+
+            // Das gleiche gilt auch für die Genre-Zuordnungen
+            var genres = movie.MovieGenres.Select(mg => mg.Genre);
+            Parallel.ForEach(genres, g => { context.Entry(g).State = EntityState.Unchanged; });
+
+            // IsNew für alle MovieGenes zurücksetzen, damit man direkt Änderungen vornehmen kann 
+            // (sonst würde erneut Insert statt Update durchgeführt)
+            Parallel.ForEach(movie.MovieGenres, mg => { mg.IsNew = false; });
         }
 
         protected override void UpdateAsync(MoviekusDbContext context, Movie movie)

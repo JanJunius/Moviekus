@@ -24,6 +24,10 @@ namespace Moviekus.Views.Movies
             viewModel.Navigation = Navigation;
 
             this.viewModel = viewModel;
+
+            // Zurücksetzen der Selektion eines Films, damit man ihn direkt nochmal selektieren kann
+            // (andernfalls müsste man erst einen anderen Film wählen und dann wieder zurück)
+            MoviesListView.ItemSelected += (sender, args) => MoviesListView.SelectedItem = null;
         }
 
         protected override void OnAppearing()

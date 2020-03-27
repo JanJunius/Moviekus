@@ -29,7 +29,7 @@ namespace Moviekus.ViewModels.Genres
             var genreDetailView = Resolver.Resolve<GenreDetailPage>();
             var viewModel = genreDetailView.BindingContext as GenreDetailViewModel;
             viewModel.Genre = Genre.CreateNew<Genre>();
-            viewModel.Title = "Neues Genre erfassen";
+            viewModel.Title = "Neues Genre";
 
             await Navigation.PushAsync(genreDetailView);
         });
@@ -66,6 +66,7 @@ namespace Moviekus.ViewModels.Genres
             var detailView = Resolver.Resolve<GenreDetailPage>();
             var viewModel = detailView.BindingContext as GenreDetailViewModel;
             viewModel.Genre = giViewModel.Genre;
+            viewModel.Title = "Genre bearbeiten";
 
             await Navigation.PushAsync(detailView);
         }

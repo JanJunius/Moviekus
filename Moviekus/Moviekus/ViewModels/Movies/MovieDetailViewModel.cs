@@ -43,6 +43,7 @@ namespace Moviekus.ViewModels.Movies
             var movieEditView = Resolver.Resolve<MovieEditPage>();
             var viewModel = movieEditView.BindingContext as MovieEditViewModel;
             viewModel.Movie = Movie;
+            viewModel.Title = "Film bearbeiten";
 
             viewModel.OnMovieChanged += (object sender, Movie movie) => {
                 Movie = movie;

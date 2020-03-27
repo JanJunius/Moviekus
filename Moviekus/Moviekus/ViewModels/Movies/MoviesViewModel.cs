@@ -28,7 +28,7 @@ namespace Moviekus.ViewModels.Movies
         {
             var movieEditView = Resolver.Resolve<MovieEditPage>();
             var viewModel = movieEditView.BindingContext as MovieEditViewModel;
-
+            viewModel.Title = "Neuer Film";
             viewModel.Movie = CreateNewMovie();
 
             await Navigation.PushAsync(movieEditView);
@@ -63,10 +63,6 @@ namespace Moviekus.ViewModels.Movies
 
                 Device.BeginInvokeOnMainThread(async () => await OpenDetailPage(value));
                 RaisePropertyChanged(nameof(SelectedItem));
-
-                // Manually deselect item.
-                //MoviesListView.SelectedItem = null;
-
             }
         }
         
@@ -75,6 +71,7 @@ namespace Moviekus.ViewModels.Movies
             var detailView = Resolver.Resolve<MovieDetailPage>();
             var viewModel = detailView.BindingContext as MovieDetailViewModel;
             viewModel.Movie = miViewModel.Movie;
+            viewModel.Title = "Filmdetails";
 
             await Navigation.PushAsync(detailView);
         }

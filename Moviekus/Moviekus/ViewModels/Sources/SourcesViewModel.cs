@@ -29,7 +29,7 @@ namespace Moviekus.ViewModels.Sources
             var sourceDetailView = Resolver.Resolve<SourceDetailPage>();
             var viewModel = sourceDetailView.BindingContext as SourceDetailViewModel;
             viewModel.Source = Source.CreateNew<Source>();
-            viewModel.Title = "Neue Quelle erfassen";           
+            viewModel.Title = "Neue Quelle";           
             
             await Navigation.PushAsync(sourceDetailView);
         });
@@ -66,6 +66,7 @@ namespace Moviekus.ViewModels.Sources
             var detailView = Resolver.Resolve<SourceDetailPage>();
             var viewModel = detailView.BindingContext as SourceDetailViewModel;
             viewModel.Source = siViewModel.Source;
+            viewModel.Title = "Quelle bearbeiten";
 
             await Navigation.PushAsync(detailView);
         }

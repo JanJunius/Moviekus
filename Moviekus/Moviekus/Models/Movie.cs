@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics;
 
 namespace Moviekus.Models
 {
+    [DebuggerDisplay("Title = {Title}")]
     public class Movie : BaseModel
     {
         [Required]

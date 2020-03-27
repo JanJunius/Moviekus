@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Moviekus.Models
 {
+    [DebuggerDisplay("Name = {Name}, SourceType = {SourceTypeName}")]
     public class Source : BaseModel
     {
         public string Name { get; set; }

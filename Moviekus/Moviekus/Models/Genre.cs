@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace Moviekus.Models
 {
+    [DebuggerDisplay("Name = {Name}")]
     public class Genre : BaseModel
     {
         public string Name { get; set; }

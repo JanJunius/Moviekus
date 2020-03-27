@@ -8,7 +8,7 @@ namespace Moviekus.Models
        */
     public class MovieGenre : BaseModel
     {
-        /* Ohne die beiden Attribute wird eine Spalte MovieId in der Tabelle angelegt
+        /* Ohne die beiden Attribute wird nur eine Spalte MovieId in der Tabelle angelegt
          * Durch ForeignKey wird zusätzlich noch ein FK-Constraint erzeugt
          * Required setzt die Spalte auf NOT NULL
          * */
@@ -20,5 +20,7 @@ namespace Moviekus.Models
         [Required]
         public Genre Genre { get; set; }
 
+        [NotMapped]
+        public bool IsDeleted { get; set; }
     }
 }

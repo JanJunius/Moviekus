@@ -2,6 +2,7 @@
 using Moviekus.EntityFramework;
 using Moviekus.Models;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Moviekus.Services
@@ -54,6 +55,26 @@ namespace Moviekus.Services
 
             // Stellt sicher, dass der ForeignKey aktualisiert wird, falls sich die Quelle geändert hat
             context.Entry(movie.Source).State = EntityState.Modified;
+
+            // Spezialbehandlung für die n-m-Relation zwischen Movie und Genre
+            foreach (MovieGenre movieGenre in movie.MovieGenres)
+            {
+                if (movieGenre.IsNew && !movieGenre.IsDeleted)
+                {
+                    if (context.Entry(movieGenre).State == EntityState.Detached)
+                        context.Attach(movieGenre);
+                    context.Entry(movieGenre).State = EntityState.Added;
+                    movieGenre.IsNew = false;
+                }
+                else if (movieGenre.IsDeleted)
+                {
+                    if (context.Entry(movieGenre).State == EntityState.Detached) 
+                        context.Attach(movieGenre);
+                    context.Entry(movieGenre).State = EntityState.Deleted;
+                }
+
+            }
+
         }
     }
 }

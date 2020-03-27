@@ -3,6 +3,7 @@ using Moviekus.EntityFramework;
 using Moviekus.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -48,20 +49,24 @@ namespace Moviekus.Services
         {
             using (var context = new MoviekusDbContext())
             {
-                // Insert
-                if (model.IsNew)
+                try
                 {
-                    await InsertAsync(context, model);
-                    await context.SaveChangesAsync();
-                    model.IsNew = false;
-                    OnModelInserted?.Invoke(this, model);
-                    return model;
-                }
+                    bool inserted = model.IsNew;
+                    if (model.IsNew)
+                        await InsertAsync(context, model);
+                    else UpdateAsync(context, model);
 
-                // Update
-                UpdateAsync(context, model);
-                await context.SaveChangesAsync();
-                OnModelUpdated?.Invoke(this, model);
+                    model.IsNew = false;
+                    await context.SaveChangesAsync();
+
+                    if (inserted)
+                        OnModelInserted?.Invoke(this, model);
+                    else OnModelUpdated?.Invoke(this, model);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                }
                 return model;
             }
         }

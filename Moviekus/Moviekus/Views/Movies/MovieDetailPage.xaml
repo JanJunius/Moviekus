@@ -15,10 +15,10 @@
     <StackLayout Spacing="20" Padding="15">
         <Label Text="Titel:" FontSize="Medium" />
         <Label Text="{Binding Movie.Title}" d:Text="Name des Films" FontSize="Small"/>
-        <Label Text="Quelle" />
-        <Label Text="{Binding Movie.Source.Name}" FontSize="Medium"/>
         <Label Text="Genres" />
         <Label Text="{Binding Genres}" FontSize="Medium"/>
+        <Label Text="Verfügbar bei" />
+        <Label Text="{Binding Movie.Source.Name}" FontSize="Medium"/>
 
     </StackLayout>
     

@@ -21,6 +21,7 @@ namespace Moviekus.ViewModels.Movies
                 }
                 return genres.Length > 1 ? genres.Substring(0, genres.Length-2) : genres;
             }
+            set { }
         }
         private Movie _movie;
 
@@ -42,6 +43,7 @@ namespace Moviekus.ViewModels.Movies
             viewModel.OnMovieChanged += (object sender, Movie movie) => {
                 Movie = movie;
                 RaisePropertyChanged(nameof(Movie));
+                RaisePropertyChanged(nameof(Genres));
             };
 
             await Navigation.PushAsync(movieEditView);

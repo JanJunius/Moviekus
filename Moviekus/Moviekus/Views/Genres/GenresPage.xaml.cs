@@ -13,7 +13,7 @@ namespace Moviekus.Views.Genres
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class GenresPage : ContentPage
     {
-        GenresViewModel viewModel;
+        private GenresViewModel viewModel;
 
         public GenresPage(GenresViewModel viewModel)
         {

@@ -9,6 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
+
 namespace Moviekus.Services
 {
     public class BaseService<T> : IService<T> where T : BaseModel, new()
@@ -65,7 +66,7 @@ namespace Moviekus.Services
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(ex);
+                    
                 }
                 return model;
             }

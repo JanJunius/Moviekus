@@ -1,4 +1,5 @@
 ﻿using Acr.UserDialogs;
+using Microsoft.Data.Sqlite;
 using Moviekus.Models;
 using Moviekus.Services;
 using Moviekus.ViewModels;
@@ -38,7 +39,26 @@ namespace Moviekus.ViewModels.Sources
             });
             if (result)
             {
-                await SourceService.DeleteAsync(Source);
+                try
+                {
+                    await SourceService.DeleteAsync(Source);
+                }
+                catch (Exception ex)
+                {
+                    string errorMsg = ex.Message;
+                    if (ex.InnerException != null && ex.InnerException is SqliteException)
+                    {
+                        SqliteException sqlException = ex.InnerException as SqliteException;
+                        if (sqlException.SqliteErrorCode == 19)
+                            errorMsg = "Quelle kann nicht gelöscht werden, da sie noch verwendet wird.";
+                        else errorMsg = sqlException.Message;
+                    }
+                    await UserDialogs.Instance.AlertAsync(new AlertConfig
+                    {
+                        Message = errorMsg
+                    });
+                }
+                
                 await Navigation.PopAsync();
             }
         });

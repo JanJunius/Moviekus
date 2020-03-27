@@ -105,17 +105,15 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\add.png" />
-    <Content Include="Assets\delete.png" />
-    <Content Include="Assets\filter.png" />
-    <Content Include="Assets\genres.png" />
-    <Content Include="Assets\local.png" />
-    <Content Include="Assets\movie.png" />
-    <Content Include="Assets\moviekus.png" />
-    <Content Include="Assets\netflix.png" />
-    <Content Include="Assets\prime.png" />
-    <Content Include="Assets\save.png" />
-    <Content Include="Assets\sources.png" />
+    <Content Include="delete.png" />
+    <Content Include="edit.png" />
+    <Content Include="filter.png" />
+    <Content Include="genres.png" />
+    <Content Include="local.png" />
+    <Content Include="movie.png" />
+    <Content Include="moviekus.png" />
+    <Content Include="netflix.png" />
+    <Content Include="prime.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LargeTile.scale-100.png" />
     <Content Include="Assets\LargeTile.scale-200.png" />
@@ -144,6 +142,7 @@
     <Content Include="Assets\Wide310x150Logo.scale-100.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
+    <Content Include="sources.png" />
     <Content Include="xamarin_logo.png" />
     <Content Include="add.png" />
     <Content Include="save.png" />

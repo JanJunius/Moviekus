@@ -38,6 +38,8 @@ namespace Moviekus.ViewModels.Movies
         {
             Movie movie = Movie.CreateNew<Movie>();
             movie.Source = SourceService.GetDefaultSource();
+            movie.LastSeen = DateTime.Today;
+            movie.ReleaseDate = DateTime.Today;
             return movie;
         }
 

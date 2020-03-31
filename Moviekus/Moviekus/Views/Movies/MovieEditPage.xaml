@@ -22,10 +22,10 @@
                 <Entry Text="{Binding Movie.Description}" d:Text="Beschreibung des Films" FontSize="Small" />
 
                 <Label Text="Veröffentlichungsdatum" FontSize="Medium" />
-                <DatePicker Date="{Binding Movie.ReleaseDate}" HorizontalOptions="Start"/>
+                <DatePicker Date="{Binding Movie.ReleaseDate}" Format="D" HorizontalOptions="Start"/>
 
                 <Label Text="Zuletzt gesehen" FontSize="Medium" />
-                <DatePicker Date="{Binding Movie.LastSeen}" HorizontalOptions="Start"/>
+                <DatePicker Date="{Binding Movie.LastSeen}" Format ="D" HorizontalOptions="Start"/>
 
                 <Label Text="Laufzeit (Minuten)" FontSize="Medium" />
                 <Entry Text="{Binding Movie.Runtime}" Keyboard="Numeric" MaxLength="3" FontSize="Small" />

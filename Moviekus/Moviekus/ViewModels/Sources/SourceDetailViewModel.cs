@@ -5,6 +5,7 @@ using Moviekus.Services;
 using Moviekus.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows.Input;
@@ -45,6 +46,7 @@ namespace Moviekus.ViewModels.Sources
                 }
                 catch (Exception ex)
                 {
+                    Debug.WriteLine(ex.ToString());
                     string errorMsg = ex.Message;
                     if (ex.InnerException != null && ex.InnerException is SqliteException)
                     {

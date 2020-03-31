@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:customcontrol="clr-namespace:Moviekus.Views"
              mc:Ignorable="d"
              x:Class="Moviekus.Views.Movies.MovieDetailPage"
              Title="{Binding Title}">
@@ -12,14 +13,44 @@
         <ToolbarItem Text="Ändern" Command="{Binding EditCommand}" IconImageSource="edit.png" />
     </ContentPage.ToolbarItems>
 
-    <StackLayout Spacing="20" Padding="15">
-        <Label Text="Titel:" FontSize="Medium" />
-        <Label Text="{Binding Movie.Title}" d:Text="Name des Films" FontSize="Small"/>
-        <Label Text="Genres" />
-        <Label Text="{Binding Genres}" FontSize="Medium"/>
-        <Label Text="Verfügbar bei" />
-        <Label Text="{Binding Movie.Source.Name}" FontSize="Medium"/>
+    <ScrollView>
+        <StackLayout Spacing="20" Padding="15">
+            <Label Text="Titel:" FontSize="Medium" />
+            <Label Text="{Binding Movie.Title}" FontSize="Small"/>
 
-    </StackLayout>
+            <Label Text="Beschreibung:" FontSize="Medium" />
+            <Label Text="{Binding Movie.Description}" FontSize="Small"/>
+
+            <Label Text="Veröffentlichungsdatum:" FontSize="Medium" />
+            <Label Text="{Binding ReleaseDateText}" FontSize="Small"/>
+
+            <Label Text="Zuletzt gesehen:" FontSize="Medium" />
+            <Label Text="{Binding LastSeenText}" FontSize="Small"/>
+
+            <Label Text="Laufzeit:" FontSize="Medium" />
+            <StackLayout Orientation="Horizontal">
+                <Label Text="{Binding Movie.Runtime}" FontSize="Small"/>
+                <Label Text="Minuten" FontSize="Small" />
+            </StackLayout>
+
+            <Label Text="Bewertung:" FontSize="Medium" />
+            <customcontrol:RatingBar x:Name="ratingBarDetail" 
+            HorizontalOptions="Start"  
+            IsEnabled="False"
+            ImageWidth="25" 
+            ImageHeight="25"
+            Rating ="{Binding Movie.Rating}" />
+
+            <Label Text="Genres" />
+            <Label Text="{Binding Genres}" FontSize="Medium"/>
+
+            <Label Text="Verfügbar bei" />
+            <Label Text="{Binding Movie.Source.Name}" FontSize="Medium"/>
+
+            <Label Text="Bemerkungen:" FontSize="Medium" />
+            <Label Text="{Binding Movie.Notes}" FontSize="Small"/>
+
+        </StackLayout>
+    </ScrollView>
     
 </ContentPage>

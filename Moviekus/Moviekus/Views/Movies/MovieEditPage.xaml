@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:customcontrol="clr-namespace:Moviekus.Views"
              mc:Ignorable="d"
              x:Class="Moviekus.Views.Movies.MovieEditPage"
              Title="{Binding Title}">
@@ -12,22 +13,50 @@
     </ContentPage.ToolbarItems>
     
     <ContentPage.Content>
-        <StackLayout Spacing="20" Padding="15">
-            <Label Text="Titel" FontSize="Medium" />
-            <Entry Text="{Binding Movie.Title}" d:Text="Name des Films" FontSize="Small" />
-            <Label Text="Genres" />
-            <StackLayout Orientation="Horizontal" Padding="5">
-                <Label Text="{Binding Genres}" FontSize="Medium"/>
-                <Button Text="..." WidthRequest="40" HorizontalOptions="EndAndExpand" Command="{Binding GenreEditButtonClicked}"></Button>
-            </StackLayout>
-            <Label Text="Verfügbar bei" />
-            <Picker Title="-- Anbieter des Films wählen --"
+        <ScrollView>
+            <StackLayout Spacing="20" Padding="15">
+                <Label Text="Titel" FontSize="Medium" />
+                <Entry Text="{Binding Movie.Title}" d:Text="Name des Films" FontSize="Small" />
+
+                <Label Text="Beschreibung" FontSize="Medium" />
+                <Entry Text="{Binding Movie.Description}" d:Text="Beschreibung des Films" FontSize="Small" />
+
+                <Label Text="Veröffentlichungsdatum" FontSize="Medium" />
+                <DatePicker Date="{Binding Movie.ReleaseDate}" HorizontalOptions="Start"/>
+
+                <Label Text="Zuletzt gesehen" FontSize="Medium" />
+                <DatePicker Date="{Binding Movie.LastSeen}" HorizontalOptions="Start"/>
+
+                <Label Text="Laufzeit (Minuten)" FontSize="Medium" />
+                <Entry Text="{Binding Movie.Runtime}" Keyboard="Numeric" MaxLength="3" FontSize="Small" />
+
+                <Label Text="Bewertung:" FontSize="Medium" />
+                <customcontrol:RatingBar x:Name="ratingBarEdit" 
+            HorizontalOptions="Start"  
+            IsEnabled="True"
+            ImageWidth="25" 
+            ImageHeight="25"
+            Rating ="{Binding Movie.Rating}" />
+
+                <Label Text="Genres" />
+                <StackLayout Orientation="Horizontal" Padding="5">
+                    <Label Text="{Binding Genres}" FontSize="Medium"/>
+                    <Button Text="..." WidthRequest="40" HorizontalOptions="EndAndExpand" Command="{Binding GenreEditButtonClicked}"></Button>
+                </StackLayout>
+
+                <Label Text="Verfügbar bei" />
+                <Picker Title="-- Anbieter des Films wählen --"
                     FontSize="Small"
                     TitleColor="Blue"                    
                     ItemsSource="{Binding Sources}"
                     ItemDisplayBinding="{Binding Name}"                     
                     SelectedItem="{Binding SelectedSource, Mode=TwoWay}"/>
-        </StackLayout>
+
+                <Label Text="Bemerkungen" FontSize="Medium" />
+                <Entry Text="{Binding Movie.Notes}" d:Text="Eigene Kommentare zu diesem Film" FontSize="Small" />
+
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
     
 </ContentPage>

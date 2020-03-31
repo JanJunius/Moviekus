@@ -2,6 +2,7 @@
 using Moviekus.Services;
 using Moviekus.ViewModels.Genres;
 using Moviekus.ViewModels.Sources;
+using Moviekus.Views;
 using Moviekus.Views.Genres;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,7 +44,6 @@ namespace Moviekus.ViewModels.Movies
             }
             set { } // Setter notwendig fürs DataBinding
         }
-
 
         public ICommand SaveCommand => new Command(async () =>
         {

@@ -35,7 +35,7 @@ namespace Moviekus.EntityFramework
             var movies = new List<Movie>()
             {
                 new Movie { Title = "Mein erster Film von Netflix", Source = sources[1] },
-                new Movie { Title = "Mein erster Film von Amazon", Source = sources[2] }
+                new Movie { Title = "Mein erster Film von Amazon", Source = sources[2], Description="Dies ist mein erster Film bei Amazon Prime, der aber nur zum Testen angelegt wurde.\r\nSpäter kommen echte Filme dazu", ReleaseDate=DateTime.Today.AddMonths(-24), Runtime=123, Rating=4 }
             };
             movies.ForEach(m => m.IsNew = true);
             movies.ForEach(m => context.Add(m));

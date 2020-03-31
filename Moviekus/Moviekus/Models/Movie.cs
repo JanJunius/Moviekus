@@ -14,6 +14,18 @@ namespace Moviekus.Models
         
         public Source Source { get; set; }
 
+        public string Description { get; set; }
+
+        public DateTime ReleaseDate { get; set; }
+
+        public int Runtime { get; set; }
+
+        public int Rating { get; set; }
+
+        public DateTime LastSeen { get; set; }
+
+        public string Notes { get; set; }
+
         public virtual ICollection<MovieGenre> MovieGenres { get; set; }
 
         public Movie()
@@ -28,12 +40,29 @@ namespace Moviekus.Models
                    base.Equals(obj) &&
                    Title == movie.Title &&
                    EqualityComparer<Source>.Default.Equals(Source, movie.Source) &&
+                   Description == movie.Description &&
+                   ReleaseDate == movie.ReleaseDate &&
+                   Runtime == movie.Runtime &&
+                   Rating == movie.Rating &&
+                   LastSeen == movie.LastSeen &&
+                   Notes == movie.Notes &&
                    EqualityComparer<ICollection<MovieGenre>>.Default.Equals(MovieGenres, movie.MovieGenres);
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(base.GetHashCode(), Title, Source, MovieGenres);
+            var hash = new HashCode();
+            hash.Add(base.GetHashCode());
+            hash.Add(Title);
+            hash.Add(Source);
+            hash.Add(Description);
+            hash.Add(ReleaseDate);
+            hash.Add(Runtime);
+            hash.Add(Rating);
+            hash.Add(LastSeen);
+            hash.Add(Notes);
+            hash.Add(MovieGenres);
+            return hash.ToHashCode();
         }
     }
 }

@@ -2,7 +2,10 @@
 using Moviekus.Models;
 using Moviekus.Services;
 using Moviekus.Views.Movies;
+using System;
+using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
@@ -38,6 +41,16 @@ namespace Moviekus.ViewModels.Movies
             }
         }
 
+        public string ReleaseDateText 
+        {
+            get { return Movie != null && Movie.ReleaseDate != DateTime.MinValue ? Movie.ReleaseDate.ToString("d", MoviekusDefines.MoviekusCultureInfo) : "-"; }
+        }
+
+        public string LastSeenText
+        {
+            get { return Movie != null && Movie.LastSeen != DateTime.MinValue ? Movie.LastSeen.ToString("d", MoviekusDefines.MoviekusCultureInfo) : "-"; }
+        }
+
         public ICommand EditCommand => new Command(async () =>
         {
             var movieEditView = Resolver.Resolve<MovieEditPage>();
@@ -45,9 +58,11 @@ namespace Moviekus.ViewModels.Movies
             viewModel.Movie = Movie;
             viewModel.Title = "Film bearbeiten";
 
-            viewModel.OnMovieChanged += (object sender, Movie movie) => {
+            viewModel.OnMovieChanged += (object sender, Movie movie) =>
+            {
                 Movie = movie;
                 RaisePropertyChanged(nameof(Movie));
+                RaisePropertyChanged(nameof(ReleaseDateText));
                 RaisePropertyChanged(nameof(Genres));
             };
 

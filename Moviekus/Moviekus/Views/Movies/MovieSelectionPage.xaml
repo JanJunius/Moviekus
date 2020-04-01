@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             Title="{Binding Title}"
+             x:Class="Moviekus.Views.Movies.MovieSelectionPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <ListView x:Name="MovieSelectionView"
+                ItemsSource="{Binding Movies}"
+                VerticalOptions="FillAndExpand"
+                HasUnevenRows="true"
+                IsPullToRefreshEnabled="true"
+                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                CachingStrategy="RecycleElement"
+                RefreshCommand="{Binding LoadMoviesCommand}"
+                SelectedItem="{Binding SelectedItem}">
+                <ListView.Header>
+                    <Grid Padding="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="180"/>
+                            <ColumnDefinition Width="40" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Label Text="Titel" Font="Bold, 14" BackgroundColor="LightGray" TextColor="Black" Grid.Column="0" />
+                        <Label Text="Jahr" Font="Bold, 14" BackgroundColor="LightGray" TextColor="Black" Grid.Column="1" />
+                        <Label Text="Beschreibung" Font="Bold, 16" BackgroundColor="LightGray" TextColor="Black" Grid.Column="2" />
+                    </Grid>
+                </ListView.Header>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Padding="10">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="40" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Text="{Binding Title}" FontSize="14" MaxLines="2" Grid.Column="0" />
+                                    <Label Text="{Binding ReleaseYear}" FontSize="14" Grid.Column="1" />
+                                    <Label Text="{Binding Overview}" FontSize="14" MaxLines="8" Grid.Column="2" />
+                                </Grid>
+                                    
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,9 +1,12 @@
-﻿using Moviekus.Models;
+﻿using Acr.UserDialogs;
+using Moviekus.Dto;
+using Moviekus.Models;
 using Moviekus.Services;
 using Moviekus.ViewModels.Genres;
 using Moviekus.ViewModels.Sources;
 using Moviekus.Views;
 using Moviekus.Views.Genres;
+using Moviekus.Views.Movies;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -52,6 +55,57 @@ namespace Moviekus.ViewModels.Movies
 
             OnMovieChanged?.Invoke(this, Movie);
         });
+
+        public ICommand MovieDbCommand => new Command(async () =>
+        {
+            if (string.IsNullOrEmpty(Movie.Title) || Movie.Title.Length < 3)
+            {
+                await UserDialogs.Instance.AlertAsync(new AlertConfig
+                {
+                    Message = "Bitte einen Titel mit mindestens 3 Zeichen eingeben."
+                });
+                return;
+            }
+
+            IEnumerable<MovieDto> movieDtos = new MovieDbService().SearchMovie(Movie.Title);
+
+            if (movieDtos.Count() == 0)
+            {
+                await UserDialogs.Instance.AlertAsync(new AlertConfig
+                {
+                    Message = "Es wurde kein passender Film gefunden."
+                });                
+            }
+            // Wurde genau ein Film gefunden, dann übernehmen wir den
+            else if (movieDtos.Count() == 1)
+            {
+                MovieDto movieDto = movieDtos.FirstOrDefault();
+                ApplyMovieSelection(movieDto);
+            }
+            // Wurde mehr als ein Film gefunden, muss man einen auswählen
+            else
+            {
+                var selectionView = Resolver.Resolve<MovieSelectionPage>();
+                var viewModel = selectionView.BindingContext as MovieSelectionViewModel;
+                viewModel.Title = "Filmauswahl";
+                viewModel.Movies = movieDtos;
+                viewModel.OnMovieSelectionChanged += async (movie) => await ApplyMovieSelection(movie); 
+                await Navigation.PushAsync(selectionView);
+            }
+        });
+
+        private async Task ApplyMovieSelection(MovieDto movieDto)
+        {
+            Movie.Title = movieDto.Title;
+            Movie.Description = movieDto.Overview;
+            Movie.ReleaseDate = movieDto.ReleaseDate;
+            Movie.Runtime = movieDto.Runtime;
+            Movie.MovieGenres = await MovieService.GetMovieGenres(Movie, movieDto.Genres);
+
+            //OnMovieChanged?.Invoke(this, Movie);
+            RaisePropertyChanged(nameof(Movie));
+            RaisePropertyChanged(nameof(Genres));
+        }
 
         public ICommand GenreEditButtonClicked => new Command(async () =>
         {

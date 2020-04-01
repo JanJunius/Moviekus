@@ -111,6 +111,7 @@
     <Content Include="genres.png" />
     <Content Include="local.png" />
     <Content Include="movie.png" />
+    <Content Include="moviedb.png" />
     <Content Include="moviekus.png" />
     <Content Include="netflix.png" />
     <Content Include="prime.png" />
@@ -142,6 +143,7 @@
     <Content Include="Assets\Wide310x150Logo.scale-100.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
+    <Content Include="search.png" />
     <Content Include="sources.png" />
     <Content Include="star.png" />
     <Content Include="star_empty.png" />

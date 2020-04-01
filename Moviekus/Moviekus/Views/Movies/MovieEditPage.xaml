@@ -9,6 +9,7 @@
              Title="{Binding Title}">
     
     <ContentPage.ToolbarItems>
+        <ToolbarItem Text="MovieDb" IconImageSource="moviedb.png" Command="{Binding MovieDbCommand}" />
         <ToolbarItem Text="Speichern" IconImageSource="save.png" Command="{Binding SaveCommand}" />
     </ContentPage.ToolbarItems>
     

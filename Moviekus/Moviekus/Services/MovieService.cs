@@ -40,6 +40,23 @@ namespace Moviekus.Services
             return movie;
         }
 
+        public async Task<ICollection<MovieGenre>> GetMovieGenres(Movie movie, IList<string> genres)
+        {
+            List<MovieGenre> movieGenres = new List<MovieGenre>();
+            GenreService genreService = new GenreService();
+
+            foreach(string genreName in genres)
+            {
+                Genre genre = await genreService.GetOrCreateGenre(genreName);
+                MovieGenre movieGenre = MovieGenre.CreateNew<MovieGenre>();
+                movieGenre.Movie = movie;
+                movieGenre.Genre = genre;
+                movieGenres.Add(movieGenre);
+            }
+
+            return movieGenres;
+        }
+
         protected override async Task InsertAsync(MoviekusDbContext context, Movie movie)
         {
             await context.Movies.AddAsync(movie);

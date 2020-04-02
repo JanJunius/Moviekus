@@ -1,8 +1,10 @@
 ﻿using Moviekus.Dto;
+using Moviekus.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Moviekus.ViewModels.Movies
 {
@@ -21,7 +23,16 @@ namespace Moviekus.ViewModels.Movies
                 if (value == null)
                     return;
 
-                OnMovieSelectionChanged?.Invoke(value);
+                MovieDto dto = value;
+
+                // Details zum Film nachladen bei Auswahl
+                if (!string.IsNullOrEmpty(value.MovieDbId))
+                {
+                    Task t = Task.Run(() => new MovieDbService().FillMovieDetails(value));
+                    t.Wait();
+                }
+
+                OnMovieSelectionChanged?.Invoke(dto);
                 RaisePropertyChanged(nameof(SelectedItem));
                 Navigation.PopAsync();
             }

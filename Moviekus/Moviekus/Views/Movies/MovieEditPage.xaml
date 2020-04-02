@@ -20,7 +20,7 @@
                 <Entry Text="{Binding Movie.Title}" d:Text="Name des Films" FontSize="Small" />
 
                 <Label Text="Beschreibung" FontSize="Medium" />
-                <Entry Text="{Binding Movie.Description}" d:Text="Beschreibung des Films" FontSize="Small" />
+                <Editor Text="{Binding Movie.Description}" d:Text="Beschreibung des Films" FontSize="Small" AutoSize="TextChanges" />
 
                 <Label Text="Veröffentlichungsdatum" FontSize="Medium" />
                 <DatePicker Date="{Binding Movie.ReleaseDate}" Format="D" HorizontalOptions="Start"/>

@@ -67,7 +67,7 @@ namespace Moviekus.ViewModels.Movies
                 return;
             }
 
-            IEnumerable<MovieDto> movieDtos = new MovieDbService().SearchMovie(Movie.Title);
+            IEnumerable<MovieDto> movieDtos = await new MovieDbService().SearchMovie(Movie.Title);
 
             if (movieDtos.Count() == 0)
             {

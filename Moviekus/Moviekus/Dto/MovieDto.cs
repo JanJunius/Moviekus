@@ -1,10 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Moviekus.Dto
 {
+    [DebuggerDisplay("Title = {Title}")]
     public class MovieDto
     {
+        public MovieDto()
+        {
+            Genres = new List<string>();
+        }
+
         public string MovieDbId { get; set; }
         
         public string ImDbId { get; set; }

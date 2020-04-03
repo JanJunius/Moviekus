@@ -2,7 +2,9 @@
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -58,6 +60,20 @@ namespace Moviekus.Services
                 movieDto.Runtime = details.Data.runtime;
         }
 
+        private byte[] GetImageBytes(Stream input)
+        {
+            byte[] buffer = new byte[16 * 1024];
+            using (MemoryStream ms = new MemoryStream())
+            {
+                int read;
+                while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    ms.Write(buffer, 0, read);
+                }
+                return ms.ToArray();
+            }
+        }
+
         private MovieDto BuildMovieDto(MovieDbResult movieDbResult, MovieDbGenres movieDbGenres)
         {
             MovieDto movieDto = new MovieDto()
@@ -65,8 +81,8 @@ namespace Moviekus.Services
                 MovieDbId = movieDbResult.id,
                 Overview = movieDbResult.overview,
                 Title = movieDbResult.title,
-                ReleaseDate = movieDbResult.release_date
-                
+                ReleaseDate = movieDbResult.release_date,
+                Cover = GetMovieCover(movieDbResult)
             };
 
             foreach (string genreId in movieDbResult.genre_ids)
@@ -95,5 +111,34 @@ namespace Moviekus.Services
 
             return response.Data;
         }
+
+        private byte[] GetMovieCover(MovieDbResult dbResult)
+        {
+            //https://image.tmdb.org/t/p/w500/uxqxBVwkiyo21XmGNCVY8soTWZz.jpg 
+            string url = $"https://image.tmdb.org/t/p/w500/{dbResult.poster_path}";
+            HttpWebRequest webRequest;
+            WebResponse webResponse = null;
+
+            try
+            {
+                webRequest = (HttpWebRequest)HttpWebRequest.Create(url);
+                webRequest.AllowWriteStreamBuffering = true;
+                webRequest.Timeout = 30000;
+
+                webResponse = webRequest.GetResponse();
+                Stream stream = webResponse.GetResponseStream();
+                return GetImageBytes(stream);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            finally
+            {
+                webResponse?.Close();
+            }
+            return null;
+        }
+
     }
 }

@@ -38,5 +38,6 @@ namespace Moviekus.Dto
 
         public byte[] Cover { get; set; }
 
+
     }
 }

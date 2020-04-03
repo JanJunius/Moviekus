@@ -3,10 +3,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:Moviekus.ViewModels"
              mc:Ignorable="d"
              Title="{Binding Title}"
              x:Class="Moviekus.Views.Movies.MovieSelectionPage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:ByteToImageFieldConverter x:Key="ByteArrayToImage" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <ContentPage.Content>
+              
         <StackLayout>
             <ListView x:Name="MovieSelectionView"
                 ItemsSource="{Binding Movies}"
@@ -20,13 +29,14 @@
                 <ListView.Header>
                     <Grid Padding="10">
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
                             <ColumnDefinition Width="180"/>
                             <ColumnDefinition Width="40" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <Label Text="Titel" Font="Bold, 14" BackgroundColor="LightGray" TextColor="Black" Grid.Column="0" />
-                        <Label Text="Jahr" Font="Bold, 14" BackgroundColor="LightGray" TextColor="Black" Grid.Column="1" />
-                        <Label Text="Beschreibung" Font="Bold, 16" BackgroundColor="LightGray" TextColor="Black" Grid.Column="2" />
+                        <Label Text="Titel" Font="Bold, 14" BackgroundColor="LightGray" TextColor="Black" Grid.Column="1" />
+                        <Label Text="Jahr" Font="Bold, 14" BackgroundColor="LightGray" TextColor="Black" Grid.Column="2" />
+                        <Label Text="Beschreibung" Font="Bold, 16" BackgroundColor="LightGray" TextColor="Black" Grid.Column="3" />
                     </Grid>
                 </ListView.Header>
                 <ListView.ItemTemplate>
@@ -35,13 +45,15 @@
                             <StackLayout Padding="10">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="100"/>
                                         <ColumnDefinition Width="180"/>
                                         <ColumnDefinition Width="40" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-                                    <Label Text="{Binding Title}" FontSize="14" MaxLines="2" Grid.Column="0" />
-                                    <Label Text="{Binding ReleaseYear}" FontSize="14" Grid.Column="1" />
-                                    <Label Text="{Binding Overview}" FontSize="14" MaxLines="8" Grid.Column="2" />
+                                    <Image x:Name="coverImage" Source="{Binding Cover, Converter={StaticResource ByteArrayToImage}}" VerticalOptions="Center" HorizontalOptions="Center" WidthRequest="80" HeightRequest="120" Grid.Column="0"/>
+                                    <Label Text="{Binding Title}" FontSize="14" MaxLines="2" Grid.Column="1" />
+                                    <Label Text="{Binding ReleaseYear}" FontSize="14" Grid.Column="2" />
+                                    <Label Text="{Binding Overview}" FontSize="14" MaxLines="8" Grid.Column="3" />
                                 </Grid>
                                     
                             </StackLayout>

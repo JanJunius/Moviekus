@@ -26,6 +26,8 @@ namespace Moviekus.Models
 
         public string Notes { get; set; }
 
+        public byte[] Cover { get; set; }
+
         public virtual ICollection<MovieGenre> MovieGenres { get; set; }
 
         public Movie()

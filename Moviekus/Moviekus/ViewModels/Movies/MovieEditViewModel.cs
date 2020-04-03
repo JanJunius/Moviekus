@@ -8,6 +8,7 @@ using Moviekus.Views;
 using Moviekus.Views.Genres;
 using Moviekus.Views.Movies;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -80,7 +81,7 @@ namespace Moviekus.ViewModels.Movies
             else if (movieDtos.Count() == 1)
             {
                 MovieDto movieDto = movieDtos.FirstOrDefault();
-                ApplyMovieSelection(movieDto);
+                await ApplyMovieSelection(movieDto);
             }
             // Wurde mehr als ein Film gefunden, muss man einen auswählen
             else
@@ -100,9 +101,10 @@ namespace Moviekus.ViewModels.Movies
             Movie.Description = movieDto.Overview;
             Movie.ReleaseDate = movieDto.ReleaseDate;
             Movie.Runtime = movieDto.Runtime;
+            Movie.Cover = movieDto.Cover;
             Movie.MovieGenres = await MovieService.GetMovieGenres(Movie, movieDto.Genres);
 
-            //OnMovieChanged?.Invoke(this, Movie);
+            OnMovieChanged?.Invoke(this, Movie);
             RaisePropertyChanged(nameof(Movie));
             RaisePropertyChanged(nameof(Genres));
         }

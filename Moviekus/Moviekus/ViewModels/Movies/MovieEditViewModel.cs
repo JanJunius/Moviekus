@@ -76,33 +76,6 @@ namespace Moviekus.ViewModels.Movies
             viewModel.OnMovieSelectionChanged += async (movie) => await ApplyMovieSelection(movie);
             await Navigation.PushAsync(selectionView);
 
-            /*
-            IEnumerable<MovieDto> movieDtos = await new MovieDbService().SearchMovie(Movie.Title);
-
-            if (movieDtos.Count() == 0)
-            {
-                await UserDialogs.Instance.AlertAsync(new AlertConfig
-                {
-                    Message = "Es wurde kein passender Film gefunden."
-                });                
-            }
-            // Wurde genau ein Film gefunden, dann übernehmen wir den
-            else if (movieDtos.Count() == 1)
-            {
-                MovieDto movieDto = movieDtos.FirstOrDefault();
-                await ApplyMovieSelection(movieDto);
-            }
-            // Wurde mehr als ein Film gefunden, muss man einen auswählen
-            else
-            {
-                var selectionView = Resolver.Resolve<MovieSelectionPage>();
-                var viewModel = selectionView.BindingContext as MovieSelectionViewModel;
-                viewModel.Title = "Filmauswahl";
-                viewModel.Movies = movieDtos;
-                viewModel.OnMovieSelectionChanged += async (movie) => await ApplyMovieSelection(movie); 
-                await Navigation.PushAsync(selectionView);
-            }
-            */
         });
 
         private async Task ApplyMovieSelection(MovieDto movieDto)

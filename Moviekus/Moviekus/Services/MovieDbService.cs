@@ -1,4 +1,5 @@
 ﻿using Moviekus.Dto;
+using Moviekus.Models;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -12,8 +13,26 @@ namespace Moviekus.Services
 {
     public class MovieDbService
     {
-        private const string api_key = "121d3dae50d820edc0329e0bcf02c712";
-        private const string language = "de-DE";
+        private static MovieDbService TheInstance = null;
+
+        private static Settings Settings;
+
+        public static MovieDbService Ref
+        {
+            get
+            {
+                if (TheInstance == null)
+                {
+                    TheInstance = new MovieDbService();
+                    Settings = new SettingsService().GetSettings();
+                }
+                return TheInstance;
+            }
+        }
+
+        private MovieDbService()
+        {
+        }
 
         public async Task<IEnumerable<MovieDto>> SearchMovieAsync(string title)
         {
@@ -23,8 +42,8 @@ namespace Moviekus.Services
             var client = new RestClient("https://api.themoviedb.org/3/search/movie");
             var request = new RestRequest(Method.GET);
             
-            request.AddParameter("api_key", api_key);
-            request.AddParameter("language", language);
+            request.AddParameter("api_key", Settings.MovieDb_ApiKey);
+            request.AddParameter("language", Settings.MovieDb_Language);
             request.AddParameter("query", title);
             request.AddParameter("page", "1");
 
@@ -38,11 +57,13 @@ namespace Moviekus.Services
             foreach (MovieDbResult result in movieDbResponse.results)
                 movies.Add(BuildMovieDto(result, genres));
 
-            // Details nur nachladen, wenn genau ein Treffer vorliegt
-            if (movies.Count == 1)
-                await FillMovieDetails(movies.First());
+            return movies.OrderByDescending(m => m.ReleaseDate);
 
-            return movies;
+            // Details nur nachladen, wenn genau ein Treffer vorliegt
+            //if (movies.Count == 1)
+            //    await FillMovieDetails(movies.First());
+
+            //return movies;
         }
 
         public async Task FillMovieDetails(MovieDto movieDto)
@@ -51,8 +72,8 @@ namespace Moviekus.Services
             var client = new RestClient(url);
             var request = new RestRequest(Method.GET);
 
-            request.AddParameter("api_key", api_key);
-            request.AddParameter("language", language);
+            request.AddParameter("api_key", Settings.MovieDb_ApiKey);
+            request.AddParameter("language", Settings.MovieDb_Language);
 
             IRestResponse<MovieDbDetails> details = await client.ExecuteAsync<MovieDbDetails>(request);
 
@@ -131,8 +152,8 @@ namespace Moviekus.Services
             var client = new RestClient("https://api.themoviedb.org/3/genre/movie/list");
             var request = new RestRequest(Method.GET);
 
-            request.AddParameter("api_key", api_key);
-            request.AddParameter("language", language);
+            request.AddParameter("api_key", Settings.MovieDb_ApiKey);
+            request.AddParameter("language", Settings.MovieDb_Language);
 
             IRestResponse<MovieDbGenres> response = await client.ExecuteAsync<MovieDbGenres>(request);
 

@@ -14,7 +14,7 @@ namespace Moviekus.EntityFramework
         public virtual DbSet<Genre> Genres { get; set; }
         public virtual DbSet<Movie> Movies { get; set; }
         public virtual DbSet<Source> Sources { get; set; }
-
+        public virtual DbSet<Settings> Settings { get; set; }
         public virtual DbSet<MovieGenre> MovieGenres { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -26,7 +26,6 @@ namespace Moviekus.EntityFramework
                 // Specify that we will use sqlite and the path of the database here
                 optionsBuilder.UseSqlite($"Filename={databasePath}");
             }
-
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

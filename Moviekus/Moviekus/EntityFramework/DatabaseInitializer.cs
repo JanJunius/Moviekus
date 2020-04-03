@@ -23,7 +23,7 @@ namespace Moviekus.EntityFramework
             //genres.ForEach(g => context.Add(g));
             //await context.SaveChangesAsync();
 
-            if (context.Sources.Count(s => s.Id != "") == 0)
+            if (context.Sources.Count() == 0)
             {
                 var sources = new List<Source>()
                 {
@@ -33,6 +33,17 @@ namespace Moviekus.EntityFramework
                 };
                 sources.ForEach(s => s.IsNew = true);
                 sources.ForEach(s => context.Add(s));
+                await context.SaveChangesAsync();
+            }
+
+            if (context.Settings.Count() == 0)
+            {
+                Settings settings = Settings.CreateNew<Settings>();
+
+                settings.MovieDb_ApiKey = "121d3dae50d820edc0329e0bcf02c712";
+                settings.MovieDb_Language = "de-DE";
+
+                context.Add(settings);
                 await context.SaveChangesAsync();
             }
 
@@ -62,7 +73,7 @@ namespace Moviekus.EntityFramework
 
         public static void RecreateDatabase(MoviekusDbContext context)
         {
-            //context.Database.EnsureDeleted();
+            context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
             context.Database.Migrate();
         }

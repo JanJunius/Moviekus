@@ -50,24 +50,36 @@ namespace Moviekus.Services
         {
             using (var context = new MoviekusDbContext())
             {
-                try
-                {
-                    bool inserted = model.IsNew;
-                    if (model.IsNew)
-                        await InsertAsync(context, model);
-                    else UpdateAsync(context, model);
+                bool inserted = model.IsNew;
+                if (model.IsNew)
+                    await InsertAsync(context, model);
+                else UpdateAsync(context, model);
 
-                    model.IsNew = false;
-                    await context.SaveChangesAsync();
+                model.IsNew = false;
+                await context.SaveChangesAsync();
 
-                    if (inserted)
-                        OnModelInserted?.Invoke(this, model);
-                    else OnModelUpdated?.Invoke(this, model);
-                }
-                catch (Exception ex)
-                {
-                    
-                }
+                if (inserted)
+                    OnModelInserted?.Invoke(this, model);
+                else OnModelUpdated?.Invoke(this, model);
+                return model;
+            }
+        }
+
+        public virtual T SaveChanges(T model)
+        {
+            using (var context = new MoviekusDbContext())
+            {
+                bool inserted = model.IsNew;
+                if (model.IsNew)
+                    context.Set<T>().Add(model);
+                else context.Entry(model).State = EntityState.Modified;
+
+                model.IsNew = false;
+                context.SaveChanges();
+
+                if (inserted)
+                    OnModelInserted?.Invoke(this, model);
+                else OnModelUpdated?.Invoke(this, model);
                 return model;
             }
         }

@@ -18,8 +18,6 @@ namespace Moviekus.ViewModels.Movies
         public delegate void MovieSelectionChanged(MovieDto selectedMovie);
         public event MovieSelectionChanged OnMovieSelectionChanged;
 
-        private MovieDbService MovieDbService = new MovieDbService();
-
         // Enthält die Suchkriterien
         public Movie Movie { get; set; }
 
@@ -34,14 +32,14 @@ namespace Moviekus.ViewModels.Movies
 
             try
             {
-                var movies = await MovieDbService.SearchMovieAsync(Movie.Title);
+                var movies = await MovieDbService.Ref.SearchMovieAsync(Movie.Title);
                 Movies = new ObservableCollection<MovieDto>();
 
                 await Task.Run(() =>
                 {
                     foreach (MovieDto movieDto in movies)
                     {
-                        movieDto.Cover = MovieDbService.GetMovieCover(movieDto);
+                        movieDto.Cover = MovieDbService.Ref.GetMovieCover(movieDto);
                         Device.BeginInvokeOnMainThread(() => Movies.Add(movieDto));
                     }
                 });
@@ -71,7 +69,7 @@ namespace Moviekus.ViewModels.Movies
                 // Details zum Film nachladen bei Auswahl
                 if (!string.IsNullOrEmpty(value.MovieDbId))
                 {
-                    Task t = Task.Run(() => new MovieDbService().FillMovieDetails(value));
+                    Task t = Task.Run(() => MovieDbService.Ref.FillMovieDetails(value));
                     t.Wait();
                 }
 

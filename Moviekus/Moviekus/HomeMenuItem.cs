@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Moviekus.Models
+namespace Moviekus
 {
     public enum MenuItemType
     {
         Movies,
         Genres,
         Sources,
+        Settings,
         About
     }
     public class HomeMenuItem

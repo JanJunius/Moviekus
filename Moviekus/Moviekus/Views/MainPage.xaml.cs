@@ -43,6 +43,9 @@ namespace Moviekus.Views
                     case (int)MenuItemType.Sources:
                         MenuPages.Add(id, new NavigationPage(Resolver.Resolve<SourcesPage>()));
                         break;
+                    case (int)MenuItemType.Settings:
+                        MenuPages.Add(id, new NavigationPage(Resolver.Resolve<SettingsPage>()));
+                        break;
                     case (int)MenuItemType.About:
                         MenuPages.Add(id, new NavigationPage(new AboutPage()));
                         break;

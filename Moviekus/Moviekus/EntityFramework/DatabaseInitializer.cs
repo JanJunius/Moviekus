@@ -2,6 +2,7 @@
 using Moviekus.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,15 +23,18 @@ namespace Moviekus.EntityFramework
             //genres.ForEach(g => context.Add(g));
             //await context.SaveChangesAsync();
 
-            //var sources = new List<Source>()
-            //{
-            //    new Source { Name = "Lokal", SourceTypeName = "Lokal"},
-            //    new Source { Name = "Netflix", SourceTypeName = "Netflix"},
-            //    new Source { Name = "Amazon Prime", SourceTypeName = "Amazon Prime"}
-            //};
-            //sources.ForEach(s => s.IsNew = true);
-            //sources.ForEach(s => context.Add(s));
-            //await context.SaveChangesAsync();
+            if (context.Sources.Count(s => s.Id != "") == 0)
+            {
+                var sources = new List<Source>()
+                {
+                    new Source { Name = "Lokal", SourceTypeName = "Lokal"},
+                    new Source { Name = "Netflix", SourceTypeName = "Netflix"},
+                    new Source { Name = "Amazon Prime", SourceTypeName = "Amazon Prime"}
+                };
+                sources.ForEach(s => s.IsNew = true);
+                sources.ForEach(s => context.Add(s));
+                await context.SaveChangesAsync();
+            }
 
             //var movies = new List<Movie>()
             //{

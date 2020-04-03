@@ -1,11 +1,15 @@
 ﻿using Moviekus.Dto;
+using Moviekus.Models;
 using Moviekus.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace Moviekus.ViewModels.Movies
 {
@@ -14,7 +18,45 @@ namespace Moviekus.ViewModels.Movies
         public delegate void MovieSelectionChanged(MovieDto selectedMovie);
         public event MovieSelectionChanged OnMovieSelectionChanged;
 
-        public IEnumerable<MovieDto> Movies { get; set; }
+        private MovieDbService MovieDbService = new MovieDbService();
+
+        // Enthält die Suchkriterien
+        public Movie Movie { get; set; }
+
+        public bool IsLoading { get; set; }
+
+        public ICommand LoadCommand => new Command(async () =>
+        {
+            if (Movie == null)
+                return;
+
+            IsLoading = true;
+
+            try
+            {
+                var movies = await MovieDbService.SearchMovieAsync(Movie.Title);
+                Movies = new ObservableCollection<MovieDto>();
+
+                await Task.Run(() =>
+                {
+                    foreach (MovieDto movieDto in movies)
+                    {
+                        movieDto.Cover = MovieDbService.GetMovieCover(movieDto);
+                        Device.BeginInvokeOnMainThread(() => Movies.Add(movieDto));
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+            finally
+            {
+                IsLoading = false;
+            }
+        });
+
+        public ObservableCollection<MovieDto> Movies { get; set; }
 
         public MovieDto SelectedItem
         {
@@ -38,6 +80,5 @@ namespace Moviekus.ViewModels.Movies
                 Navigation.PopAsync();
             }
         }
-
     }
 }

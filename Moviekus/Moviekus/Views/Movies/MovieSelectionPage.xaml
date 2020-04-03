@@ -17,6 +17,7 @@
     <ContentPage.Content>
               
         <StackLayout>
+            <ActivityIndicator IsRunning="{Binding IsLoading}" IsVisible="{Binding IsLoading}" />
             <ListView x:Name="MovieSelectionView"
                 ItemsSource="{Binding Movies}"
                 VerticalOptions="FillAndExpand"
@@ -24,7 +25,6 @@
                 IsPullToRefreshEnabled="true"
                 IsRefreshing="{Binding IsBusy, Mode=OneWay}"
                 CachingStrategy="RecycleElement"
-                RefreshCommand="{Binding LoadMoviesCommand}"
                 SelectedItem="{Binding SelectedItem}">
                 <ListView.Header>
                     <Grid Padding="10">
@@ -36,7 +36,7 @@
                         </Grid.ColumnDefinitions>
                         <Label Text="Titel" Font="Bold, 14" BackgroundColor="LightGray" TextColor="Black" Grid.Column="1" />
                         <Label Text="Jahr" Font="Bold, 14" BackgroundColor="LightGray" TextColor="Black" Grid.Column="2" />
-                        <Label Text="Beschreibung" Font="Bold, 16" BackgroundColor="LightGray" TextColor="Black" Grid.Column="3" />
+                        <Label Text="Beschreibung" Font="Bold, 14" BackgroundColor="LightGray" TextColor="Black" Grid.Column="3" />
                     </Grid>
                 </ListView.Header>
                 <ListView.ItemTemplate>

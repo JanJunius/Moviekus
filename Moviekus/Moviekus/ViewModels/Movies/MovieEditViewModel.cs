@@ -68,6 +68,15 @@ namespace Moviekus.ViewModels.Movies
                 return;
             }
 
+            var selectionView = Resolver.Resolve<MovieSelectionPage>();
+            var viewModel = selectionView.BindingContext as MovieSelectionViewModel;
+            viewModel.Title = "Filmauswahl";
+            viewModel.Movie = Movie;
+            viewModel.LoadCommand.Execute(null);
+            viewModel.OnMovieSelectionChanged += async (movie) => await ApplyMovieSelection(movie);
+            await Navigation.PushAsync(selectionView);
+
+            /*
             IEnumerable<MovieDto> movieDtos = await new MovieDbService().SearchMovie(Movie.Title);
 
             if (movieDtos.Count() == 0)
@@ -93,6 +102,7 @@ namespace Moviekus.ViewModels.Movies
                 viewModel.OnMovieSelectionChanged += async (movie) => await ApplyMovieSelection(movie); 
                 await Navigation.PushAsync(selectionView);
             }
+            */
         });
 
         private async Task ApplyMovieSelection(MovieDto movieDto)

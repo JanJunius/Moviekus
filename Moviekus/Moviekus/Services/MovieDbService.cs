@@ -15,7 +15,7 @@ namespace Moviekus.Services
         private const string api_key = "121d3dae50d820edc0329e0bcf02c712";
         private const string language = "de-DE";
 
-        public async Task<IEnumerable<MovieDto>> SearchMovie(string title)
+        public async Task<IEnumerable<MovieDto>> SearchMovieAsync(string title)
         {
             MovieDbGenres genres = await GetGenres();
             List<MovieDto> movies = new List<MovieDto>();
@@ -60,6 +60,33 @@ namespace Moviekus.Services
                 movieDto.Runtime = details.Data.runtime;
         }
 
+        public byte[] GetMovieCover(MovieDto movieDto)
+        {
+            string url = $"https://image.tmdb.org/t/p/w500/{movieDto.CoverUri}";
+            HttpWebRequest webRequest;
+            WebResponse webResponse = null;
+
+            try
+            {
+                webRequest = (HttpWebRequest)HttpWebRequest.Create(url);
+                webRequest.AllowWriteStreamBuffering = true;
+                webRequest.Timeout = 30000;
+
+                webResponse = webRequest.GetResponse();
+                Stream stream = webResponse.GetResponseStream();
+                return GetImageBytes(stream);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            finally
+            {
+                webResponse?.Close();
+            }
+            return null;
+        }
+
         private byte[] GetImageBytes(Stream input)
         {
             byte[] buffer = new byte[16 * 1024];
@@ -82,7 +109,7 @@ namespace Moviekus.Services
                 Overview = movieDbResult.overview,
                 Title = movieDbResult.title,
                 ReleaseDate = movieDbResult.release_date,
-                Cover = GetMovieCover(movieDbResult)
+                CoverUri = movieDbResult.poster_path
             };
 
             foreach (string genreId in movieDbResult.genre_ids)
@@ -112,33 +139,6 @@ namespace Moviekus.Services
             return response.Data;
         }
 
-        private byte[] GetMovieCover(MovieDbResult dbResult)
-        {
-            //https://image.tmdb.org/t/p/w500/uxqxBVwkiyo21XmGNCVY8soTWZz.jpg 
-            string url = $"https://image.tmdb.org/t/p/w500/{dbResult.poster_path}";
-            HttpWebRequest webRequest;
-            WebResponse webResponse = null;
-
-            try
-            {
-                webRequest = (HttpWebRequest)HttpWebRequest.Create(url);
-                webRequest.AllowWriteStreamBuffering = true;
-                webRequest.Timeout = 30000;
-
-                webResponse = webRequest.GetResponse();
-                Stream stream = webResponse.GetResponseStream();
-                return GetImageBytes(stream);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
-            finally
-            {
-                webResponse?.Close();
-            }
-            return null;
-        }
 
     }
 }

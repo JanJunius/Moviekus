@@ -32,7 +32,7 @@
                         <Label Text="Titel" FontSize="Medium" />
                         <Entry Text="{Binding Movie.Title}" d:Text="Name des Films" FontSize="Small" />
                         <Label Text="Beschreibung" FontSize="Medium" />
-                        <Editor Text="{Binding Movie.Description}" d:Text="Beschreibung des Films" FontSize="Small" AutoSize="TextChanges" />
+                        <Editor Text="{Binding Movie.Description}" d:Text="Beschreibung des Films" HeightRequest="250" FontSize="Small" AutoSize="TextChanges" />
                     </StackLayout>
                     <Image x:Name="coverImage" Source="{Binding Movie.Cover, Converter={StaticResource ByteArrayToImage}}" VerticalOptions="Center" HorizontalOptions="Center" WidthRequest="120" HeightRequest="200" Grid.Column="1"/>
                 </Grid>

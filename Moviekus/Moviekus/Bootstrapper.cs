@@ -56,6 +56,7 @@ namespace Moviekus
             ContainerBuilder.RegisterType<GenreService>().SingleInstance();
             ContainerBuilder.RegisterType<MovieService>().SingleInstance();
             ContainerBuilder.RegisterType<SettingsService>().SingleInstance();
+            ContainerBuilder.RegisterType<FilterService>().SingleInstance();
         }
 
         private void FinishInitialization()

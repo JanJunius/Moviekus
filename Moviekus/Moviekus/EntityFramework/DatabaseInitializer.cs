@@ -12,16 +12,16 @@ namespace Moviekus.EntityFramework
     {
         public static async Task InitializeData(MoviekusDbContext context)
         {
-            //var genres = new List<Genre>()
-            //{
-            //    new Genre { Name = "Musik" },
-            //    new Genre { Name = "Action" },
-            //    new Genre { Name = "Komödie" },
-            //    new Genre { Name = "Drama" }
-            //};
-            //genres.ForEach(g => g.IsNew = true);
-            //genres.ForEach(g => context.Add(g));
-            //await context.SaveChangesAsync();
+            var genres = new List<Genre>()
+            {
+                new Genre { Name = "Musik" },
+                new Genre { Name = "Action" },
+                new Genre { Name = "Komödie" },
+                new Genre { Name = "Drama" }
+            };
+            genres.ForEach(g => g.IsNew = true);
+            genres.ForEach(g => context.Add(g));
+            await context.SaveChangesAsync();
 
             if (context.Sources.Count() == 0)
             {
@@ -46,6 +46,23 @@ namespace Moviekus.EntityFramework
                 context.Add(settings);
                 await context.SaveChangesAsync();
             }
+
+            Filter filter = Filter.CreateNew<Filter>();
+            filter.Name = "Filter 1";
+            context.Filter.Add(filter);
+            await context.SaveChangesAsync();
+
+            FilterEntry entry1 = FilterEntry.CreateNew<FilterEntry>();
+            entry1.Filter = filter;
+            entry1.FilterEntryProperty = FilterEntryProperty.Title;
+            entry1.ValueFrom = "Krieger";
+            context.FilterEntries.Add(entry1);
+            FilterEntry entry2 = FilterEntry.CreateNew<FilterEntry>();
+            entry2.Filter = filter;
+            entry2.FilterEntryProperty = FilterEntryProperty.LastSeen;
+            entry2.ValueFrom = DateTime.MinValue.ToString();
+            context.FilterEntries.Add(entry2);
+            await context.SaveChangesAsync();
 
             //var movies = new List<Movie>()
             //{

@@ -10,6 +10,8 @@ using Moviekus.Views.Movies;
 using Moviekus.Services;
 using System.Linq;
 using System.Windows.Input;
+using Moviekus.Views.Filter;
+using Moviekus.ViewModels.Filter;
 
 namespace Moviekus.ViewModels.Movies
 {
@@ -32,6 +34,15 @@ namespace Moviekus.ViewModels.Movies
             viewModel.Movie = CreateNewMovie();
 
             await Navigation.PushAsync(movieEditView);
+        });
+
+        public ICommand FilterCommand => new Command(async () =>
+        {
+            var filterView = Resolver.Resolve<FilterPage>();
+            var viewModel = filterView.BindingContext as FilterViewModel;
+            viewModel.Title = "Filter";
+
+            await Navigation.PushAsync(filterView);
         });
 
         private Movie CreateNewMovie()

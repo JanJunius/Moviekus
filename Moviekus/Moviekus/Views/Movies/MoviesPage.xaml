@@ -11,7 +11,7 @@
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Neu" Command="{Binding AddMovieCommand}" IconImageSource="add.png"/>
-
+        <ToolbarItem Text="Filter" Command="{Binding FilterCommand}" IconImageSource="filter.png"/>
     </ContentPage.ToolbarItems>
 
     <ContentPage.Resources>

@@ -17,6 +17,10 @@ namespace Moviekus.EntityFramework
         public virtual DbSet<Settings> Settings { get; set; }
         public virtual DbSet<MovieGenre> MovieGenres { get; set; }
 
+        public virtual DbSet<Filter> Filter { get; set; }
+
+        public virtual DbSet<FilterEntry> FilterEntries{ get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)

@@ -4,6 +4,7 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:customcontrol="clr-namespace:Moviekus.Views"
+             xmlns:local="clr-namespace:Moviekus.ViewModels"
              mc:Ignorable="d"
              x:Class="Moviekus.Views.Movies.MovieDetailPage"
              Title="{Binding Title}">
@@ -13,13 +14,27 @@
         <ToolbarItem Text="Ändern" Command="{Binding EditCommand}" IconImageSource="edit.png" />
     </ContentPage.ToolbarItems>
 
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:ByteToImageFieldConverter x:Key="ByteArrayToImage" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <ScrollView>
         <StackLayout Spacing="20" Padding="15">
-            <Label Text="Titel:" FontSize="Medium" />
-            <Label Text="{Binding Movie.Title}" FontSize="Small"/>
-
-            <Label Text="Beschreibung:" FontSize="Medium" />
-            <Label Text="{Binding Movie.Description}" FontSize="Small"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="120"/>
+                </Grid.ColumnDefinitions>
+                <StackLayout Grid.Column="0">
+                    <Label Text="Titel:" FontSize="Medium" />
+                    <Label Text="{Binding Movie.Title}" FontSize="Small"/>
+                    <Label Text="Beschreibung:" FontSize="Medium" />
+                    <Label Text="{Binding Movie.Description}" FontSize="Small"/>
+                </StackLayout>
+                <Image x:Name="coverImage" Source="{Binding Movie.Cover, Converter={StaticResource ByteArrayToImage}}" VerticalOptions="Center" HorizontalOptions="Center" WidthRequest="120" HeightRequest="200" Grid.Column="1"/>
+            </Grid>
 
             <Label Text="Veröffentlichungsdatum:" FontSize="Medium" />
             <Label Text="{Binding ReleaseDateText}" FontSize="Small"/>

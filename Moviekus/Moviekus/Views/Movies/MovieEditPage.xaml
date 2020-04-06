@@ -4,22 +4,38 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:customcontrol="clr-namespace:Moviekus.Views"
+             xmlns:local="clr-namespace:Moviekus.ViewModels"
              mc:Ignorable="d"
              x:Class="Moviekus.Views.Movies.MovieEditPage"
              Title="{Binding Title}">
     
     <ContentPage.ToolbarItems>
+        <ToolbarItem Text="MovieDb" IconImageSource="moviedb.png" Command="{Binding MovieDbCommand}" />
         <ToolbarItem Text="Speichern" IconImageSource="save.png" Command="{Binding SaveCommand}" />
     </ContentPage.ToolbarItems>
-    
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:ByteToImageFieldConverter x:Key="ByteArrayToImage" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <ContentPage.Content>
         <ScrollView>
             <StackLayout Spacing="20" Padding="15">
-                <Label Text="Titel" FontSize="Medium" />
-                <Entry Text="{Binding Movie.Title}" d:Text="Name des Films" FontSize="Small" />
-
-                <Label Text="Beschreibung" FontSize="Medium" />
-                <Entry Text="{Binding Movie.Description}" d:Text="Beschreibung des Films" FontSize="Small" />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="120"/>
+                    </Grid.ColumnDefinitions>
+                    <StackLayout Grid.Column="0">
+                        <Label Text="Titel" FontSize="Medium" />
+                        <Entry Text="{Binding Movie.Title}" d:Text="Name des Films" FontSize="Small" />
+                        <Label Text="Beschreibung" FontSize="Medium" />
+                        <Editor Text="{Binding Movie.Description}" d:Text="Beschreibung des Films" HeightRequest="250" FontSize="Small" AutoSize="TextChanges" />
+                    </StackLayout>
+                    <Image x:Name="coverImage" Source="{Binding Movie.Cover, Converter={StaticResource ByteArrayToImage}}" VerticalOptions="Center" HorizontalOptions="Center" WidthRequest="120" HeightRequest="200" Grid.Column="1"/>
+                </Grid>
 
                 <Label Text="Veröffentlichungsdatum" FontSize="Medium" />
                 <DatePicker Date="{Binding Movie.ReleaseDate}" Format="D" HorizontalOptions="Start"/>
@@ -32,11 +48,11 @@
 
                 <Label Text="Bewertung:" FontSize="Medium" />
                 <customcontrol:RatingBar x:Name="ratingBarEdit" 
-            HorizontalOptions="Start"  
-            IsEnabled="True"
-            ImageWidth="25" 
-            ImageHeight="25"
-            Rating ="{Binding Movie.Rating}" />
+                    HorizontalOptions="Start"  
+                    IsEnabled="True"
+                    ImageWidth="25" 
+                    ImageHeight="25"
+                    Rating ="{Binding Movie.Rating}" />
 
                 <Label Text="Genres" />
                 <StackLayout Orientation="Horizontal" Padding="5">
@@ -54,7 +70,7 @@
 
                 <Label Text="Bemerkungen" FontSize="Medium" />
                 <Entry Text="{Binding Movie.Notes}" d:Text="Eigene Kommentare zu diesem Film" FontSize="Small" />
-
+                
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

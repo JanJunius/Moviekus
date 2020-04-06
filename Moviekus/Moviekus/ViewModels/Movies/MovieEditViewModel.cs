@@ -1,10 +1,14 @@
-﻿using Moviekus.Models;
+﻿using Acr.UserDialogs;
+using Moviekus.Dto;
+using Moviekus.Models;
 using Moviekus.Services;
 using Moviekus.ViewModels.Genres;
 using Moviekus.ViewModels.Sources;
 using Moviekus.Views;
 using Moviekus.Views.Genres;
+using Moviekus.Views.Movies;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -52,6 +56,41 @@ namespace Moviekus.ViewModels.Movies
 
             OnMovieChanged?.Invoke(this, Movie);
         });
+
+        public ICommand MovieDbCommand => new Command(async () =>
+        {
+            if (string.IsNullOrEmpty(Movie.Title) || Movie.Title.Length < 3)
+            {
+                await UserDialogs.Instance.AlertAsync(new AlertConfig
+                {
+                    Message = "Bitte einen Titel mit mindestens 3 Zeichen eingeben."
+                });
+                return;
+            }
+
+            var selectionView = Resolver.Resolve<MovieSelectionPage>();
+            var viewModel = selectionView.BindingContext as MovieSelectionViewModel;
+            viewModel.Title = "Filmauswahl";
+            viewModel.Movie = Movie;
+            viewModel.LoadCommand.Execute(null);
+            viewModel.OnMovieSelectionChanged += async (movie) => await ApplyMovieSelection(movie);
+            await Navigation.PushAsync(selectionView);
+
+        });
+
+        private async Task ApplyMovieSelection(MovieDto movieDto)
+        {
+            Movie.Title = movieDto.Title;
+            Movie.Description = movieDto.Overview;
+            Movie.ReleaseDate = movieDto.ReleaseDate;
+            Movie.Runtime = movieDto.Runtime;
+            Movie.Cover = movieDto.Cover;
+            Movie.MovieGenres = await MovieService.GetMovieGenres(Movie, movieDto.Genres);
+
+            OnMovieChanged?.Invoke(this, Movie);
+            RaisePropertyChanged(nameof(Movie));
+            RaisePropertyChanged(nameof(Genres));
+        }
 
         public ICommand GenreEditButtonClicked => new Command(async () =>
         {

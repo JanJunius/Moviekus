@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="Moviekus.Views.SettingsPage">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Speichern" IconImageSource="save.png" Command="{Binding SaveCommand}" />
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+
+        <StackLayout>
+            <Label Text="MovieDB Einstellungen" FontSize="Medium" FontAttributes="Bold" />
+            <BoxView Color="Gray" HeightRequest="2" HorizontalOptions="Fill" />
+            <Label Text="Api-Key" Margin="5"/>
+            <Entry Text="{Binding Settings.MovieDb_ApiKey}" Margin="5"/>
+            <Label Text="Language" Margin="5"/>
+            <Entry Text="{Binding Settings.MovieDb_Language}" Margin="5"/>
+        </StackLayout>
+
+    </ContentPage.Content>
+</ContentPage>

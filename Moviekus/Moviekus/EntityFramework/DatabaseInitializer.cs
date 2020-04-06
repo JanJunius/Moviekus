@@ -62,6 +62,17 @@ namespace Moviekus.EntityFramework
             entry2.FilterEntryProperty = FilterEntryProperty.LastSeen;
             entry2.ValueFrom = DateTime.MinValue.ToString();
             context.FilterEntries.Add(entry2);
+            FilterEntry entry3 = FilterEntry.CreateNew<FilterEntry>();
+            entry3.Filter = filter;
+            entry3.FilterEntryProperty = FilterEntryProperty.Rating;
+            entry3.ValueFrom = "4";
+            context.FilterEntries.Add(entry3);
+            FilterEntry entry4 = FilterEntry.CreateNew<FilterEntry>();
+            entry4.Filter = filter;
+            entry4.FilterEntryProperty = FilterEntryProperty.ReleaseDate;
+            entry4.ValueFrom = DateTime.Today.AddMonths(-10).ToString();
+            entry4.ValueTo = DateTime.Today.AddMonths(-4).ToString();
+            context.FilterEntries.Add(entry4);
             await context.SaveChangesAsync();
 
             //var movies = new List<Movie>()

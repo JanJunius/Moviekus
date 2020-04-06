@@ -21,6 +21,10 @@ namespace Moviekus.Views.Filter
 
             BindingContext = ViewModel = viewModel;
             viewModel.Navigation = Navigation;
+
+            // Zurücksetzen der Selektion eines Films, damit man ihn direkt nochmal selektieren kann
+            // (andernfalls müsste man erst einen anderen Film wählen und dann wieder zurück)
+            FilterList.ItemSelected += (sender, args) => FilterList.SelectedItem = null;
         }
 
         protected override void OnAppearing()

@@ -15,6 +15,11 @@ namespace Moviekus.Models
 
         public ICollection<FilterEntry> FilterEntries { get; set; }
 
+        public Filter()
+        {
+            FilterEntries = new List<FilterEntry>();
+        }
+
         public override bool Equals(object obj)
         {
             return obj is Filter filter &&

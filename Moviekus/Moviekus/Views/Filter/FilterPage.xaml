@@ -17,7 +17,8 @@
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
-        <ListView RowHeight="60"
+        <ListView x:Name ="FilterList" 
+                  RowHeight="60"
                   ItemsSource="{Binding Filter}"
                   RefreshCommand="{Binding LoadFilterCommand}"
                   IsPullToRefreshEnabled="true"

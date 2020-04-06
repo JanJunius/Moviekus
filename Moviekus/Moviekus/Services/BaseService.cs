@@ -22,7 +22,7 @@ namespace Moviekus.Services
         {
         }
 
-        public IEnumerable<T> Get()
+        public virtual IEnumerable<T> Get()
         {
             using (var context = new MoviekusDbContext())
             {
@@ -30,7 +30,7 @@ namespace Moviekus.Services
             }
         }
 
-        public async Task<IEnumerable<T>> GetAsync()
+        public virtual async Task<IEnumerable<T>> GetAsync()
         {
             using (var context = new MoviekusDbContext())
             {
@@ -38,7 +38,7 @@ namespace Moviekus.Services
             }                
         }
 
-        public async Task<T> GetAsync(string id)
+        public virtual async Task<T> GetAsync(string id)
         {
             using (var context = new MoviekusDbContext())
             {

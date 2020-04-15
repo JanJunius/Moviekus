@@ -3,9 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:Moviekus.ViewModels.Filter"
              mc:Ignorable="d"
              Title="{Binding Title}"
              x:Class="Moviekus.Views.Filter.FilterDetailPage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:FilterEntryDataTemplateSelector x:Key="FilterEntryDataTemplateSelector"></local:FilterEntryDataTemplateSelector>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Löschen" IconImageSource="delete.png" Command="{Binding DeleteCommand}" />
@@ -21,14 +28,7 @@
                 ItemsSource="{Binding FilterEntries}"
                 VerticalOptions="FillAndExpand"
                 HasUnevenRows="true"
-                SelectedItem="{Binding SelectedItem}">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <Label Text="{Binding FilterEntryText}"/>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
+                ItemTemplate="{StaticResource FilterEntryDataTemplateSelector}">
             </ListView>
 
         </StackLayout>

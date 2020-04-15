@@ -23,14 +23,13 @@ namespace Moviekus.EntityFramework
             genres.ForEach(g => context.Add(g));
             await context.SaveChangesAsync();
 
+            var sources = new List<Source>();
             if (context.Sources.Count() == 0)
             {
-                var sources = new List<Source>()
-                {
-                    new Source { Name = "Lokal", SourceTypeName = "Lokal"},
-                    new Source { Name = "Netflix", SourceTypeName = "Netflix"},
-                    new Source { Name = "Amazon Prime", SourceTypeName = "Amazon Prime"}
-                };
+                sources.Add(new Source { Name = "Lokal", SourceTypeName = "Lokal" });
+                sources.Add(new Source { Name = "Netflix", SourceTypeName = "Netflix" });
+                sources.Add(new Source { Name = "Amazon Prime", SourceTypeName = "Amazon Prime" });
+
                 sources.ForEach(s => s.IsNew = true);
                 sources.ForEach(s => context.Add(s));
                 await context.SaveChangesAsync();
@@ -73,6 +72,16 @@ namespace Moviekus.EntityFramework
             entry4.ValueFrom = DateTime.Today.AddMonths(-10).ToString();
             entry4.ValueTo = DateTime.Today.AddMonths(-4).ToString();
             context.FilterEntries.Add(entry4);
+            FilterEntry entry5 = FilterEntry.CreateNew<FilterEntry>();
+            entry5.Filter = filter;
+            entry5.FilterEntryProperty = FilterEntryProperty.Source;
+            entry5.ValueFrom = sources[1].Id;
+            context.FilterEntries.Add(entry5);
+            FilterEntry entry6 = FilterEntry.CreateNew<FilterEntry>();
+            entry6.Filter = filter;
+            entry6.FilterEntryProperty = FilterEntryProperty.Genre;
+            entry6.ValueFrom = genres[1].Id;
+            context.FilterEntries.Add(entry6);
             await context.SaveChangesAsync();
 
             //var movies = new List<Movie>()

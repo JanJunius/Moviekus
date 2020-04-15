@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Moviekus.Models
 {
-    public class BaseModel
+    public class BaseModel : INotifyPropertyChanged
     {
         [Key]
         public string Id { get; set; }
@@ -13,13 +14,20 @@ namespace Moviekus.Models
         [NotMapped]
         public bool IsNew { get; set; }
 
+        [NotMapped]
+        public bool IsModified { get; set; }
+
         public BaseModel()
         {
             Id = Guid.NewGuid().ToString();
             // Es ist effizienter, IsNew mit false zu belegen, denn dies gilt für alle geladenen Objekte
             // Für neu erzeugte Models muss es explizit auf true gesetzt werden => CreateNew aufrufen
             IsNew = false;
+            IsModified = false;
         }
+
+        // Es genügt hier, das Event zu definieren, es muss nicht explizit gefeuert werden, denn das macht FodyWeavers
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public static T CreateNew<T>() where T : BaseModel, new()
         {

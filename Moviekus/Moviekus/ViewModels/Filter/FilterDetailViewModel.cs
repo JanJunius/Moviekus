@@ -29,10 +29,10 @@ namespace Moviekus.ViewModels.Filter
         public FilterDetailViewModel(FilterService filterService)
         {
             FilterService = filterService;
-            FilterEntries = new ObservableCollection<FilterDto>();
+            FilterEntries = new ObservableCollection<FilterDetailItemViewModel>();
         }
 
-        public ObservableCollection<FilterDto> FilterEntries { get; set; }
+        public ObservableCollection<FilterDetailItemViewModel> FilterEntries { get; set; }
 
         public ICommand SaveCommand => new Command(async () =>
         {
@@ -58,92 +58,15 @@ namespace Moviekus.ViewModels.Filter
         private void BuildFilterDto()
         {
             FilterEntries.Clear();
-            foreach(FilterEntry filterEntry in Filter.FilterEntries)
+            foreach(var filterEntry in Filter.FilterEntries)
             {
-                FilterDto filterDto = new FilterDto()
+                var filterDetailItemViewModel = new FilterDetailItemViewModel()
                 {
-                    FilterEntryId = filterEntry.Id,
-                    FilterEntryText = GetText(filterEntry)
+                    FilterEntry = filterEntry
                 };
-                FilterEntries.Add(filterDto);
+                FilterEntries.Add(filterDetailItemViewModel);
             }
         }
 
-        private string GetText(FilterEntry filterEntry)
-        {
-            string text = Enum.GetName(typeof(FilterEntryProperty), filterEntry.FilterEntryProperty);
-
-            if (filterEntry.FilterEntryProperty == FilterEntryProperty.LastSeen 
-                || filterEntry.FilterEntryProperty == FilterEntryProperty.ReleaseDate)
-            {
-                text += GetDateText(filterEntry);
-            } else if (filterEntry.FilterEntryProperty == FilterEntryProperty.Rating)
-            {
-                text += GetRatingText(filterEntry);
-            } else if (filterEntry.FilterEntryProperty == FilterEntryProperty.Runtime)
-            {
-                text += GetRuntimeText(filterEntry);
-            }
-            else
-            {
-                text += " ist gleich ";
-                text += filterEntry.ValueFrom;
-            }
-
-
-            return text;
-        }
-
-        private string GetRatingText(FilterEntry filterEntry)
-        {
-            if (string.IsNullOrEmpty(filterEntry.ValueTo))
-            {
-                int rating = int.Parse(filterEntry.ValueFrom);
-                if (rating < 1)
-                    return " nicht bewertet";
-                return $" hat {rating} Sterne";
-            }
-            else
-            {
-                int ratingFrom = int.Parse(filterEntry.ValueFrom);
-                int ratingTo = int.Parse(filterEntry.ValueTo);
-                return $" liegt zwischen {ratingFrom} und {ratingTo} Sternen";
-
-            }
-        }
-
-        private string GetRuntimeText(FilterEntry filterEntry)
-        {
-            if (string.IsNullOrEmpty(filterEntry.ValueTo))
-            {
-                int runtime = int.Parse(filterEntry.ValueFrom);
-                return $" beträgt {runtime} Minuten";
-            }
-            else
-            {
-                int runtimeFrom = int.Parse(filterEntry.ValueFrom);
-                int runtimeTo = int.Parse(filterEntry.ValueTo);
-                return $" liegt zwischen {runtimeFrom} und {runtimeTo} Minuten";
-
-            }
-        }
-
-        private string GetDateText(FilterEntry filterEntry)
-        {
-            if (string.IsNullOrEmpty(filterEntry.ValueTo))
-            {
-                DateTime dt = DateTime.Parse(filterEntry.ValueFrom);
-                if (dt == DateTime.MinValue)
-                    return " ist leer";
-                return $" ist am {dt.ToString("d", MoviekusDefines.MoviekusCultureInfo)}";
-            }
-            else
-            {
-                DateTime dtFrom = DateTime.Parse(filterEntry.ValueFrom);
-                DateTime dtTo = DateTime.Parse(filterEntry.ValueTo);
-                return $" liegt zwischen dem {dtFrom.ToString("d", MoviekusDefines.MoviekusCultureInfo)} und dem {dtTo.ToString("d", MoviekusDefines.MoviekusCultureInfo)}";
-
-            }
-        }
     }
 }

@@ -4,11 +4,15 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="Moviekus.Views.Filter.FilterEntryEntryCellTemplate">
+             x:Class="Moviekus.Views.Filter.FilterEntrySourceCellTemplate">
   <ViewCell.View>
       <StackLayout Padding="5">
-            <Label Text="{Binding FilterEntryLabel}" />
-            <Entry Text="{Binding FilterEntry.ValueFrom}" />
+            <Label Text="Verfügbar bei" />
+            <Picker FontSize="Small"
+                    TitleColor="Blue"                    
+                    ItemsSource="{Binding Sources}"
+                    ItemDisplayBinding="{Binding Name}"                     
+                    SelectedItem="{Binding Source, Mode=TwoWay}"/>
         </StackLayout>
   </ViewCell.View>
 </ViewCell>

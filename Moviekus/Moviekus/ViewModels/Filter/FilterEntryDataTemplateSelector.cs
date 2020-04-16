@@ -10,14 +10,16 @@ namespace Moviekus.ViewModels.Filter
     {
         private DataTemplate FilterEntryEntryCellTemplate;
         private DataTemplate FilterEntryDateCellTemplate;
-        private DataTemplate FilterEntryPickerCellTemplate;
+        private DataTemplate FilterEntrySourceCellTemplate;
+        private DataTemplate FilterEntryGenreCellTemplate;
         private DataTemplate FilterEntryRatingCellTemplate;
 
         public FilterEntryDataTemplateSelector()
         {
             FilterEntryEntryCellTemplate = new DataTemplate(typeof(FilterEntryEntryCellTemplate));
             FilterEntryDateCellTemplate = new DataTemplate(typeof(FilterEntryDateCellTemplate));
-            FilterEntryPickerCellTemplate = new DataTemplate(typeof(FilterEntryPickerCellTemplate));
+            FilterEntrySourceCellTemplate = new DataTemplate(typeof(FilterEntrySourceCellTemplate));
+            FilterEntryGenreCellTemplate = new DataTemplate(typeof(FilterEntryGenreCellTemplate));
             FilterEntryRatingCellTemplate = new DataTemplate(typeof(FilterEntryRatingCellTemplate));
         }
         protected override DataTemplate OnSelectTemplate(object item, BindableObject container)
@@ -26,18 +28,21 @@ namespace Moviekus.ViewModels.Filter
             if (viewModel == null)
                 return null;
 
-            if (viewModel.FilterEntry.FilterEntryProperty == Models.FilterEntryProperty.LastSeen
-                || viewModel.FilterEntry.FilterEntryProperty == Models.FilterEntryProperty.ReleaseDate)
-                return FilterEntryDateCellTemplate;
-
-            if (viewModel.FilterEntry.FilterEntryProperty == Models.FilterEntryProperty.Source
-                || viewModel.FilterEntry.FilterEntryProperty == Models.FilterEntryProperty.Genre)
-                return FilterEntryPickerCellTemplate;
-
-            if (viewModel.FilterEntry.FilterEntryProperty == Models.FilterEntryProperty.Rating)
-                return FilterEntryRatingCellTemplate;
-
-            return FilterEntryEntryCellTemplate;
+            switch(viewModel.FilterEntry.FilterEntryProperty)
+            {
+                case Models.FilterEntryProperty.LastSeen:
+                case Models.FilterEntryProperty.ReleaseDate:
+                    return FilterEntryDateCellTemplate;
+                case Models.FilterEntryProperty.Source:
+                    return FilterEntrySourceCellTemplate;
+                case Models.FilterEntryProperty.Genre:
+                    return FilterEntryGenreCellTemplate;
+                case Models.FilterEntryProperty.Rating:
+                    return FilterEntryRatingCellTemplate;
+                default:
+                    return FilterEntryEntryCellTemplate;
+            }
+            
         }
     }
 }

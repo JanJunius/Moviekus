@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ViewCell xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="Moviekus.Views.Filter.FilterEntryGenreCellTemplate">
+  <ViewCell.View>
+        <StackLayout Padding="5">
+            <Label Text="Genre" />
+            <Picker FontSize="Small"
+                    TitleColor="Blue"                    
+                    ItemsSource="{Binding Genres}"
+                    ItemDisplayBinding="{Binding Name}"                     
+                    SelectedItem="{Binding Genre, Mode=TwoWay}"/>
+        </StackLayout>
+    </ViewCell.View>
+</ViewCell>

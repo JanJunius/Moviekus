@@ -10,9 +10,9 @@ using Xamarin.Forms.Xaml;
 namespace Moviekus.Views.Filter
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class FilterEntryPickerCellTemplate : ViewCell
+    public partial class FilterEntryGenreCellTemplate : ViewCell
     {
-        public FilterEntryPickerCellTemplate()
+        public FilterEntryGenreCellTemplate()
         {
             InitializeComponent();
         }

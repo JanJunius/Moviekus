@@ -3,11 +3,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:customcontrol="clr-namespace:Moviekus.Views"
              mc:Ignorable="d"
              x:Class="Moviekus.Views.Filter.FilterEntryRatingCellTemplate">
   <ViewCell.View>
       <StackLayout>
-          <Label Text="Hello Rating Cell!" />
-      </StackLayout>
+            <Label Text="Bewertung:" FontSize="Medium" />
+            <customcontrol:RatingBar x:Name="ratingBarEdit" 
+                    HorizontalOptions="Start"  
+                    IsEnabled="True"
+                    ImageWidth="25" 
+                    ImageHeight="25"
+                    Rating ="{Binding Rating}" />
+        </StackLayout>
   </ViewCell.View>
 </ViewCell>

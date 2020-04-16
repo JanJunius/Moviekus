@@ -38,6 +38,14 @@ namespace Moviekus.Services
             }                
         }
 
+        public virtual T Get(string id)
+        {
+            using (var context = new MoviekusDbContext())
+            {
+                return context.Set<T>().Find(id);
+            }
+        }
+
         public virtual async Task<T> GetAsync(string id)
         {
             using (var context = new MoviekusDbContext())

@@ -1,4 +1,5 @@
 ﻿using Moviekus.Models;
+using Moviekus.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -40,6 +41,54 @@ namespace Moviekus.ViewModels.Filter
             {
                 if (value != null && value != DateTime.MinValue)
                     FilterEntry.ValueTo = value.ToString("D");
+            }
+        }
+
+        public IList<Source> Sources => new List<Source>(new SourceService().Get());
+
+        public Source Source
+        {
+            get 
+            { 
+                if (!string.IsNullOrEmpty(FilterEntry.ValueFrom))
+                    return new SourceService().Get(FilterEntry.ValueFrom);
+                return null;
+            }
+            set
+            {
+                if (value != null)
+                    FilterEntry.ValueFrom = value.Id;
+            }
+        }
+
+        public IList<Genre> Genres => new List<Genre>(new GenreService().Get());
+
+        public Genre Genre
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(FilterEntry.ValueFrom))
+                    return new GenreService().Get(FilterEntry.ValueFrom);
+                return null;
+            }
+            set
+            {
+                if (value != null)
+                    FilterEntry.ValueFrom = value.Id;
+            }
+        }
+
+        public int Rating
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(FilterEntry.ValueFrom))
+                    return int.Parse(FilterEntry.ValueFrom);
+                return 0;
+            }
+            set
+            {
+                FilterEntry.ValueFrom = value.ToString();
             }
         }
 

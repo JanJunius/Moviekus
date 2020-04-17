@@ -7,16 +7,22 @@ using System.Text;
 
 namespace Moviekus.Models
 {
-    [DebuggerDisplay("Property = {FilterEntryProperty}")]
+    [DebuggerDisplay("Property = {FilterEntryType.Property}")]
     public class FilterEntry : BaseModel
     {
+        public FilterEntry()
+        {
+            FilterEntryType = new FilterEntryType();
+        }
+
         [ForeignKey("FilterId")]
         [Required]
-
         public Filter Filter { get; set; }
 
+        
+        [ForeignKey("FilterEntryTypeId")]
         [Required]
-        public FilterEntryProperty FilterEntryProperty { get; set; }
+        public FilterEntryType FilterEntryType { get; set; }
 
         [Required]
         public string ValueFrom { get; set; }
@@ -31,7 +37,7 @@ namespace Moviekus.Models
             return obj is FilterEntry entry &&
                    base.Equals(obj) &&
                    EqualityComparer<Filter>.Default.Equals(Filter, entry.Filter) &&
-                   FilterEntryProperty == entry.FilterEntryProperty &&
+                   EqualityComparer<FilterEntryType>.Default.Equals(FilterEntryType, entry.FilterEntryType) &&
                    ValueFrom == entry.ValueFrom &&
                    ValueTo == entry.ValueTo &&
                    IsDeleted == entry.IsDeleted;
@@ -39,7 +45,7 @@ namespace Moviekus.Models
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(base.GetHashCode(), Filter, FilterEntryProperty, ValueFrom, ValueTo, IsDeleted);
+            return HashCode.Combine(base.GetHashCode(), Filter, FilterEntryType, ValueFrom, ValueTo, IsDeleted);
         }
     }
 }

@@ -15,6 +15,8 @@
     </ContentPage.Resources>
     
     <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Hinzufügen" IconImageSource="add.png" Command="{Binding AddEntryCommand}" />
+        <ToolbarItem Text="Entfernen" IconImageSource="remove.png" Command="{Binding RemoveEntryCommand}" />
         <ToolbarItem Text="Löschen" IconImageSource="delete.png" Command="{Binding DeleteCommand}" />
         <ToolbarItem Text="Speichern" IconImageSource="save.png" Command="{Binding SaveCommand}" />
     </ContentPage.ToolbarItems>
@@ -28,6 +30,7 @@
                 ItemsSource="{Binding FilterEntries}"
                 VerticalOptions="FillAndExpand"
                 HasUnevenRows="true"
+                SelectedItem="{Binding SelectedFilterEntry}"
                 ItemTemplate="{StaticResource FilterEntryDataTemplateSelector}">
             </ListView>
 

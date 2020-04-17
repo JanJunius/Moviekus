@@ -7,7 +7,7 @@
              x:Class="Moviekus.Views.Filter.FilterEntryGenreCellTemplate">
   <ViewCell.View>
         <StackLayout Padding="5">
-            <Label Text="Genre" />
+            <Label Text="{Binding FilterEntry.FilterEntryType.Name}" />
             <Picker FontSize="Small"
                     TitleColor="Blue"                    
                     ItemsSource="{Binding Genres}"

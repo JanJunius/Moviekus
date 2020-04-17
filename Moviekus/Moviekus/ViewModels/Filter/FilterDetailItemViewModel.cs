@@ -16,7 +16,7 @@ namespace Moviekus.ViewModels.Filter
             set
             {
                 filterEntry = value;
-                filterEntry.PropertyChanged += (sender, args) => { filterEntry.IsModified = true; };
+                filterEntry.PropertyChanged += (sender, args) => { if (!filterEntry.IsNew) filterEntry.IsModified = true; };
             }
         }
 
@@ -92,28 +92,15 @@ namespace Moviekus.ViewModels.Filter
             }
         }
 
-        public string FilterEntryLabel
+        public override bool Equals(object obj)
         {
-            get
-            {
-                if (FilterEntry != null)
-                {
-                    switch (FilterEntry.FilterEntryProperty)
-                    {
-                        case FilterEntryProperty.Description: return "Beschreibung";
-                        case FilterEntryProperty.LastSeen: return "Zuletzt gesehen";
-                        case FilterEntryProperty.Notes: return "Bemerkungen";
-                        case FilterEntryProperty.Rating: return "Bewertung";
-                        case FilterEntryProperty.ReleaseDate: return "Veröffentlichung";
-                        case FilterEntryProperty.Runtime: return "Laufzeit";
-                        case FilterEntryProperty.Source: return "Quelle";
-                        case FilterEntryProperty.Title: return "Titel";
-                    }
-                }
-
-                return string.Empty;
-            }
+            return obj is FilterDetailItemViewModel model &&
+                   EqualityComparer<FilterEntry>.Default.Equals(FilterEntry, model.FilterEntry);
         }
 
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(FilterEntry);
+        }
     }
 }

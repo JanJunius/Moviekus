@@ -46,6 +46,21 @@ namespace Moviekus.EntityFramework
                 await context.SaveChangesAsync();
             }
 
+            var filterEntryTypes = new List<FilterEntryType>()
+            {
+                new FilterEntryType() { Id = Guid.NewGuid().ToString(), IsNew = true, Property = FilterEntryProperty.Description, Name = "Beschreibung"},
+                new FilterEntryType() { Id = Guid.NewGuid().ToString(), IsNew = true, Property = FilterEntryProperty.Genre, Name = "Genre"},
+                new FilterEntryType() { Id = Guid.NewGuid().ToString(), IsNew = true, Property = FilterEntryProperty.LastSeen, Name = "Zuletzt gesehen"},
+                new FilterEntryType() { Id = Guid.NewGuid().ToString(), IsNew = true, Property = FilterEntryProperty.Notes, Name = "Bemerkung"},
+                new FilterEntryType() { Id = Guid.NewGuid().ToString(), IsNew = true, Property = FilterEntryProperty.Rating, Name = "Bewertung"},
+                new FilterEntryType() { Id = Guid.NewGuid().ToString(), IsNew = true, Property = FilterEntryProperty.ReleaseDate, Name = "Veröffentlichungsdatum"},
+                new FilterEntryType() { Id = Guid.NewGuid().ToString(), IsNew = true, Property = FilterEntryProperty.Runtime, Name = "Laufzeit"},
+                new FilterEntryType() { Id = Guid.NewGuid().ToString(), IsNew = true, Property = FilterEntryProperty.Source, Name = "Verfügbar bei"},
+                new FilterEntryType() { Id = Guid.NewGuid().ToString(), IsNew = true, Property = FilterEntryProperty.Title, Name = "Titel"}
+            };
+            filterEntryTypes.ForEach(f => context.Add(f));
+            await context.SaveChangesAsync();
+
             Filter filter = Filter.CreateNew<Filter>();
             filter.Name = "Filter 1";
             context.Filter.Add(filter);
@@ -53,33 +68,33 @@ namespace Moviekus.EntityFramework
 
             FilterEntry entry1 = FilterEntry.CreateNew<FilterEntry>();
             entry1.Filter = filter;
-            entry1.FilterEntryProperty = FilterEntryProperty.Title;
+            entry1.FilterEntryType = filterEntryTypes[8];
             entry1.ValueFrom = "Krieger";
             context.FilterEntries.Add(entry1);
             FilterEntry entry2 = FilterEntry.CreateNew<FilterEntry>();
             entry2.Filter = filter;
-            entry2.FilterEntryProperty = FilterEntryProperty.LastSeen;
+            entry2.FilterEntryType = filterEntryTypes[2];
             entry2.ValueFrom = DateTime.MinValue.ToString();
             context.FilterEntries.Add(entry2);
             FilterEntry entry3 = FilterEntry.CreateNew<FilterEntry>();
             entry3.Filter = filter;
-            entry3.FilterEntryProperty = FilterEntryProperty.Rating;
+            entry3.FilterEntryType = filterEntryTypes[4];
             entry3.ValueFrom = "4";
             context.FilterEntries.Add(entry3);
             FilterEntry entry4 = FilterEntry.CreateNew<FilterEntry>();
             entry4.Filter = filter;
-            entry4.FilterEntryProperty = FilterEntryProperty.ReleaseDate;
+            entry4.FilterEntryType = filterEntryTypes[5];
             entry4.ValueFrom = DateTime.Today.AddMonths(-10).ToString();
             entry4.ValueTo = DateTime.Today.AddMonths(-4).ToString();
             context.FilterEntries.Add(entry4);
             FilterEntry entry5 = FilterEntry.CreateNew<FilterEntry>();
             entry5.Filter = filter;
-            entry5.FilterEntryProperty = FilterEntryProperty.Source;
+            entry5.FilterEntryType = filterEntryTypes[7];
             entry5.ValueFrom = sources[1].Id;
             context.FilterEntries.Add(entry5);
             FilterEntry entry6 = FilterEntry.CreateNew<FilterEntry>();
             entry6.Filter = filter;
-            entry6.FilterEntryProperty = FilterEntryProperty.Genre;
+            entry6.FilterEntryType = filterEntryTypes[1];
             entry6.ValueFrom = genres[1].Id;
             context.FilterEntries.Add(entry6);
             await context.SaveChangesAsync();

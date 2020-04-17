@@ -2,6 +2,7 @@
 using Moviekus.Dto;
 using Moviekus.Models;
 using Moviekus.Services;
+using Moviekus.Views.Filter;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -22,7 +23,7 @@ namespace Moviekus.ViewModels.Filter
             set
             {
                 _Filter = value;
-                BuildFilterDto();
+                LoadFilterEntries();
             }
         }
 
@@ -33,6 +34,12 @@ namespace Moviekus.ViewModels.Filter
         }
 
         public ObservableCollection<FilterDetailItemViewModel> FilterEntries { get; set; }
+
+        public FilterDetailItemViewModel SelectedFilterEntry 
+        { 
+            get; 
+            set; 
+        }
 
         public ICommand SaveCommand => new Command(async () =>
         {
@@ -55,18 +62,56 @@ namespace Moviekus.ViewModels.Filter
             }
         });
 
-        private void BuildFilterDto()
+        public ICommand AddEntryCommand => new Command(async () =>
+        {
+            var selectionView = Resolver.Resolve<FilterEntrySelectionPage>();
+            var viewModel = selectionView.BindingContext as FilterEntrySelectionViewModel;
+
+            viewModel.Title = "Filter hinzufügen";
+            viewModel.LoadFilterEntryTypesCommand.Execute(null);
+
+            FilterEntry filterEntry = AddFilterEntry();
+            viewModel.FilterEntryTypeSelected += (sender, filterEntryType) => { filterEntry.FilterEntryType = filterEntryType; };
+
+            await Navigation.PushAsync(selectionView);
+        });
+
+        public ICommand RemoveEntryCommand => new Command(() =>
+        {
+            RemoveFilterEntry();
+        });
+
+        private FilterEntry AddFilterEntry()
+        {
+            FilterEntry filterEntry = FilterEntry.CreateNew<FilterEntry>();
+            filterEntry.Filter = Filter;
+            Filter.FilterEntries.Add(filterEntry);
+            FilterEntries.Add(CreateFilterDetailItemViewModel(filterEntry));
+            return filterEntry;
+        }
+
+        private void RemoveFilterEntry()
+        {
+            SelectedFilterEntry.FilterEntry.IsDeleted = true;
+            FilterEntries.Remove(CreateFilterDetailItemViewModel(SelectedFilterEntry.FilterEntry));
+        }
+
+        private void LoadFilterEntries()
         {
             FilterEntries.Clear();
             foreach(var filterEntry in Filter.FilterEntries)
             {
-                var filterDetailItemViewModel = new FilterDetailItemViewModel()
-                {
-                    FilterEntry = filterEntry
-                };
-                FilterEntries.Add(filterDetailItemViewModel);
+                FilterEntries.Add(CreateFilterDetailItemViewModel(filterEntry));
             }
         }
 
+        private FilterDetailItemViewModel CreateFilterDetailItemViewModel(FilterEntry filterEntry)
+        {
+            var filterDetailItemViewModel = new FilterDetailItemViewModel()
+            {
+                FilterEntry = filterEntry
+            };
+            return filterDetailItemViewModel;
+        }
     }
 }

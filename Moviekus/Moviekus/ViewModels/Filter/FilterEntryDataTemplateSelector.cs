@@ -28,7 +28,7 @@ namespace Moviekus.ViewModels.Filter
             if (viewModel == null)
                 return null;
 
-            switch(viewModel.FilterEntry.FilterEntryProperty)
+            switch(viewModel.FilterEntry.FilterEntryType.Property)
             {
                 case Models.FilterEntryProperty.LastSeen:
                 case Models.FilterEntryProperty.ReleaseDate:

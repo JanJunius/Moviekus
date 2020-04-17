@@ -7,7 +7,7 @@
              x:Class="Moviekus.Views.Filter.FilterEntryDateCellTemplate">
   <ViewCell.View>
         <StackLayout Padding="5">
-            <Label Text="{Binding FilterEntryLabel}" />
+            <Label Text="{Binding FilterEntry.FilterEntryType.Name}" />
             <StackLayout Orientation="Vertical" >
                 <Label Text="Vom"/>
                 <DatePicker Date="{Binding DateFrom}" Format="D" HorizontalOptions="Start"/>

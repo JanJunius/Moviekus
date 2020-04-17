@@ -15,7 +15,15 @@ namespace Moviekus.Services
         {
             using (var context = new MoviekusDbContext())
             {
-                return await context.Filter.Include(f => f.FilterEntries).ToListAsync();
+                return await context.Filter.Include(f => f.FilterEntries).ThenInclude(t => t.FilterEntryType).ToListAsync();
+            }
+        }
+
+        public async Task<IEnumerable<FilterEntryType>> GetFilterEntryTypesAsync()
+        {
+            using (var context = new MoviekusDbContext())
+            {
+                return await context.FilterEntryTypes.ToListAsync();
             }
         }
 

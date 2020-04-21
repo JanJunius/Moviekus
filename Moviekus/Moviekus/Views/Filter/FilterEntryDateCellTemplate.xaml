@@ -8,11 +8,15 @@
   <ViewCell.View>
         <StackLayout Padding="5">
             <Label Text="{Binding FilterEntry.FilterEntryType.Name}" />
-            <StackLayout Orientation="Vertical" >
-                <Label Text="Vom"/>
-                <DatePicker Date="{Binding DateFrom}" Format="D" HorizontalOptions="Start"/>
-                <Label Text="bis"/>
-                <DatePicker Date="{Binding DateTo}" Format="D" HorizontalOptions="Start"/>
+            <StackLayout Orientation="Horizontal">
+                <CheckBox IsChecked="{Binding DateEmpty}" />
+                <Label Text="Nicht gesetzt" HorizontalTextAlignment="Center" />
+            </StackLayout>
+            <StackLayout x:Name="DatePanel" Orientation="Vertical"  IsVisible="{Binding DateVisible}" >
+                <Label Text="Vom" />
+                <DatePicker Date="{Binding DateFrom}" Format="d" HorizontalOptions="Start" />
+                <Label Text="bis" />
+                <DatePicker Date="{Binding DateTo}" Format="d" HorizontalOptions="Start"/>
             </StackLayout>
         </StackLayout>
   </ViewCell.View>

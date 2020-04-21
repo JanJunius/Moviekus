@@ -74,7 +74,8 @@ namespace Moviekus.EntityFramework
             FilterEntry entry2 = FilterEntry.CreateNew<FilterEntry>();
             entry2.Filter = filter;
             entry2.FilterEntryType = filterEntryTypes[2];
-            entry2.ValueFrom = DateTime.MinValue.ToString();
+            entry2.ValueFrom = MoviekusDefines.MinDate.ToString("d");
+            entry2.ValueTo = MoviekusDefines.MinDate.ToString("d");
             context.FilterEntries.Add(entry2);
             FilterEntry entry3 = FilterEntry.CreateNew<FilterEntry>();
             entry3.Filter = filter;
@@ -84,8 +85,8 @@ namespace Moviekus.EntityFramework
             FilterEntry entry4 = FilterEntry.CreateNew<FilterEntry>();
             entry4.Filter = filter;
             entry4.FilterEntryType = filterEntryTypes[5];
-            entry4.ValueFrom = DateTime.Today.AddMonths(-10).ToString();
-            entry4.ValueTo = DateTime.Today.AddMonths(-4).ToString();
+            entry4.ValueFrom = DateTime.Today.AddMonths(-10).ToString("d");
+            entry4.ValueTo = DateTime.Today.AddMonths(-4).ToString("d");
             context.FilterEntries.Add(entry4);
             FilterEntry entry5 = FilterEntry.CreateNew<FilterEntry>();
             entry5.Filter = filter;

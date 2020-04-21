@@ -31,7 +31,8 @@ namespace Moviekus.Views.Filter
         {
             base.OnAppearing();
 
-            ViewModel.LoadFilterCommand.Execute(null);
+            if (ViewModel.Filter.Count == 0)
+                ViewModel.LoadFilterCommand.Execute(null);
         }
 
     }

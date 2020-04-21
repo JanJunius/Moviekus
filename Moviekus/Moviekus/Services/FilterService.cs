@@ -27,6 +27,28 @@ namespace Moviekus.Services
             }
         }
 
+        protected override async Task InsertAsync(MoviekusDbContext context, Filter filter)
+        {
+            if (context.Entry(filter).State == EntityState.Detached)
+                context.Attach(filter);
+
+            context.Entry(filter).State = EntityState.Added;
+
+            foreach(var filterEntry in filter.FilterEntries)
+            {
+                // Keine neu hinzugefügten und gleich wieder entfernten Einträge betrachten
+                if (!filterEntry.IsDeleted)
+                    context.Entry(filterEntry).State = EntityState.Added;
+
+                //if (context.Entry(filterEntry).State == EntityState.Detached)
+                //    context.Attach(filterEntry);
+
+                //context.Entry(filterEntry.FilterEntryType).State = EntityState.Detached;
+            }
+
+            await base.InsertAsync(context, filter);
+        }
+
         protected override void UpdateAsync(MoviekusDbContext context, Filter filter)
         {
             base.UpdateAsync(context, filter);
@@ -38,13 +60,14 @@ namespace Moviekus.Services
 
                 if (filterEntry.IsNew)
                     context.Entry(filterEntry).State = EntityState.Added;
-                if (filterEntry.IsModified)
-                    context.Entry(filterEntry).State = EntityState.Modified;
-                if (filterEntry.IsDeleted)
+                else if (filterEntry.IsDeleted)
                     context.Entry(filterEntry).State = EntityState.Deleted;
+                else if (filterEntry.IsModified)
+                    context.Entry(filterEntry).State = EntityState.Modified;
 
                 filterEntry.IsNew = filterEntry.IsModified = filterEntry.IsDeleted = false;
             }
+
 
         }
 

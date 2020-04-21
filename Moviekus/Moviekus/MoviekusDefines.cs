@@ -5,8 +5,10 @@ using System.Text;
 
 namespace Moviekus
 {
-    class MoviekusDefines
+    public class MoviekusDefines
     {
         public static CultureInfo MoviekusCultureInfo = new CultureInfo("de-DE");
+
+        public static readonly DateTime MinDate = new DateTime(1900, 1, 1);
     }
 }

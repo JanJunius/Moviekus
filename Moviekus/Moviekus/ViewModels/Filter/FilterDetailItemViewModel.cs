@@ -16,33 +16,51 @@ namespace Moviekus.ViewModels.Filter
             set
             {
                 filterEntry = value;
-                filterEntry.PropertyChanged += (sender, args) => { if (!filterEntry.IsNew) filterEntry.IsModified = true; };
+                filterEntry.PropertyChanged += (sender, args) => { if (!filterEntry.IsNew && !filterEntry.IsDeleted) filterEntry.IsModified = true; };
+                DateVisible = DateFrom != MoviekusDefines.MinDate;
             }
         }
 
         public DateTime DateFrom
         {
-            get { return DateTime.Parse(filterEntry.ValueFrom); }
+            get 
+            {
+                if (filterEntry == null || string.IsNullOrEmpty(filterEntry.ValueTo))
+                    return MoviekusDefines.MinDate;
+                return DateTime.Parse(filterEntry.ValueFrom); 
+            }
             set
             {
-                FilterEntry.ValueFrom = value.ToString("D");
+                FilterEntry.ValueFrom = value.ToString("d");
             }
         }
 
         public DateTime DateTo
         {
             get 
-            {  
-               if (filterEntry == null || string.IsNullOrEmpty(filterEntry.ValueTo))
-                    return DateTime.MinValue;
+            {
+                if (filterEntry == null || string.IsNullOrEmpty(filterEntry.ValueTo))
+                    return MoviekusDefines.MinDate;
                 return DateTime.Parse(filterEntry.ValueTo); 
             }
             set
             {
-                if (value != null && value != DateTime.MinValue)
-                    FilterEntry.ValueTo = value.ToString("D");
+                if (value != null)
+                    FilterEntry.ValueTo = value.ToString("d");
             }
         }
+
+        public bool DateEmpty
+        {
+            get { return DateFrom == MoviekusDefines.MinDate; }
+            set 
+            { 
+                DateFrom = DateTo = value == true ? MoviekusDefines.MinDate : DateTime.Today;
+                DateVisible = !value;
+            }
+        }
+
+        public bool DateVisible { get; set; }
 
         public IList<Source> Sources => new List<Source>(new SourceService().Get());
 

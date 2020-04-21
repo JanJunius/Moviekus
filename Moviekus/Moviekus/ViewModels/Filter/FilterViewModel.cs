@@ -30,6 +30,14 @@ namespace Moviekus.ViewModels.Filter
             Filter = new ObservableCollection<Models.Filter>(filter);
         });
 
+        public ICommand AddFilterCommand => new Command(async () => 
+        {
+            var filter = Models.Filter.CreateNew<Models.Filter>();
+            filter.Name = "Neuer Filter";
+            Filter.Add(filter);
+            await OpenEditPage(filter);
+        });
+
         public Models.Filter SelectedItem
         {
             get { return null; }
@@ -49,6 +57,7 @@ namespace Moviekus.ViewModels.Filter
             var viewModel = detailView.BindingContext as FilterDetailViewModel;
             viewModel.Filter = filter;
             viewModel.Title = "Filter bearbeiten";
+            viewModel.FilterDeleted += (sender, deletedFilter) => { Filter.Remove(deletedFilter); };
 
             await Navigation.PushAsync(detailView);
         }

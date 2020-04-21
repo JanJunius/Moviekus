@@ -50,7 +50,7 @@ namespace Moviekus.ViewModels.Movies
                 subTitle += $"{Movie.Runtime} Min.";
             }
                 
-            if (Movie.ReleaseDate != DateTime.MinValue)
+            if (Movie.ReleaseDate != MoviekusDefines.MinDate)
             {
                 if (subTitle.Length > 0)
                     subTitle += ", ";

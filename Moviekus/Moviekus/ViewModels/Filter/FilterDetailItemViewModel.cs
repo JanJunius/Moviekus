@@ -2,10 +2,12 @@
 using Moviekus.Services;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace Moviekus.ViewModels.Filter
 {
+    [DebuggerDisplay("Property = {FilterEntry.FilterEntryType}")]
     public class FilterDetailItemViewModel : BaseViewModel
     {
         private FilterEntry filterEntry;
@@ -16,7 +18,13 @@ namespace Moviekus.ViewModels.Filter
             set
             {
                 filterEntry = value;
-                filterEntry.PropertyChanged += (sender, args) => { if (!filterEntry.IsNew && !filterEntry.IsDeleted) filterEntry.IsModified = true; };
+                filterEntry.PropertyChanged += (sender, args) => 
+                { 
+                    if (!filterEntry.IsNew && !filterEntry.IsDeleted 
+                    && args.PropertyName != nameof(filterEntry.IsModified) && args.PropertyName != nameof(filterEntry.IsNew)
+                    && args.PropertyName != nameof(filterEntry.IsDeleted)) 
+                    filterEntry.IsModified = true; 
+                };
                 DateVisible = DateFrom != MoviekusDefines.MinDate;
             }
         }

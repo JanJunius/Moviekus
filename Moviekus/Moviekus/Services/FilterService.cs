@@ -40,10 +40,7 @@ namespace Moviekus.Services
                 if (!filterEntry.IsDeleted)
                     context.Entry(filterEntry).State = EntityState.Added;
 
-                //if (context.Entry(filterEntry).State == EntityState.Detached)
-                //    context.Attach(filterEntry);
-
-                //context.Entry(filterEntry.FilterEntryType).State = EntityState.Detached;
+                filterEntry.IsNew = filterEntry.IsModified = filterEntry.IsDeleted = false;
             }
 
             await base.InsertAsync(context, filter);
@@ -56,7 +53,11 @@ namespace Moviekus.Services
             foreach (var filterEntry in filter.FilterEntries)
             {
                 if (context.Entry(filterEntry).State == EntityState.Detached)
+                {
                     context.Attach(filterEntry);
+                    context.Entry(filterEntry.FilterEntryType).State = EntityState.Detached;
+                }
+                    
 
                 if (filterEntry.IsNew)
                     context.Entry(filterEntry).State = EntityState.Added;

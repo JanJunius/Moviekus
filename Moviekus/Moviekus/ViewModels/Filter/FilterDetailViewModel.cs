@@ -127,8 +127,14 @@ namespace Moviekus.ViewModels.Filter
                 });
                 return;
             }
-            SelectedFilterEntry.FilterEntry.IsDeleted = true;
+            // Ein neu angelegtes, noch nicht in der DB gespeichertes Objekt muss nicht gelöscht werden
+            if (!SelectedFilterEntry.FilterEntry.IsNew)
+                SelectedFilterEntry.FilterEntry.IsDeleted = true;
+            SelectedFilterEntry.FilterEntry.IsNew = SelectedFilterEntry.FilterEntry.IsModified = false;
+
             FilterEntries.Remove(CreateFilterDetailItemViewModel(SelectedFilterEntry.FilterEntry));
+
+            bool removed = Filter.FilterEntries.Remove(SelectedFilterEntry.FilterEntry);
         }
 
         private void LoadFilterEntries()

@@ -42,15 +42,13 @@ namespace Moviekus.Models
         {
             return obj is BaseModel model &&
                    Id == model.Id &&
-                   IsNew == model.IsNew;
+                   IsNew == model.IsNew &&
+                   IsModified == model.IsModified;
         }
 
         public override int GetHashCode()
         {
-            var hashCode = -1952321503;
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Id);
-            hashCode = hashCode * -1521134295 + IsNew.GetHashCode();
-            return hashCode;
+            return HashCode.Combine(Id, IsNew, IsModified);
         }
     }
 }

@@ -38,9 +38,17 @@ namespace Moviekus.ViewModels.Movies
 
         public ICommand FilterCommand => new Command(async () =>
         {
-            var filterView = Resolver.Resolve<FilterPage>();
-            var viewModel = filterView.BindingContext as FilterViewModel;
-            viewModel.Title = "Filter";
+            var filterView = Resolver.Resolve<FilterSelectionPage>();
+            var viewModel = filterView.BindingContext as FilterSelectionViewModel;
+            viewModel.Title = "Filter wählen";
+            viewModel.LoadFilterCommand.Execute(null);
+
+            viewModel.FilterSelected += (sender, filter) => 
+            {
+                if (filter != null)
+                    Title = $"Filme ({filter.Name})";
+                else Title = "Filme"; 
+            };
 
             await Navigation.PushAsync(filterView);
         });

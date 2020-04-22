@@ -9,6 +9,7 @@ namespace Moviekus
         Movies,
         Genres,
         Sources,
+        Filter,
         Settings,
         About
     }

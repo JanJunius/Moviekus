@@ -11,7 +11,7 @@
         <ToolbarItem
                 Text="Neu" 
                 Command="{Binding AddSourceCommand}"
-                IconImageSource="add.png">
+                IconImageSource="new.png">
         </ToolbarItem>
 
     </ContentPage.ToolbarItems>

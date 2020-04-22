@@ -10,6 +10,7 @@ using Moviekus.Views.Movies;
 using Moviekus.Views.Genres;
 using Moviekus.Views.Sources;
 using Moviekus.EntityFramework;
+using Moviekus.Views.Filter;
 
 namespace Moviekus.Views
 {
@@ -42,6 +43,9 @@ namespace Moviekus.Views
                         break;
                     case (int)MenuItemType.Sources:
                         MenuPages.Add(id, new NavigationPage(Resolver.Resolve<SourcesPage>()));
+                        break;
+                    case (int)MenuItemType.Filter:
+                        MenuPages.Add(id, new NavigationPage(Resolver.Resolve<FilterPage>()));
                         break;
                     case (int)MenuItemType.Settings:
                         MenuPages.Add(id, new NavigationPage(Resolver.Resolve<SettingsPage>()));

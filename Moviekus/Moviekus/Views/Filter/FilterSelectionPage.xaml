@@ -4,27 +4,16 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             Title="{Binding Title}"
-             x:Class="Moviekus.Views.Filter.FilterPage">
-    
-    <ContentPage.ToolbarItems>
-        <ToolbarItem
-                Text="Neu" 
-                Command="{Binding AddFilterCommand}"
-                IconImageSource="new.png">
-        </ToolbarItem>
-
-    </ContentPage.ToolbarItems>
-
+             Title="{Binding Title}"             
+             x:Class="Moviekus.Views.Filter.FilterSelectionPage">
     <ContentPage.Content>
-        <ListView x:Name ="FilterList" 
-                  RowHeight="60"
+        <ListView RowHeight="60"
                   ItemsSource="{Binding Filter}"
                   RefreshCommand="{Binding LoadFilterCommand}"
                   IsPullToRefreshEnabled="true"
                   IsRefreshing="{Binding IsBusy, Mode=OneWay}"
                   CachingStrategy="RecycleElement"
-                  SelectedItem="{Binding SelectedItem}">
+                  SelectedItem="{Binding SelectedFilter}">
 
             <ListView.ItemTemplate>
                 <DataTemplate>

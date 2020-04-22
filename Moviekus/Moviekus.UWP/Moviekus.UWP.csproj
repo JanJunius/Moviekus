@@ -114,6 +114,7 @@
     <Content Include="moviedb.png" />
     <Content Include="moviekus.png" />
     <Content Include="netflix.png" />
+    <Content Include="new.png" />
     <Content Include="prime.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LargeTile.scale-100.png" />

@@ -12,6 +12,8 @@ namespace Moviekus.Models
         [Required]
         public string Title { get; set; }
         
+        [ForeignKey("SourceId")]
+        [Required]
         public Source Source { get; set; }
 
         public string Description { get; set; }
@@ -24,7 +26,7 @@ namespace Moviekus.Models
 
         public DateTime LastSeen { get; set; }
 
-        public string Notes { get; set; }
+        public string Remarks { get; set; }
 
         public byte[] Cover { get; set; }
 
@@ -32,7 +34,8 @@ namespace Moviekus.Models
 
         public Movie()
         {
-            Source = CreateNew<Source>();
+            //ACHTUNG: Die Source darf hier nicht angelegt werden, sonst wird das Objekt beim Laden nicht korrekt gefüllt!
+            //Source = CreateNew<Source>();
             MovieGenres = new List<MovieGenre>();
         }
 
@@ -47,7 +50,7 @@ namespace Moviekus.Models
                    Runtime == movie.Runtime &&
                    Rating == movie.Rating &&
                    LastSeen == movie.LastSeen &&
-                   Notes == movie.Notes &&
+                   Remarks == movie.Remarks &&
                    EqualityComparer<ICollection<MovieGenre>>.Default.Equals(MovieGenres, movie.MovieGenres);
         }
 
@@ -62,7 +65,7 @@ namespace Moviekus.Models
             hash.Add(Runtime);
             hash.Add(Rating);
             hash.Add(LastSeen);
-            hash.Add(Notes);
+            hash.Add(Remarks);
             hash.Add(MovieGenres);
             return hash.ToHashCode();
         }

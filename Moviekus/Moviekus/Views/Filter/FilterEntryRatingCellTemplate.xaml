@@ -9,12 +9,22 @@
   <ViewCell.View>
       <StackLayout>
             <Label Text="{Binding FilterEntry.FilterEntryType.Name}" />
-            <customcontrol:RatingBar x:Name="ratingBarEdit" 
-                    HorizontalOptions="Start"  
-                    IsEnabled="True"
-                    ImageWidth="25" 
-                    ImageHeight="25"
-                    Rating ="{Binding Rating}" />
+            <StackLayout Orientation="Horizontal" Spacing="5">
+                <Label Text="Von" />
+                <customcontrol:RatingBar 
+                        HorizontalOptions="Start"  
+                        IsEnabled="True"
+                        IsVisible="True"                     
+                        Rating ="{Binding RatingFrom}" />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" Spacing="5">
+                <Label Text="Bis" />
+                <customcontrol:RatingBar 
+                        HorizontalOptions="Start"  
+                        IsEnabled="True"
+                        IsVisible="True"
+                        Rating ="{Binding RatingTo}"/>
+            </StackLayout>
         </StackLayout>
   </ViewCell.View>
 </ViewCell>

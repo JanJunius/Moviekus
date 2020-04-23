@@ -12,23 +12,26 @@ namespace Moviekus.EntityFramework
     {
         public static async Task InitializeData(MoviekusDbContext context)
         {
-            var genres = new List<Genre>()
+            if (context.Genres.Count() == 0)
             {
-                new Genre { Name = "Musik" },
-                new Genre { Name = "Action" },
-                new Genre { Name = "Komödie" },
-                new Genre { Name = "Drama" }
-            };
-            genres.ForEach(g => g.IsNew = true);
-            genres.ForEach(g => context.Add(g));
-            await context.SaveChangesAsync();
+                var genres = new List<Genre>()
+                {
+                    new Genre { Id = "dca20c06-5b6e-4a43-a850-ac5343ecc465", Name = "Musik" },
+                    new Genre { Id = "47a65cb0-7f35-490d-9749-2bd923939438", Name = "Action" },
+                    new Genre { Id = "6ab67134-55f4-4c39-9e5e-704606b82460", Name = "Komödie" },
+                    new Genre { Id = "de0fe707-128f-47db-be0b-63815bc61a64", Name = "Drama" }
+                };
+                genres.ForEach(g => g.IsNew = true);
+                genres.ForEach(g => context.Add(g));
+                await context.SaveChangesAsync();
+            }
 
-            var sources = new List<Source>();
             if (context.Sources.Count() == 0)
             {
-                sources.Add(new Source { Name = "Lokal", SourceTypeName = "Lokal" });
-                sources.Add(new Source { Name = "Netflix", SourceTypeName = "Netflix" });
-                sources.Add(new Source { Name = "Amazon Prime", SourceTypeName = "Amazon Prime" });
+                var sources = new List<Source>();
+                sources.Add(new Source { Id = "4f72aa31-38b3-48b6-988e-3f96df94c44f", Name = "Lokal", SourceTypeName = "Lokal" });
+                sources.Add(new Source { Id = "79aab413-5c1b-4446-9288-72f0f476b219", Name = "Netflix", SourceTypeName = "Netflix" });
+                sources.Add(new Source { Id = "3fe0f150-c349-4462-99fd-0e61e6e513a7", Name = "Amazon Prime", SourceTypeName = "Amazon Prime" });
 
                 sources.ForEach(s => s.IsNew = true);
                 sources.ForEach(s => context.Add(s));
@@ -46,21 +49,25 @@ namespace Moviekus.EntityFramework
                 await context.SaveChangesAsync();
             }
 
-            var filterEntryTypes = new List<FilterEntryType>()
+            if (context.FilterEntryTypes.Count() == 0)
             {
-                new FilterEntryType() { Id = Guid.NewGuid().ToString(), IsNew = true, Property = FilterEntryProperty.Description, Name = "Beschreibung"},
-                new FilterEntryType() { Id = Guid.NewGuid().ToString(), IsNew = true, Property = FilterEntryProperty.Genre, Name = "Genre"},
-                new FilterEntryType() { Id = Guid.NewGuid().ToString(), IsNew = true, Property = FilterEntryProperty.LastSeen, Name = "Zuletzt gesehen"},
-                new FilterEntryType() { Id = Guid.NewGuid().ToString(), IsNew = true, Property = FilterEntryProperty.Notes, Name = "Bemerkung"},
-                new FilterEntryType() { Id = Guid.NewGuid().ToString(), IsNew = true, Property = FilterEntryProperty.Rating, Name = "Bewertung"},
-                new FilterEntryType() { Id = Guid.NewGuid().ToString(), IsNew = true, Property = FilterEntryProperty.ReleaseDate, Name = "Veröffentlichungsdatum"},
-                new FilterEntryType() { Id = Guid.NewGuid().ToString(), IsNew = true, Property = FilterEntryProperty.Runtime, Name = "Laufzeit"},
-                new FilterEntryType() { Id = Guid.NewGuid().ToString(), IsNew = true, Property = FilterEntryProperty.Source, Name = "Verfügbar bei"},
-                new FilterEntryType() { Id = Guid.NewGuid().ToString(), IsNew = true, Property = FilterEntryProperty.Title, Name = "Titel"}
+                var filterEntryTypes = new List<FilterEntryType>()
+            {
+                new FilterEntryType() { Id = "d33a4909-2f26-499f-a4b1-25b09a29bf31", IsNew = true, Property = FilterEntryProperty.Description, Name = "Beschreibung"},
+                new FilterEntryType() { Id = "2829099a-dc9d-4a6c-9e1a-13bb4bc86732", IsNew = true, Property = FilterEntryProperty.Genre, Name = "Genre"},
+                new FilterEntryType() { Id = "ec6e8e1d-1b13-4914-b99e-d4daae8ff4d9", IsNew = true, Property = FilterEntryProperty.LastSeen, Name = "Zuletzt gesehen"},
+                new FilterEntryType() { Id = "f37872db-a61f-40e8-a3e5-6c46a74a2b77", IsNew = true, Property = FilterEntryProperty.Remarks, Name = "Bemerkung"},
+                new FilterEntryType() { Id = "eb5685d5-03e4-4a5a-ae27-6bd17ef35d8c", IsNew = true, Property = FilterEntryProperty.Rating, Name = "Bewertung"},
+                new FilterEntryType() { Id = "86d7f54b-0730-4a01-9ff7-4f9fb0cb55c4", IsNew = true, Property = FilterEntryProperty.ReleaseDate, Name = "Veröffentlichungsdatum"},
+                new FilterEntryType() { Id = "1821f370-6953-4f9a-bdaf-e0be7fb1bea6", IsNew = true, Property = FilterEntryProperty.Runtime, Name = "Laufzeit"},
+                new FilterEntryType() { Id = "2117437b-9895-4c66-bc79-1e4dd025d125", IsNew = true, Property = FilterEntryProperty.Source, Name = "Verfügbar bei"},
+                new FilterEntryType() { Id = "1bee1bbb-a1c8-4a45-b599-19fb2deadc96", IsNew = true, Property = FilterEntryProperty.Title, Name = "Titel"}
             };
-            filterEntryTypes.ForEach(f => context.Add(f));
-            await context.SaveChangesAsync();
+                filterEntryTypes.ForEach(f => context.Add(f));
+                await context.SaveChangesAsync();
+            }
 
+            /*
             Filter filter = Filter.CreateNew<Filter>();
             filter.Name = "Filter 1";
             context.Filter.Add(filter);
@@ -99,6 +106,7 @@ namespace Moviekus.EntityFramework
             entry6.ValueFrom = genres[1].Id;
             context.FilterEntries.Add(entry6);
             await context.SaveChangesAsync();
+            */
 
             //var movies = new List<Movie>()
             //{
@@ -126,7 +134,7 @@ namespace Moviekus.EntityFramework
 
         public static void RecreateDatabase(MoviekusDbContext context)
         {
-            context.Database.EnsureDeleted();
+            //context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
             context.Database.Migrate();
         }

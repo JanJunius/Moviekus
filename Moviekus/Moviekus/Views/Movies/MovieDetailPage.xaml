@@ -52,8 +52,6 @@
             <customcontrol:RatingBar x:Name="ratingBarDetail" 
             HorizontalOptions="Start"  
             IsEnabled="False"
-            ImageWidth="25" 
-            ImageHeight="25"
             Rating ="{Binding Movie.Rating}" />
 
             <Label Text="Genres" />
@@ -63,7 +61,7 @@
             <Label Text="{Binding Movie.Source.Name}" FontSize="Medium"/>
 
             <Label Text="Bemerkungen:" FontSize="Medium" />
-            <Label Text="{Binding Movie.Notes}" FontSize="Small"/>
+            <Label Text="{Binding Movie.Remarks}" FontSize="Small"/>
 
         </StackLayout>
     </ScrollView>

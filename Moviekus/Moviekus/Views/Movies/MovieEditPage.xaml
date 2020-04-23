@@ -50,8 +50,6 @@
                 <customcontrol:RatingBar x:Name="ratingBarEdit" 
                     HorizontalOptions="Start"  
                     IsEnabled="True"
-                    ImageWidth="25" 
-                    ImageHeight="25"
                     Rating ="{Binding Movie.Rating}" />
 
                 <Label Text="Genres" />
@@ -69,7 +67,7 @@
                     SelectedItem="{Binding SelectedSource, Mode=TwoWay}"/>
 
                 <Label Text="Bemerkungen" FontSize="Medium" />
-                <Entry Text="{Binding Movie.Notes}" d:Text="Eigene Kommentare zu diesem Film" FontSize="Small" />
+                <Entry Text="{Binding Movie.Remarks}" d:Text="Eigene Kommentare zu diesem Film" FontSize="Small" />
                 
             </StackLayout>
         </ScrollView>

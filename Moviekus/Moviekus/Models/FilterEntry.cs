@@ -12,7 +12,8 @@ namespace Moviekus.Models
     {
         public FilterEntry()
         {
-            FilterEntryType = new FilterEntryType();
+            // ACHTUNG: DFer FilterEntryType darf hier nicht angelegt werden, sonst wird das Objekt beim Laden nicht korrekt gefüllt!
+            //FilterEntryType = new FilterEntryType();
         }
 
         [ForeignKey("FilterId")]

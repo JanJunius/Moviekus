@@ -13,6 +13,7 @@ namespace Moviekus.ViewModels.Filter
         private DataTemplate FilterEntrySourceCellTemplate;
         private DataTemplate FilterEntryGenreCellTemplate;
         private DataTemplate FilterEntryRatingCellTemplate;
+        private DataTemplate FilterEntryRuntimeCellTemplate;
 
         public FilterEntryDataTemplateSelector()
         {
@@ -21,6 +22,7 @@ namespace Moviekus.ViewModels.Filter
             FilterEntrySourceCellTemplate = new DataTemplate(typeof(FilterEntrySourceCellTemplate));
             FilterEntryGenreCellTemplate = new DataTemplate(typeof(FilterEntryGenreCellTemplate));
             FilterEntryRatingCellTemplate = new DataTemplate(typeof(FilterEntryRatingCellTemplate));
+            FilterEntryRuntimeCellTemplate = new DataTemplate(typeof(FilterEntryRuntimeCellTemplate));
         }
         protected override DataTemplate OnSelectTemplate(object item, BindableObject container)
         {
@@ -39,6 +41,8 @@ namespace Moviekus.ViewModels.Filter
                     return FilterEntryGenreCellTemplate;
                 case Models.FilterEntryProperty.Rating:
                     return FilterEntryRatingCellTemplate;
+                case Models.FilterEntryProperty.Runtime:
+                    return FilterEntryRuntimeCellTemplate;
                 default:
                     return FilterEntryEntryCellTemplate;
             }

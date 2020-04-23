@@ -12,6 +12,8 @@ using System.Linq;
 using System.Windows.Input;
 using Moviekus.Views.Filter;
 using Moviekus.ViewModels.Filter;
+using System.Linq.Expressions;
+using System.Collections.Generic;
 
 namespace Moviekus.ViewModels.Movies
 {
@@ -43,11 +45,18 @@ namespace Moviekus.ViewModels.Movies
             viewModel.Title = "Filter wählen";
             viewModel.LoadFilterCommand.Execute(null);
 
-            viewModel.FilterSelected += (sender, filter) => 
+            viewModel.FilterSelected += async (sender, filter) => 
             {
                 if (filter != null)
+                {
                     Title = $"Filme ({filter.Name})";
-                else Title = "Filme"; 
+                    await ApplyFilter(filter);
+                }
+                else
+                {
+                    Title = "Filme";
+                    await RemoveFilter();
+                }                
             };
 
             await Navigation.PushAsync(filterView);
@@ -99,28 +108,17 @@ namespace Moviekus.ViewModels.Movies
 
         private async Task LoadMovies()
         {
-            if (IsBusy)
-                return;
-
-            IsBusy = true;
-
             try
             {
-                Movies.Clear();
                 //var movies = await MoviesService.GetAsync();
                 //var movies = await MoviesService.GetWithSourceAsync();
                 var movies = await MoviesService.GetWithGenresAndSourcesAsync();
 
-                var itemViewModels = movies.Select(m => CreateMoviesItemViewModel(m));
-                Movies = new ObservableCollection<MoviesItemViewModel>(itemViewModels);
+                Movies = new ObservableCollection<MoviesItemViewModel>(movies.Select(m => CreateMoviesItemViewModel(m)));
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
-            }
-            finally
-            {
-                IsBusy = false;
             }
         }
 
@@ -130,6 +128,42 @@ namespace Moviekus.ViewModels.Movies
             //moviesItemViewModel.MovieStatusChanged += MovieStatusChanged;
             return moviesItemViewModel;
         }
+
+        private async Task ApplyFilter(Models.Filter filter)
+        {
+            await RemoveFilter();
+
+            var titleEntries = filter.FilterEntries.Where(v => v.FilterEntryType.Property == FilterEntryProperty.Title);
+
+            try
+            {
+                Movies = new ObservableCollection<MoviesItemViewModel>(Movies.AsQueryable().Where(FilterBuilder.Ref.BuildFilter(filter)));
+            }
+            catch(Exception ex)
+            {
+                string test = ex.ToString();
+            }
+            
+            /*
+            foreach (var filterEntry in filter.FilterEntries)
+            {
+                if (filterEntry.FilterEntryType.Property == FilterEntryProperty.Remarks)
+                {
+                    //Movies = new ObservableCollcetion<Movie>(Movies.Select(m => m.Title.Contains(filterEntry.ValueFrom)));
+
+                    Movies = new ObservableCollection<MoviesItemViewModel>(Movies.Where(m => m.Movie.Remarks != null && m.Movie.Remarks.Contains(filterEntry.ValueFrom)));
+                }
+            }
+            */
+        }
+
+        private async Task RemoveFilter()
+        {
+            await LoadMovies();
+        }
+
+
+
 
     }
 }

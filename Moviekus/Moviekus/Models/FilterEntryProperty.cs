@@ -13,7 +13,7 @@ namespace Moviekus.Models
         Runtime,
         Rating,
         LastSeen,
-        Notes,
+        Remarks,
         Genre
     }
 }

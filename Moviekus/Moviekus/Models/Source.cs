@@ -18,7 +18,7 @@ namespace Moviekus.Models
                    SourceTypeName == source.SourceTypeName;
         }
 
-        public ICollection<Movie> Movies { get; set; }
+        public virtual ICollection<Movie> Movies { get; set; }
 
         public override int GetHashCode()
         {

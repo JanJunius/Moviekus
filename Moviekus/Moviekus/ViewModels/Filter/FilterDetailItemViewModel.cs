@@ -35,7 +35,10 @@ namespace Moviekus.ViewModels.Filter
             {
                 if (filterEntry == null || string.IsNullOrEmpty(filterEntry.ValueTo))
                     return MoviekusDefines.MinDate;
-                return DateTime.Parse(filterEntry.ValueFrom); 
+                DateTime dt;
+                if (DateTime.TryParse(filterEntry.ValueFrom, out dt))
+                    return dt;
+                return MoviekusDefines.MinDate;
             }
             set
             {
@@ -49,7 +52,10 @@ namespace Moviekus.ViewModels.Filter
             {
                 if (filterEntry == null || string.IsNullOrEmpty(filterEntry.ValueTo))
                     return MoviekusDefines.MinDate;
-                return DateTime.Parse(filterEntry.ValueTo); 
+                DateTime dt;
+                if (DateTime.TryParse(filterEntry.ValueTo, out dt))
+                    return dt;
+                return MoviekusDefines.MinDate;
             }
             set
             {
@@ -104,17 +110,31 @@ namespace Moviekus.ViewModels.Filter
             }
         }
 
-        public int Rating
+        public int RatingFrom
         {
             get
             {
                 if (!string.IsNullOrEmpty(FilterEntry.ValueFrom))
                     return int.Parse(FilterEntry.ValueFrom);
-                return 0;
+                return 1;
             }
             set
             {
                 FilterEntry.ValueFrom = value.ToString();
+            }
+        }
+
+        public int RatingTo
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(FilterEntry.ValueTo))
+                    return int.Parse(FilterEntry.ValueTo);
+                return 1;
+            }
+            set
+            {
+                FilterEntry.ValueTo = value.ToString();
             }
         }
 

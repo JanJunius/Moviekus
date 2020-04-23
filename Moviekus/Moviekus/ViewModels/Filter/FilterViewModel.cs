@@ -25,7 +25,6 @@ namespace Moviekus.ViewModels.Filter
 
         public ICommand LoadFilterCommand => new Command(async () =>
         {
-            Filter.Clear();
             var filter = await FilterService.GetAsync();
             Filter = new ObservableCollection<Models.Filter>(filter);
         });
@@ -45,8 +44,16 @@ namespace Moviekus.ViewModels.Filter
             {
                 if (value != null)
                 {
-                    Device.BeginInvokeOnMainThread(async () => await OpenEditPage(value));
-                    RaisePropertyChanged(nameof(Filter));
+                    try
+                    {
+                        Device.BeginInvokeOnMainThread(async () => await OpenEditPage(value));
+                        RaisePropertyChanged(nameof(Filter));
+
+                    }
+                    catch(Exception ex)
+                    {
+                        string mist = ex.ToString();
+                    }
                 }
             }
         }

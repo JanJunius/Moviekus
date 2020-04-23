@@ -13,7 +13,7 @@ namespace Moviekus.Services
         {
             using (var context = new MoviekusDbContext())
             {
-                return await context.Movies.Include(m => m.Source).ToListAsync();
+                return await context.Movies.Include(m => m.Source).ToListAsync();               
             }
         }
 

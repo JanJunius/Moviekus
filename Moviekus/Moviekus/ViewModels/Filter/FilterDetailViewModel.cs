@@ -114,6 +114,7 @@ namespace Moviekus.ViewModels.Filter
         {
             FilterEntry filterEntry = FilterEntry.CreateNew<FilterEntry>();
             filterEntry.Filter = Filter;
+            filterEntry.FilterEntryType = new FilterEntryType();
             Filter.FilterEntries.Add(filterEntry);
             return filterEntry;
         }

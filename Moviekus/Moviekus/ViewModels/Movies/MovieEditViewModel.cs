@@ -29,8 +29,11 @@ namespace Moviekus.ViewModels.Movies
             set
             {
                 _movie = value;
-                Source source = Sources.Where(s => s.Id == _movie.Source.Id).FirstOrDefault();
-                SelectedSource = source;
+                if (_movie.Source != null)
+                {
+                    Source source = Sources.Where(s => s.Id == _movie.Source.Id).FirstOrDefault();
+                    SelectedSource = source;
+                }
             }
         }
 
@@ -83,6 +86,8 @@ namespace Moviekus.ViewModels.Movies
             Movie.Title = movieDto.Title;
             Movie.Description = movieDto.Overview;
             Movie.ReleaseDate = movieDto.ReleaseDate;
+            Movie.LastSeen = MoviekusDefines.MinDate;
+            Movie.Rating = 1;
             Movie.Runtime = movieDto.Runtime;
             Movie.Cover = movieDto.Cover;
             Movie.MovieGenres = await MovieService.GetMovieGenres(Movie, movieDto.Genres);

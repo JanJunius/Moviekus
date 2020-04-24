@@ -135,7 +135,7 @@ namespace Moviekus.ViewModels.Filter
 
             FilterEntries.Remove(CreateFilterDetailItemViewModel(SelectedFilterEntry.FilterEntry));
 
-            bool removed = Filter.FilterEntries.Remove(SelectedFilterEntry.FilterEntry);
+            //bool removed = Filter.FilterEntries.Remove(SelectedFilterEntry.FilterEntry);
         }
 
         private void LoadFilterEntries()

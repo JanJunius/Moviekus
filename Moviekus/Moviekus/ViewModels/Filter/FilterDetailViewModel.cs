@@ -119,7 +119,8 @@ namespace Moviekus.ViewModels.Filter
             return filterEntry;
         }
 
-        private async Task RemoveFilterEntry()        {
+        private async Task RemoveFilterEntry()        
+        {
             if (SelectedFilterEntry == null)
             {
                 await UserDialogs.Instance.AlertAsync(new AlertConfig
@@ -134,8 +135,6 @@ namespace Moviekus.ViewModels.Filter
             SelectedFilterEntry.FilterEntry.IsNew = SelectedFilterEntry.FilterEntry.IsModified = false;
 
             FilterEntries.Remove(CreateFilterDetailItemViewModel(SelectedFilterEntry.FilterEntry));
-
-            //bool removed = Filter.FilterEntries.Remove(SelectedFilterEntry.FilterEntry);
         }
 
         private void LoadFilterEntries()

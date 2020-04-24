@@ -3,21 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:customcontrol="clr-namespace:Moviekus.Views.Controls"          
              mc:Ignorable="d"
              x:Class="Moviekus.Views.Filter.FilterEntryDateCellTemplate">
   <ViewCell.View>
         <StackLayout Padding="5">
             <Label Text="{Binding FilterEntry.FilterEntryType.Name}" />
-            <StackLayout Orientation="Horizontal">
-                <CheckBox IsChecked="{Binding DateEmpty}" />
-                <Label Text="Nicht gesetzt" HorizontalTextAlignment="Center" />
-            </StackLayout>
-            <StackLayout x:Name="DatePanel" Orientation="Vertical"  IsVisible="{Binding DateVisible}" >
-                <Label Text="Vom" />
-                <DatePicker Date="{Binding DateFrom}" Format="d" HorizontalOptions="Start" />
-                <Label Text="bis" />
-                <DatePicker Date="{Binding DateTo}" Format="d" HorizontalOptions="Start"/>
-            </StackLayout>
+            <customcontrol:NullableDatePicker DateFrom="{Binding DateFrom}" DateTo="{Binding DateTo}" ShowRange="True" />
         </StackLayout>
   </ViewCell.View>
 </ViewCell>

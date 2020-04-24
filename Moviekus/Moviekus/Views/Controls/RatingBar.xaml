@@ -1,6 +1,6 @@
 ﻿<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-             x:Class="Moviekus.Views.RatingBar">
+             x:Class="Moviekus.Views.Controls.RatingBar">
     <ContentView.Content>
         <StackLayout x:Name="ratingbar" Orientation="Horizontal" />
     </ContentView.Content>

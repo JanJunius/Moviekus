@@ -7,7 +7,7 @@ using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace Moviekus.Views
+namespace Moviekus.Views.Controls
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RatingBar : ContentView

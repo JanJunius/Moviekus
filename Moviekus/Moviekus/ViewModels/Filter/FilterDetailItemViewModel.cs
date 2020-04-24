@@ -3,7 +3,6 @@ using Moviekus.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 
 namespace Moviekus.ViewModels.Filter
 {
@@ -21,11 +20,10 @@ namespace Moviekus.ViewModels.Filter
                 filterEntry.PropertyChanged += (sender, args) => 
                 { 
                     if (!filterEntry.IsNew && !filterEntry.IsDeleted 
-                    && args.PropertyName != nameof(filterEntry.IsModified) && args.PropertyName != nameof(filterEntry.IsNew)
-                    && args.PropertyName != nameof(filterEntry.IsDeleted)) 
+                        && args.PropertyName != nameof(filterEntry.IsModified) && args.PropertyName != nameof(filterEntry.IsNew)
+                        && args.PropertyName != nameof(filterEntry.IsDeleted)) 
                     filterEntry.IsModified = true; 
                 };
-                DateVisible = DateFrom != MoviekusDefines.MinDate;
             }
         }
 
@@ -63,18 +61,6 @@ namespace Moviekus.ViewModels.Filter
                     FilterEntry.ValueTo = value.ToString("d");
             }
         }
-
-        public bool DateEmpty
-        {
-            get { return DateFrom == MoviekusDefines.MinDate; }
-            set 
-            { 
-                DateFrom = DateTo = value == true ? MoviekusDefines.MinDate : DateTime.Today;
-                DateVisible = !value;
-            }
-        }
-
-        public bool DateVisible { get; set; }
 
         public IList<Source> Sources => new List<Source>(new SourceService().Get());
 

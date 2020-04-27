@@ -17,21 +17,21 @@
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
-        <ListView x:Name ="FilterList" 
-                  RowHeight="60"
+        <ListView x:Name="FilterList"
+                  Margin="5"
+                  HasUnevenRows="True"
                   ItemsSource="{Binding Filter}"
                   RefreshCommand="{Binding LoadFilterCommand}"
                   IsPullToRefreshEnabled="true"
-                  IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                  CachingStrategy="RecycleElement"
                   SelectedItem="{Binding SelectedItem}">
 
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <Label 
-                            Text="{Binding Name}"
-                            FontSize="Medium" />
+                        <StackLayout Orientation="Vertical">
+                            <Label Text="{Binding Filter.Name}" TextColor="#3d5f8a" FontAttributes="Bold" FontSize="Title" />
+                            <Label Text="{Binding Description}" Padding="0,0,0,10" FontSize="Micro" FontAttributes="Italic"/>
+                        </StackLayout>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>

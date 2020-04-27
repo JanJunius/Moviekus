@@ -3,6 +3,7 @@ using Moviekus.Views.Filter;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -13,31 +14,39 @@ namespace Moviekus.ViewModels.Filter
 {
     public class FilterViewModel : BaseViewModel
     {
-        public ObservableCollection<Models.Filter> Filter { get; set; }
+        public ObservableCollection<FilterItemViewModel> Filter { get; set; }
 
         private IService<Models.Filter> FilterService;
 
         public FilterViewModel(FilterService filterService)
         {
             FilterService = filterService;
-            Filter = new ObservableCollection<Models.Filter>();
+            Filter = new ObservableCollection<FilterItemViewModel>();
+            Title = "Filter";
         }
 
         public ICommand LoadFilterCommand => new Command(async () =>
         {
             var filter = await FilterService.GetAsync();
-            Filter = new ObservableCollection<Models.Filter>(filter);
+            //Filter = new ObservableCollection<Models.Filter>(filter);
+            Filter = new ObservableCollection<FilterItemViewModel>(filter.Select(f => CreateFilterItemViewModel(f)));
         });
+
+        private FilterItemViewModel CreateFilterItemViewModel(Models.Filter filter)
+        {
+            return new FilterItemViewModel(filter);
+        }
 
         public ICommand AddFilterCommand => new Command(async () => 
         {
             var filter = Models.Filter.CreateNew<Models.Filter>();
             filter.Name = "Neuer Filter";
-            Filter.Add(filter);
-            await OpenEditPage(filter);
+            FilterItemViewModel viewModel = CreateFilterItemViewModel(filter);
+            Filter.Add(viewModel);
+            await OpenEditPage(viewModel);
         });
 
-        public Models.Filter SelectedItem
+        public FilterItemViewModel SelectedItem
         {
             get { return null; }
             set
@@ -58,13 +67,13 @@ namespace Moviekus.ViewModels.Filter
             }
         }
 
-        private async Task OpenEditPage(Models.Filter filter)
+        private async Task OpenEditPage(FilterItemViewModel filterItemViewModel)
         {
             var detailView = Resolver.Resolve<FilterDetailPage>();
             var viewModel = detailView.BindingContext as FilterDetailViewModel;
-            viewModel.Filter = filter;
+            viewModel.Filter = filterItemViewModel.Filter;
             viewModel.Title = "Filter bearbeiten";
-            viewModel.FilterDeleted += (sender, deletedFilter) => { Filter.Remove(deletedFilter); };
+            viewModel.FilterDeleted += (sender, deletedFilter) => { Filter.Remove(CreateFilterItemViewModel(deletedFilter)); };
 
             await Navigation.PushAsync(detailView);
         }

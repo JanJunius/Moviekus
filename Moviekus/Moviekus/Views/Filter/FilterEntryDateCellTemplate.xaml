@@ -8,7 +8,6 @@
              x:Class="Moviekus.Views.Filter.FilterEntryDateCellTemplate">
   <ViewCell.View>
         <StackLayout Padding="5">
-            <Label Text="{Binding FilterEntry.FilterEntryType.Name}" />
             <customcontrol:NullableDatePicker DateFrom="{Binding DateFrom}" DateTo="{Binding DateTo}" ShowRange="True" />
         </StackLayout>
   </ViewCell.View>

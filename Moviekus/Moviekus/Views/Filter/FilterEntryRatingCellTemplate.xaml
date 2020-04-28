@@ -8,7 +8,6 @@
              x:Class="Moviekus.Views.Filter.FilterEntryRatingCellTemplate">
   <ViewCell.View>
       <StackLayout>
-            <Label Text="{Binding FilterEntry.FilterEntryType.Name}" />
             <StackLayout Orientation="Horizontal" Spacing="5">
                 <Label Text="Von" />
                 <customcontrol:RatingBar 

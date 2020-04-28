@@ -3,6 +3,7 @@ using Moviekus.Dto;
 using Moviekus.Models;
 using Moviekus.Services;
 using Moviekus.Views.Filter;
+using MvvmHelpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,6 +17,7 @@ namespace Moviekus.ViewModels.Filter
 {
     public class FilterDetailViewModel : BaseViewModel
     {
+        public EventHandler<Models.Filter> FilterChanged;
         public EventHandler<Models.Filter> FilterDeleted;
 
         private IService<Models.Filter> FilterService;
@@ -34,10 +36,10 @@ namespace Moviekus.ViewModels.Filter
         public FilterDetailViewModel(FilterService filterService)
         {
             FilterService = filterService;
-            FilterEntries = new ObservableCollection<FilterDetailItemViewModel>();
         }
 
-        public ObservableCollection<FilterDetailItemViewModel> FilterEntries { get; set; }
+        private readonly ObservableRangeCollection<Grouping<string, FilterDetailItemViewModel>> _filterEntries = new ObservableRangeCollection<Grouping<string, FilterDetailItemViewModel>>();
+        public ObservableCollection<Grouping<string, FilterDetailItemViewModel>> FilterEntries => _filterEntries;
 
         public FilterDetailItemViewModel SelectedFilterEntry { get; set; }
 
@@ -47,6 +49,7 @@ namespace Moviekus.ViewModels.Filter
             {
                 await FilterService.SaveChangesAsync(Filter);
                 await Navigation.PopAsync();
+                FilterChanged?.Invoke(this, Filter);
             }
             catch(Exception ex)
             {
@@ -99,7 +102,18 @@ namespace Moviekus.ViewModels.Filter
                         filterEntry.ValueFrom = filterEntry.ValueTo = string.Empty;
                         break;
                 }
-                FilterEntries.Insert(0, CreateFilterDetailItemViewModel(filterEntry));
+
+                var grouping = FilterEntries.Where(g => g.Key == filterEntry.FilterEntryType.Name).FirstOrDefault();
+                if (grouping == null)
+                {
+                    var tmpList = new List<FilterDetailItemViewModel>
+                    {
+                        CreateFilterDetailItemViewModel(filterEntry)
+                    };
+                    grouping = new Grouping<string, FilterDetailItemViewModel>(filterEntry.FilterEntryType.Name, tmpList);
+                    FilterEntries.Insert(0, grouping);
+                }
+                else grouping.Add(CreateFilterDetailItemViewModel(filterEntry));
             };
 
             await Navigation.PushAsync(selectionView);
@@ -134,16 +148,22 @@ namespace Moviekus.ViewModels.Filter
                 SelectedFilterEntry.FilterEntry.IsDeleted = true;
             SelectedFilterEntry.FilterEntry.IsNew = SelectedFilterEntry.FilterEntry.IsModified = false;
 
-            FilterEntries.Remove(CreateFilterDetailItemViewModel(SelectedFilterEntry.FilterEntry));
+            var grouping = FilterEntries.Where(g => g.Key == SelectedFilterEntry.FilterEntry.FilterEntryType.Name).FirstOrDefault();
+            if (grouping != null)
+                grouping.Remove(CreateFilterDetailItemViewModel(SelectedFilterEntry.FilterEntry));
         }
 
         private void LoadFilterEntries()
         {
             FilterEntries.Clear();
-            foreach (var filterEntry in Filter.FilterEntries.OrderBy(p => p.FilterEntryType.Name))
-            {
-                FilterEntries.Add(CreateFilterDetailItemViewModel(filterEntry));
-            }
+
+            IEnumerable<FilterDetailItemViewModel> filterEntries = new List<FilterDetailItemViewModel>(Filter.FilterEntries.Select(f => CreateFilterDetailItemViewModel(f)));
+
+            var sorted = from filterEntry in filterEntries
+                         orderby filterEntry.FilterEntry.FilterEntryType.Name
+                         group filterEntry by filterEntry.FilterEntry.FilterEntryType.Name into entryGroup
+                         select new Grouping<string, FilterDetailItemViewModel>(entryGroup.Key, entryGroup);
+            _filterEntries.ReplaceRange(sorted);
         }
 
         private FilterDetailItemViewModel CreateFilterDetailItemViewModel(FilterEntry filterEntry)

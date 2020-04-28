@@ -7,7 +7,6 @@
              x:Class="Moviekus.Views.Filter.FilterEntrySourceCellTemplate">
   <ViewCell.View>
       <StackLayout Padding="5">
-            <Label Text="Verfügbar bei" />
             <Picker FontSize="Small"
                     TitleColor="Blue"                    
                     ItemsSource="{Binding Sources}"

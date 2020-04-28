@@ -23,11 +23,13 @@
 
     <ContentPage.Content>
         <StackLayout Padding="14">
-            <Label Text="Name" />
+            <Label Text="Name" FontSize="Title" />
             <Entry Text="{Binding Filter.Name}"/>
 
-            <ListView x:Name="FilterEntryListView"
+            <ListView 
                 ItemsSource="{Binding FilterEntries}"
+                GroupDisplayBinding="{Binding Key}"
+                IsGroupingEnabled="True"
                 VerticalOptions="FillAndExpand"
                 HasUnevenRows="true"
                 SelectedItem="{Binding SelectedFilterEntry}"

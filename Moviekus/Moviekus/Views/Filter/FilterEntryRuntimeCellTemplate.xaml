@@ -7,7 +7,6 @@
              x:Class="Moviekus.Views.Filter.FilterEntryRuntimeCellTemplate">
   <ViewCell.View>
         <StackLayout Padding="5">
-            <Label Text="{Binding FilterEntry.FilterEntryType.Name}" />
             <StackLayout x:Name="RuntimePanel" Orientation="Vertical" >
                 <Label Text="Von (Minuten)" />
                 <Entry Text="{Binding FilterEntry.ValueFrom}" HorizontalOptions="Start" />

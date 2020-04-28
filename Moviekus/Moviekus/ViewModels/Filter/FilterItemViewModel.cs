@@ -33,7 +33,10 @@ namespace Moviekus.ViewModels.Filter
         {
             string description = string.Empty;
 
-            if (Filter == null || Filter.FilterEntries.Count < 1)
+            if (string.IsNullOrEmpty(Filter.Id))
+                return "Zurücksetzen des Filters";
+
+            if (Filter.FilterEntries.Count < 1)
                 return description;
 
             var query = from filterEntry in Filter.FilterEntries

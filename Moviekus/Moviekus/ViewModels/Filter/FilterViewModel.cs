@@ -46,7 +46,7 @@ namespace Moviekus.ViewModels.Filter
             await OpenEditPage(viewModel);
         });
 
-        public FilterItemViewModel SelectedItem
+        public FilterItemViewModel SelectedFilter
         {
             get { return null; }
             set

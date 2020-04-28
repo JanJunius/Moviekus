@@ -23,7 +23,7 @@
                   ItemsSource="{Binding Filter}"
                   RefreshCommand="{Binding LoadFilterCommand}"
                   IsPullToRefreshEnabled="true"
-                  SelectedItem="{Binding SelectedItem}">
+                  SelectedItem="{Binding SelectedFilter}">
 
             <ListView.ItemTemplate>
                 <DataTemplate>

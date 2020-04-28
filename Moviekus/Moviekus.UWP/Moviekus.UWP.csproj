@@ -114,6 +114,7 @@
     <Content Include="moviedb.png" />
     <Content Include="moviekus.png" />
     <Content Include="netflix.png" />
+    <Content Include="addnew.png" />
     <Content Include="prime.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LargeTile.scale-100.png" />
@@ -143,13 +144,14 @@
     <Content Include="Assets\Wide310x150Logo.scale-100.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
+    <Content Include="remove_entry.png" />
     <Content Include="search.png" />
     <Content Include="settings.png" />
     <Content Include="sources.png" />
     <Content Include="star.png" />
     <Content Include="star_empty.png" />
     <Content Include="xamarin_logo.png" />
-    <Content Include="add.png" />
+    <Content Include="add_entry.png" />
     <Content Include="save.png" />
     <Content Include="cancel.png" />
   </ItemGroup>
@@ -165,14 +167,14 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Acr.UserDialogs">
-      <Version>7.1.0.440</Version>
+      <Version>7.1.0.442</Version>
     </PackageReference>
     <PackageReference Include="Autofac">
       <Version>5.1.2</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.Forms" Version="4.5.0.356" />
-    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.2.9" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.5.0" />
+    <PackageReference Include="Xamarin.Forms" Version="4.5.0.617" />
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.2.10" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.5.3" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Moviekus\Moviekus.csproj">

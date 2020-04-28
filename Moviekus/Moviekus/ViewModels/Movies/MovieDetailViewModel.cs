@@ -43,12 +43,12 @@ namespace Moviekus.ViewModels.Movies
 
         public string ReleaseDateText 
         {
-            get { return Movie != null && Movie.ReleaseDate != DateTime.MinValue ? Movie.ReleaseDate.ToString("d", MoviekusDefines.MoviekusCultureInfo) : "-"; }
+            get { return Movie != null && Movie.ReleaseDate != MoviekusDefines.MinDate ? Movie.ReleaseDate.ToString("d", MoviekusDefines.MoviekusCultureInfo) : "<unbekannt>"; }
         }
 
         public string LastSeenText
         {
-            get { return Movie != null && Movie.LastSeen != DateTime.MinValue ? Movie.LastSeen.ToString("d", MoviekusDefines.MoviekusCultureInfo) : "-"; }
+            get { return Movie != null && Movie.LastSeen != MoviekusDefines.MinDate ? Movie.LastSeen.ToString("d", MoviekusDefines.MoviekusCultureInfo) : "<noch nicht gesehen>"; }
         }
 
         public ICommand EditCommand => new Command(async () =>
@@ -63,6 +63,7 @@ namespace Moviekus.ViewModels.Movies
                 Movie = movie;
                 RaisePropertyChanged(nameof(Movie));
                 RaisePropertyChanged(nameof(ReleaseDateText));
+                RaisePropertyChanged(nameof(LastSeenText));
                 RaisePropertyChanged(nameof(Genres));
             };
 

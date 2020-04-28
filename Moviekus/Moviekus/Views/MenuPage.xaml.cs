@@ -23,6 +23,7 @@ namespace Moviekus.Views
                 new HomeMenuItem {Id = MenuItemType.Movies, Title="Filme", ImageSource="movie.png" },
                 new HomeMenuItem {Id = MenuItemType.Genres, Title="Genres", ImageSource="genres.png" },
                 new HomeMenuItem {Id = MenuItemType.Sources, Title="Quellen", ImageSource="sources.png" },
+                new HomeMenuItem {Id = MenuItemType.Filter, Title="Filter", ImageSource="filter.png" },
                 new HomeMenuItem {Id = MenuItemType.Settings, Title="Einstellungen", ImageSource="settings.png" },
                 new HomeMenuItem {Id = MenuItemType.About, Title="Über Moviekus", ImageSource="moviekus.png" }
             };

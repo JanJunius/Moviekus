@@ -7,18 +7,23 @@ using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace Moviekus.Views
+namespace Moviekus.Views.Controls
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RatingBar : ContentView
     {
         private static string emptyStarImage = "star_empty.png";
         private static string fillStarImage = "star.png";
-        private static Image star1;
-        private static Image star2;
-        private static Image star3;
-        private static Image star4;
-        private static Image star5;
+        private static int imageHeight = 30;
+        private static int imageWidth = 30;
+
+        private Image star1;
+        private Image star2;
+        private Image star3;
+        private Image star4;
+        private Image star5;
+        
+        private StackLayout StarContainer = new StackLayout() { Orientation = StackOrientation.Horizontal };
 
         public int Rating
         { 
@@ -44,11 +49,21 @@ namespace Moviekus.Views
         public RatingBar()
         {
             InitializeComponent();
-            star1 = new Image();
-            star2 = new Image();
-            star3 = new Image();
-            star4 = new Image();
-            star5 = new Image();
+
+            ratingbar.Children.Add(StarContainer);
+
+            star1 = new Image() { HeightRequest = imageHeight, WidthRequest = imageWidth };
+            star2 = new Image() { HeightRequest = imageHeight, WidthRequest = imageWidth };
+            star3 = new Image() { HeightRequest = imageHeight, WidthRequest = imageWidth };
+            star4 = new Image() { HeightRequest = imageHeight, WidthRequest = imageWidth };
+            star5 = new Image() { HeightRequest = imageHeight, WidthRequest = imageWidth };
+
+            StarContainer.Children.Clear();
+            StarContainer.Children.Add(star1);
+            StarContainer.Children.Add(star2);
+            StarContainer.Children.Add(star3);
+            StarContainer.Children.Add(star4);
+            StarContainer.Children.Add(star5);
 
             star1.GestureRecognizers.Add(new TapGestureRecognizer
             {
@@ -74,7 +89,7 @@ namespace Moviekus.Views
             });            
         }
 
-
+        /*
         #region  Image Height Width Property
         public static readonly BindableProperty ImageHeightProperty = BindableProperty.Create(
         propertyName: "ImageHeight",
@@ -90,7 +105,7 @@ namespace Moviekus.Views
             set { base.SetValue(ImageHeightProperty, value); }
         }
 
-        private static void ImageHeightPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        private void ImageHeightPropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
             // set all images height  equal
             star1.HeightRequest = (double)newValue;
@@ -170,19 +185,11 @@ namespace Moviekus.Views
             control.stkRatingbar.VerticalOptions = (LayoutOptions)newValue;
         }
         #endregion
+        */
 
         // this function will replace empty star with fill star
         private void fillStar()
         {
-            // Das Refresh der Sterne funktioniert nicht, d.h. die Bilddarstellung stimmt trotz korrekten Bindings
-            // nicht immer mit dem Rating überein. Daher werden diese hier neu zugeordnet.
-            stkRatingbar.Children.Clear();
-            stkRatingbar.Children.Add(star1);
-            stkRatingbar.Children.Add(star2);
-            stkRatingbar.Children.Add(star3);
-            stkRatingbar.Children.Add(star4);
-            stkRatingbar.Children.Add(star5);
-
             switch (Rating)
             {
                 case 1:

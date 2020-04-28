@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             Title="{Binding Title}"             
+             x:Class="Moviekus.Views.Filter.FilterSelectionPage">
+    <ContentPage.Content>
+        <ListView x:Name="FilterList"
+                  Margin="5"
+                  HasUnevenRows="True"
+                  ItemsSource="{Binding Filter}"
+                  RefreshCommand="{Binding LoadFilterCommand}"
+                  IsPullToRefreshEnabled="true"
+                  SelectedItem="{Binding SelectedFilter}">
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout Orientation="Vertical">
+                            <Label Text="{Binding Filter.Name}" TextColor="#3d5f8a" FontAttributes="Bold" FontSize="Title" />
+                            <Label Text="{Binding Description}" Padding="0,0,0,10" FontSize="Micro" FontAttributes="Italic"/>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+
+        </ListView>
+    </ContentPage.Content>
+</ContentPage>

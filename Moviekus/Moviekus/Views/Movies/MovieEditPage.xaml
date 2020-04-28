@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:customcontrol="clr-namespace:Moviekus.Views"
+             xmlns:customcontrol="clr-namespace:Moviekus.Views.Controls"
              xmlns:local="clr-namespace:Moviekus.ViewModels"
              mc:Ignorable="d"
              x:Class="Moviekus.Views.Movies.MovieEditPage"
@@ -38,10 +38,10 @@
                 </Grid>
 
                 <Label Text="Veröffentlichungsdatum" FontSize="Medium" />
-                <DatePicker Date="{Binding Movie.ReleaseDate}" Format="D" HorizontalOptions="Start"/>
+                <customcontrol:NullableDatePicker DateFrom="{Binding Movie.ReleaseDate}" ShowRange="False"/>
 
                 <Label Text="Zuletzt gesehen" FontSize="Medium" />
-                <DatePicker Date="{Binding Movie.LastSeen}" Format ="D" HorizontalOptions="Start"/>
+                <customcontrol:NullableDatePicker DateFrom="{Binding Movie.LastSeen}" DateTo="{Binding Movie.LastSeen}" ShowRange="False"/>
 
                 <Label Text="Laufzeit (Minuten)" FontSize="Medium" />
                 <Entry Text="{Binding Movie.Runtime}" Keyboard="Numeric" MaxLength="3" FontSize="Small" />
@@ -50,8 +50,6 @@
                 <customcontrol:RatingBar x:Name="ratingBarEdit" 
                     HorizontalOptions="Start"  
                     IsEnabled="True"
-                    ImageWidth="25" 
-                    ImageHeight="25"
                     Rating ="{Binding Movie.Rating}" />
 
                 <Label Text="Genres" />
@@ -61,7 +59,7 @@
                 </StackLayout>
 
                 <Label Text="Verfügbar bei" />
-                <Picker Title="-- Anbieter des Films wählen --"
+                <Picker 
                     FontSize="Small"
                     TitleColor="Blue"                    
                     ItemsSource="{Binding Sources}"
@@ -69,7 +67,7 @@
                     SelectedItem="{Binding SelectedSource, Mode=TwoWay}"/>
 
                 <Label Text="Bemerkungen" FontSize="Medium" />
-                <Entry Text="{Binding Movie.Notes}" d:Text="Eigene Kommentare zu diesem Film" FontSize="Small" />
+                <Entry Text="{Binding Movie.Remarks}" d:Text="Eigene Kommentare zu diesem Film" FontSize="Small" />
                 
             </StackLayout>
         </ScrollView>

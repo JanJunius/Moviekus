@@ -3,12 +3,9 @@ using Moviekus.Dto;
 using Moviekus.Models;
 using Moviekus.Services;
 using Moviekus.ViewModels.Genres;
-using Moviekus.ViewModels.Sources;
-using Moviekus.Views;
 using Moviekus.Views.Genres;
 using Moviekus.Views.Movies;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -29,8 +26,11 @@ namespace Moviekus.ViewModels.Movies
             set
             {
                 _movie = value;
-                Source source = Sources.Where(s => s.Id == _movie.Source.Id).FirstOrDefault();
-                SelectedSource = source;
+                if (_movie.Source != null)
+                {
+                    Source source = Sources.Where(s => s.Id == _movie.Source.Id).FirstOrDefault();
+                    SelectedSource = source;
+                }
             }
         }
 
@@ -83,6 +83,8 @@ namespace Moviekus.ViewModels.Movies
             Movie.Title = movieDto.Title;
             Movie.Description = movieDto.Overview;
             Movie.ReleaseDate = movieDto.ReleaseDate;
+            Movie.LastSeen = MoviekusDefines.MinDate;
+            Movie.Rating = 1;
             Movie.Runtime = movieDto.Runtime;
             Movie.Cover = movieDto.Cover;
             Movie.MovieGenres = await MovieService.GetMovieGenres(Movie, movieDto.Genres);

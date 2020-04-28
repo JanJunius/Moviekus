@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             Title="{Binding Title}"
+             x:Class="Moviekus.Views.Filter.FilterEntrySelectionPage">
+    <ContentPage.Content>
+        <ListView RowHeight="60"
+                  ItemsSource="{Binding FilterEntryTypes}"
+                  CachingStrategy="RecycleElement"
+                  SelectedItem="{Binding FilterEntryType}">
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Label 
+                            Text="{Binding Name}"
+                            FontSize="Small" />
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+
+        </ListView>
+    </ContentPage.Content>
+</ContentPage>

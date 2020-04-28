@@ -26,7 +26,7 @@ namespace Moviekus.Dto
         {
             get 
             { 
-                if (ReleaseDate != null && ReleaseDate != DateTime.MinValue) 
+                if (ReleaseDate != null && ReleaseDate != MoviekusDefines.MinDate) 
                     return ReleaseDate.Year.ToString();
                 return string.Empty;
             }

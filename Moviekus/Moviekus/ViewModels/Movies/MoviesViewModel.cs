@@ -125,7 +125,6 @@ namespace Moviekus.ViewModels.Movies
         private MoviesItemViewModel CreateMoviesItemViewModel(Movie movie)
         {
             var moviesItemViewModel = new MoviesItemViewModel(movie);
-            //moviesItemViewModel.MovieStatusChanged += MovieStatusChanged;
             return moviesItemViewModel;
         }
 
@@ -143,27 +142,12 @@ namespace Moviekus.ViewModels.Movies
             {
                 string test = ex.ToString();
             }
-            
-            /*
-            foreach (var filterEntry in filter.FilterEntries)
-            {
-                if (filterEntry.FilterEntryType.Property == FilterEntryProperty.Remarks)
-                {
-                    //Movies = new ObservableCollcetion<Movie>(Movies.Select(m => m.Title.Contains(filterEntry.ValueFrom)));
-
-                    Movies = new ObservableCollection<MoviesItemViewModel>(Movies.Where(m => m.Movie.Remarks != null && m.Movie.Remarks.Contains(filterEntry.ValueFrom)));
-                }
-            }
-            */
         }
 
         private async Task RemoveFilter()
         {
             await LoadMovies();
         }
-
-
-
 
     }
 }

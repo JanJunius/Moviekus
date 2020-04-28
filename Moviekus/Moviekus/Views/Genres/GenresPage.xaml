@@ -10,7 +10,7 @@
         <ToolbarItem
                 Text="Neu" 
                 Command="{Binding AddGenreCommand}"
-                IconImageSource="new.png">
+                IconImageSource="addnew.png">
         </ToolbarItem>
 
     </ContentPage.ToolbarItems>

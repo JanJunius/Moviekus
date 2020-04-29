@@ -7,6 +7,7 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 using Acr.UserDialogs;
+using Moviekus.Logging;
 
 namespace Moviekus.Droid
 {
@@ -26,6 +27,7 @@ namespace Moviekus.Droid
             Bootstrapper.Init();
             UserDialogs.Init(this);
 
+            InitializeNLog();
             LoadApplication(new App());
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
@@ -33,6 +35,13 @@ namespace Moviekus.Droid
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+
+        private void InitializeNLog()
+        {
+            var assembly = this.GetType().Assembly;
+            var assemblyName = assembly.GetName().Name;
+            new LogService().Initialize(assembly, assemblyName);
         }
     }
 }

@@ -4,6 +4,7 @@ using Moviekus.Models;
 using Moviekus.Services;
 using Moviekus.Views.Filter;
 using MvvmHelpers;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -53,6 +54,7 @@ namespace Moviekus.ViewModels.Filter
             }
             catch(Exception ex)
             {
+                LogManager.GetCurrentClassLogger().Error(ex);
                 await UserDialogs.Instance.AlertAsync(new AlertConfig
                 {
                     Message = ex.Message

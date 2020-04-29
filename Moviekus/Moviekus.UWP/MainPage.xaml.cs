@@ -1,4 +1,5 @@
 ﻿using Acr.UserDialogs;
+using Moviekus.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,7 +25,15 @@ namespace Moviekus.UWP
 
             Bootstrapper.Init();
 
+            InitializeNLog();
             LoadApplication(new Moviekus.App());
+        }
+
+        private void InitializeNLog()
+        {
+            var assembly = this.GetType().Assembly;
+            var assemblyName = assembly.GetName().Name;
+            new LogService().Initialize(assembly, assemblyName);
         }
     }
 }

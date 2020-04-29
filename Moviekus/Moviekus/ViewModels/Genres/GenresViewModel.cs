@@ -1,6 +1,7 @@
 ﻿using Moviekus.Models;
 using Moviekus.Services;
 using Moviekus.Views.Genres;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -88,7 +89,7 @@ namespace Moviekus.ViewModels.Genres
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
+                LogManager.GetCurrentClassLogger().Error(ex);
             }
             finally
             {

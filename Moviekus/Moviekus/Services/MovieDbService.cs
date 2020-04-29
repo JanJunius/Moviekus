@@ -1,5 +1,6 @@
 ﻿using Moviekus.Dto;
 using Moviekus.Models;
+using NLog;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -99,7 +100,7 @@ namespace Moviekus.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                LogManager.GetCurrentClassLogger().Error(ex);
             }
             finally
             {

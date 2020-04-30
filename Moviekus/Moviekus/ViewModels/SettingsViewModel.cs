@@ -1,6 +1,7 @@
 ﻿using Acr.UserDialogs;
 using Moviekus.Models;
 using Moviekus.Services;
+using Moviekus.Views;
 using System.Linq;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -33,6 +34,14 @@ namespace Moviekus.ViewModels
             {
                 Message = "Einstellungen wurden gespeichert."
             });
+        });
+
+        public ICommand OpenLogCommand => new Command(async () =>
+        {
+            var logViewerPage = Resolver.Resolve<LogViewerPage>();
+            var viewModel = logViewerPage.BindingContext as LogViewerViewModel;
+            viewModel.Title = "Logdatei";
+            await Navigation.PushAsync(logViewerPage);
         });
 
         public SettingsViewModel(SettingsService settingsService)

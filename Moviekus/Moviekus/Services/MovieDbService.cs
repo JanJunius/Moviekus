@@ -1,5 +1,6 @@
 ﻿using Moviekus.Dto;
 using Moviekus.Models;
+using NLog;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -39,31 +40,33 @@ namespace Moviekus.Services
             MovieDbGenres genres = await GetGenres();
             List<MovieDto> movies = new List<MovieDto>();
 
-            var client = new RestClient("https://api.themoviedb.org/3/search/movie");
-            var request = new RestRequest(Method.GET);
-            
-            request.AddParameter("api_key", Settings.MovieDb_ApiKey);
-            request.AddParameter("language", Settings.MovieDb_Language);
-            request.AddParameter("query", title);
-            request.AddParameter("page", "1");
+            try
+            {
+                var client = new RestClient("https://api.themoviedb.org/3/search/movie");
+                var request = new RestRequest(Method.GET);
 
-            IRestResponse<MovieDbResponse> response = await client.ExecuteAsync<MovieDbResponse>(request);
+                request.AddParameter("api_key", Settings.MovieDb_ApiKey);
+                request.AddParameter("language", Settings.MovieDb_Language);
+                request.AddParameter("query", title);
+                request.AddParameter("page", "1");
 
-            MovieDbResponse movieDbResponse = response.Data;
+                IRestResponse<MovieDbResponse> response = await client.ExecuteAsync<MovieDbResponse>(request);
 
-            if (movieDbResponse.results.Count < 1)
-                return movies;
+                MovieDbResponse movieDbResponse = response.Data;
 
-            foreach (MovieDbResult result in movieDbResponse.results)
-                movies.Add(BuildMovieDto(result, genres));
+                if (movieDbResponse.results.Count < 1)
+                    return movies;
+
+                foreach (MovieDbResult result in movieDbResponse.results)
+                    movies.Add(BuildMovieDto(result, genres));
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().Error(ex);
+                throw;
+            }
 
             return movies.OrderByDescending(m => m.ReleaseDate);
-
-            // Details nur nachladen, wenn genau ein Treffer vorliegt
-            //if (movies.Count == 1)
-            //    await FillMovieDetails(movies.First());
-
-            //return movies;
         }
 
         public async Task FillMovieDetails(MovieDto movieDto)
@@ -75,10 +78,18 @@ namespace Moviekus.Services
             request.AddParameter("api_key", Settings.MovieDb_ApiKey);
             request.AddParameter("language", Settings.MovieDb_Language);
 
-            IRestResponse<MovieDbDetails> details = await client.ExecuteAsync<MovieDbDetails>(request);
+            try
+            {
+                IRestResponse<MovieDbDetails> details = await client.ExecuteAsync<MovieDbDetails>(request);
 
-            if (details.Data != null)
-                movieDto.Runtime = details.Data.runtime;
+                if (details.Data != null)
+                    movieDto.Runtime = details.Data.runtime;
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().Error(ex);
+                throw;
+            }
         }
 
         public byte[] GetMovieCover(MovieDto movieDto)
@@ -99,7 +110,7 @@ namespace Moviekus.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                LogManager.GetCurrentClassLogger().Error(ex);
             }
             finally
             {
@@ -155,9 +166,16 @@ namespace Moviekus.Services
             request.AddParameter("api_key", Settings.MovieDb_ApiKey);
             request.AddParameter("language", Settings.MovieDb_Language);
 
-            IRestResponse<MovieDbGenres> response = await client.ExecuteAsync<MovieDbGenres>(request);
-
-            return response.Data;
+            try
+            {
+                IRestResponse<MovieDbGenres> response = await client.ExecuteAsync<MovieDbGenres>(request);
+                return response.Data;
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().Error(ex);
+                throw;
+            }
         }
 
 

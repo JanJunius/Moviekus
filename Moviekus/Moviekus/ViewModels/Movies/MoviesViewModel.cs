@@ -14,6 +14,7 @@ using Moviekus.Views.Filter;
 using Moviekus.ViewModels.Filter;
 using System.Linq.Expressions;
 using System.Collections.Generic;
+using NLog;
 
 namespace Moviekus.ViewModels.Movies
 {
@@ -118,7 +119,7 @@ namespace Moviekus.ViewModels.Movies
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
+                LogManager.GetCurrentClassLogger().Error(ex);
             }
         }
 
@@ -140,7 +141,7 @@ namespace Moviekus.ViewModels.Movies
             }
             catch(Exception ex)
             {
-                string test = ex.ToString();
+                LogManager.GetCurrentClassLogger().Error(ex);
             }
         }
 

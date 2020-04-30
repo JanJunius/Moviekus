@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Moviekus.EntityFramework;
 using Moviekus.Models;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,20 +30,27 @@ namespace Moviekus.Services
 
         protected override async Task InsertAsync(MoviekusDbContext context, Filter filter)
         {
-            context.Entry(filter).State = EntityState.Added;
-
-            foreach(var filterEntry in filter.FilterEntries)
+            try
             {
-                if (context.Entry(filterEntry).State == EntityState.Detached)
+                context.Entry(filter).State = EntityState.Added;
+
+                foreach (var filterEntry in filter.FilterEntries)
                 {
-                    // Keine neu hinzugefügten und gleich wieder entfernten Einträge betrachten
-                    if (!filterEntry.IsDeleted)
-                        context.Entry(filterEntry).State = EntityState.Added;
+                    if (context.Entry(filterEntry).State == EntityState.Detached)
+                    {
+                        // Keine neu hinzugefügten und gleich wieder entfernten Einträge betrachten
+                        if (!filterEntry.IsDeleted)
+                            context.Entry(filterEntry).State = EntityState.Added;
+                    }
+
+                    filterEntry.IsNew = filterEntry.IsModified = filterEntry.IsDeleted = false;
                 }
-
-                filterEntry.IsNew = filterEntry.IsModified = filterEntry.IsDeleted = false;
             }
-
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().Error(ex);
+                throw;
+            }
             await base.InsertAsync(context, filter);
         }
 
@@ -50,24 +58,30 @@ namespace Moviekus.Services
         {
             base.UpdateAsync(context, filter);
 
-            foreach (var filterEntry in filter.FilterEntries)
+            try
             {
-                if (filterEntry.IsNew)
-                    context.Entry(filterEntry).State = EntityState.Added;
-                else if (filterEntry.IsDeleted)
-                    context.Entry(filterEntry).State = EntityState.Deleted;
-                else if (filterEntry.IsModified)
-                    context.Entry(filterEntry).State = EntityState.Modified;
-                else context.Entry(filterEntry).State = EntityState.Unchanged;
+                foreach (var filterEntry in filter.FilterEntries)
+                {
+                    if (filterEntry.IsNew)
+                        context.Entry(filterEntry).State = EntityState.Added;
+                    else if (filterEntry.IsDeleted)
+                        context.Entry(filterEntry).State = EntityState.Deleted;
+                    else if (filterEntry.IsModified)
+                        context.Entry(filterEntry).State = EntityState.Modified;
+                    else context.Entry(filterEntry).State = EntityState.Unchanged;
 
-                // Auf FilterEntryTypes wird nur referenziert, sie werden nie geändert
-                if (context.Entry(filterEntry.FilterEntryType).State != EntityState.Detached)
-                    context.Entry(filterEntry.FilterEntryType).State = EntityState.Detached;
+                    // Auf FilterEntryTypes wird nur referenziert, sie werden nie geändert
+                    if (context.Entry(filterEntry.FilterEntryType).State != EntityState.Detached)
+                        context.Entry(filterEntry.FilterEntryType).State = EntityState.Detached;
 
-                filterEntry.IsNew = filterEntry.IsModified = filterEntry.IsDeleted = false;
+                    filterEntry.IsNew = filterEntry.IsModified = filterEntry.IsDeleted = false;
+                }
             }
-
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().Error(ex);
+                throw;
+            }
         }
-
     }
 }

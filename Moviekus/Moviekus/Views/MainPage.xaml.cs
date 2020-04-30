@@ -11,6 +11,7 @@ using Moviekus.Views.Genres;
 using Moviekus.Views.Sources;
 using Moviekus.EntityFramework;
 using Moviekus.Views.Filter;
+using NLog;
 
 namespace Moviekus.Views
 {
@@ -24,9 +25,7 @@ namespace Moviekus.Views
 
             MasterBehavior = MasterBehavior.Popover;
 
-            Detail = new NavigationPage(Resolver.Resolve<MoviesPage>());
-
-            //MenuPages.Add((int)MenuItemType.Movies, (NavigationPage)Detail);
+            Detail = new NavigationPage(Resolver.Resolve<MoviesPage>());            
         }
 
         public async Task NavigateFromMenu(int id)

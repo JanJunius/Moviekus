@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Moviekus.EntityFramework;
 using Moviekus.Models;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -58,17 +59,25 @@ namespace Moviekus.Services
         {
             using (var context = new MoviekusDbContext())
             {
-                bool inserted = model.IsNew;
-                if (model.IsNew)
-                    await InsertAsync(context, model);
-                else UpdateAsync(context, model);
+                try
+                {
+                    bool inserted = model.IsNew;
+                    if (model.IsNew)
+                        await InsertAsync(context, model);
+                    else UpdateAsync(context, model);
 
-                model.IsNew = false;
-                await context.SaveChangesAsync();
+                    model.IsNew = false;
+                    await context.SaveChangesAsync();
 
-                if (inserted)
-                    OnModelInserted?.Invoke(this, model);
-                else OnModelUpdated?.Invoke(this, model);
+                    if (inserted)
+                        OnModelInserted?.Invoke(this, model);
+                    else OnModelUpdated?.Invoke(this, model);
+                }
+                catch (Exception ex)
+                {
+                    LogManager.GetCurrentClassLogger().Error(ex);
+                    throw;
+                }
                 return model;
             }
         }
@@ -77,17 +86,25 @@ namespace Moviekus.Services
         {
             using (var context = new MoviekusDbContext())
             {
-                bool inserted = model.IsNew;
-                if (model.IsNew)
-                    context.Set<T>().Add(model);
-                else context.Entry(model).State = EntityState.Modified;
+                try
+                {
+                    bool inserted = model.IsNew;
+                    if (model.IsNew)
+                        context.Set<T>().Add(model);
+                    else context.Entry(model).State = EntityState.Modified;
 
-                model.IsNew = false;
-                context.SaveChanges();
+                    model.IsNew = false;
+                    context.SaveChanges();
 
-                if (inserted)
-                    OnModelInserted?.Invoke(this, model);
-                else OnModelUpdated?.Invoke(this, model);
+                    if (inserted)
+                        OnModelInserted?.Invoke(this, model);
+                    else OnModelUpdated?.Invoke(this, model);
+                }
+                catch (Exception ex)
+                {
+                    LogManager.GetCurrentClassLogger().Error(ex);
+                    throw;
+                }
                 return model;
             }
         }
@@ -96,16 +113,32 @@ namespace Moviekus.Services
         {
             using (var context = new MoviekusDbContext())
             {
-                context.Set<T>().Remove(model);
-                //table.Attach(model);
-                await context.SaveChangesAsync();
+                try
+                {
+                    context.Set<T>().Remove(model);
+                    await context.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    LogManager.GetCurrentClassLogger().Error(ex);
+                    throw;
+                }
             }
             OnModelDeleted?.Invoke(this, model);
         }
 
         protected virtual async Task InsertAsync(MoviekusDbContext context, T model)
         {
-             await context.Set<T>().AddAsync(model);
+            try
+            {
+                await context.Set<T>().AddAsync(model);
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().Error(ex);
+                throw;
+            }
+
         }
 
         protected virtual void UpdateAsync(MoviekusDbContext context, T model)

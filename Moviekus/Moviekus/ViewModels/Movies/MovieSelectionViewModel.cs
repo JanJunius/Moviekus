@@ -1,6 +1,7 @@
 ﻿using Moviekus.Dto;
 using Moviekus.Models;
 using Moviekus.Services;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -46,7 +47,7 @@ namespace Moviekus.ViewModels.Movies
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
+                LogManager.GetCurrentClassLogger().Error(ex);
             }
             finally
             {

@@ -1,4 +1,5 @@
 ﻿using Moviekus.Models;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,10 +18,19 @@ namespace Moviekus.Services
             if (genre != null)
                 return genre;
 
-            genre = Genre.CreateNew<Genre>();
-            genre.Name = genreName;
+            try
+            {
+                genre = Genre.CreateNew<Genre>();
+                genre.Name = genreName;
+                genre = await SaveChangesAsync(genre);
 
-            return await SaveChangesAsync(genre);
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().Error(ex);
+                throw;
+            }
+            return genre;
         }
     }
 }

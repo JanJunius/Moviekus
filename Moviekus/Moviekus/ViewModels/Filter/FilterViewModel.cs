@@ -1,5 +1,6 @@
 ﻿using Moviekus.Services;
 using Moviekus.Views.Filter;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -60,7 +61,7 @@ namespace Moviekus.ViewModels.Filter
                     }
                     catch(Exception ex)
                     {
-                        string mist = ex.ToString();
+                        LogManager.GetCurrentClassLogger().Warn(ex);
                     }
                 }
             }

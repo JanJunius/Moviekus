@@ -110,6 +110,7 @@
     <Content Include="filter.png" />
     <Content Include="genres.png" />
     <Content Include="local.png" />
+    <Content Include="logfile.png" />
     <Content Include="movie.png" />
     <Content Include="moviedb.png" />
     <Content Include="moviekus.png" />
@@ -181,6 +182,11 @@
       <Project>{A933B6DE-7859-4DB9-8503-E10B5775B0F2}</Project>
       <Name>Moviekus</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Moviekus.EntityFramework;
 using Moviekus.Models;
+using NLog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -59,47 +61,61 @@ namespace Moviekus.Services
 
         protected override async Task InsertAsync(MoviekusDbContext context, Movie movie)
         {
-            await context.Movies.AddAsync(movie);
+            try
+            {
+                await context.Movies.AddAsync(movie);
 
-            // Die Standard-Implementierung würde auch die Source als Added kennzeichnen und damit auch dort ein Insert ausführen
-            // Um dies zu verhindern, muss der Status der Source hier manuell umgesetzt werden
-            context.Entry(movie.Source).State = EntityState.Unchanged;
+                // Die Standard-Implementierung würde auch die Source als Added kennzeichnen und damit auch dort ein Insert ausführen
+                // Um dies zu verhindern, muss der Status der Source hier manuell umgesetzt werden
+                context.Entry(movie.Source).State = EntityState.Unchanged;
 
-            // Das gleiche gilt auch für die Genre-Zuordnungen
-            var genres = movie.MovieGenres.Select(mg => mg.Genre);
-            Parallel.ForEach(genres, g => { context.Entry(g).State = EntityState.Unchanged; });
+                // Das gleiche gilt auch für die Genre-Zuordnungen
+                var genres = movie.MovieGenres.Select(mg => mg.Genre);
+                Parallel.ForEach(genres, g => { context.Entry(g).State = EntityState.Unchanged; });
 
-            // IsNew für alle MovieGenes zurücksetzen, damit man direkt Änderungen vornehmen kann 
-            // (sonst würde erneut Insert statt Update durchgeführt)
-            Parallel.ForEach(movie.MovieGenres, mg => { mg.IsNew = false; });
+                // IsNew für alle MovieGenes zurücksetzen, damit man direkt Änderungen vornehmen kann 
+                // (sonst würde erneut Insert statt Update durchgeführt)
+                Parallel.ForEach(movie.MovieGenres, mg => { mg.IsNew = false; });
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().Error(ex);
+                throw;
+            }
         }
 
         protected override void UpdateAsync(MoviekusDbContext context, Movie movie)
         {
             base.UpdateAsync(context, movie);
 
-            // Stellt sicher, dass der ForeignKey aktualisiert wird, falls sich die Quelle geändert hat
-            context.Entry(movie.Source).State = EntityState.Modified;
-
-            // Spezialbehandlung für die n-m-Relation zwischen Movie und Genre
-            foreach (MovieGenre movieGenre in movie.MovieGenres)
+            try
             {
-                if (movieGenre.IsNew && !movieGenre.IsDeleted)
-                {
-                    if (context.Entry(movieGenre).State == EntityState.Detached)
-                        context.Attach(movieGenre);
-                    context.Entry(movieGenre).State = EntityState.Added;
-                    movieGenre.IsNew = false;
-                }
-                else if (movieGenre.IsDeleted)
-                {
-                    if (context.Entry(movieGenre).State == EntityState.Detached) 
-                        context.Attach(movieGenre);
-                    context.Entry(movieGenre).State = EntityState.Deleted;
-                }
+                // Stellt sicher, dass der ForeignKey aktualisiert wird, falls sich die Quelle geändert hat
+                context.Entry(movie.Source).State = EntityState.Modified;
 
+                // Spezialbehandlung für die n-m-Relation zwischen Movie und Genre
+                foreach (MovieGenre movieGenre in movie.MovieGenres)
+                {
+                    if (movieGenre.IsNew && !movieGenre.IsDeleted)
+                    {
+                        if (context.Entry(movieGenre).State == EntityState.Detached)
+                            context.Attach(movieGenre);
+                        context.Entry(movieGenre).State = EntityState.Added;
+                        movieGenre.IsNew = false;
+                    }
+                    else if (movieGenre.IsDeleted)
+                    {
+                        if (context.Entry(movieGenre).State == EntityState.Detached)
+                            context.Attach(movieGenre);
+                        context.Entry(movieGenre).State = EntityState.Deleted;
+                    }
+                }
             }
-
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().Error(ex);
+                throw;
+            }
         }
     }
 }

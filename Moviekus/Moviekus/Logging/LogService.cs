@@ -23,7 +23,7 @@ namespace Moviekus.Logging
                     NLog.LogManager.Configuration = new XmlLoggingConfiguration(xmlReader, null);
                 }
             }
-            if (Device.RuntimePlatform == Device.UWP)
+            else if (Device.RuntimePlatform == Device.UWP)
             {
                 var nlogConfigFile = GetEmbeddedResourceStream(assembly, "NLog.config");
                 if (nlogConfigFile != null)

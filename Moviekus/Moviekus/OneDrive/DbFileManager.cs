@@ -72,7 +72,7 @@ namespace Moviekus.OneDrive
 			LogManager.GetCurrentClassLogger().Info("Signing in to OneDrive...");
 			await GraphClientManager.Ref.SignIn();
 
-			LogManager.GetCurrentClassLogger().Info("Starting Db-Download to OneDrive...");
+			LogManager.GetCurrentClassLogger().Info("Starting Db-Download from OneDrive...");
 			LogManager.GetCurrentClassLogger().Info($"Local path is: {localPath}");
 			LogManager.GetCurrentClassLogger().Info($"Remote path is: {remotePath}");
 
@@ -93,7 +93,7 @@ namespace Moviekus.OneDrive
 				return false;
 			}
 
-			LogManager.GetCurrentClassLogger().Info("Finished Db-Download to OneDrive.");
+			LogManager.GetCurrentClassLogger().Info("Finished Db-Download from OneDrive.");
 
 			return true;
 		}

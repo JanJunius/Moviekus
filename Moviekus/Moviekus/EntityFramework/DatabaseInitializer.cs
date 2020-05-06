@@ -57,8 +57,8 @@ namespace Moviekus.EntityFramework
         public static void RecreateDatabase(MoviekusDbContext context)
         {
             //context.Database.EnsureDeleted();
-            context.Database.EnsureCreated();
-            context.Database.Migrate();
+            //context.Database.EnsureCreated();
+            context.Migrate();
         }
 
     }

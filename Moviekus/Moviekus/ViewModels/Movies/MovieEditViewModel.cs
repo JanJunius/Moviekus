@@ -87,6 +87,7 @@ namespace Moviekus.ViewModels.Movies
             Movie.Rating = 1;
             Movie.Runtime = movieDto.Runtime;
             Movie.Cover = movieDto.Cover;
+            Movie.Homepage = movieDto.Homepage;
             Movie.MovieGenres = await MovieService.GetMovieGenres(Movie, movieDto.Genres);
 
             OnMovieChanged?.Invoke(this, Movie);

@@ -63,6 +63,13 @@
             <Label Text="Bemerkungen:" FontSize="Medium" />
             <Label Text="{Binding Movie.Remarks}" FontSize="Small"/>
 
+            <Label Text="Homepage:" FontSize="Medium" />
+            <Label TextColor="Blue" Text="{Binding Movie.Homepage}">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding HomepageClickedCommand}" CommandParameter="{Binding Movie.Homepage}"/>
+                </Label.GestureRecognizers>
+            </Label>
+
         </StackLayout>
     </ScrollView>
     

@@ -40,6 +40,8 @@ namespace Moviekus.Services
             MovieDbGenres genres = await GetGenres();
             List<MovieDto> movies = new List<MovieDto>();
 
+            LogManager.GetCurrentClassLogger().Info($"Searching MovieDb for '{title}'...");
+
             try
             {
                 var client = new RestClient("https://api.themoviedb.org/3/search/movie");
@@ -66,6 +68,8 @@ namespace Moviekus.Services
                 throw;
             }
 
+            LogManager.GetCurrentClassLogger().Info($"Finished searching MovieDb for '{title}'.");
+
             return movies.OrderByDescending(m => m.ReleaseDate);
         }
 
@@ -78,12 +82,19 @@ namespace Moviekus.Services
             request.AddParameter("api_key", Settings.MovieDb_ApiKey);
             request.AddParameter("language", Settings.MovieDb_Language);
 
+            LogManager.GetCurrentClassLogger().Info($"Searching MovieDb for details on '{movieDto.Title}'...");
+
             try
             {
                 IRestResponse<MovieDbDetails> details = await client.ExecuteAsync<MovieDbDetails>(request);
 
                 if (details.Data != null)
+                {
                     movieDto.Runtime = details.Data.runtime;
+                    movieDto.Homepage = details.Data.homepage;
+                }
+                LogManager.GetCurrentClassLogger().Info($"Finished searching MovieDb for details on '{movieDto.Title}'...");
+
             }
             catch (Exception ex)
             {
@@ -97,6 +108,8 @@ namespace Moviekus.Services
             string url = $"https://image.tmdb.org/t/p/w500/{movieDto.CoverUri}";
             HttpWebRequest webRequest;
             WebResponse webResponse = null;
+
+            LogManager.GetCurrentClassLogger().Info($"Getting cover from MovieDb for '{movieDto.Title}'...");
 
             try
             {
@@ -115,6 +128,7 @@ namespace Moviekus.Services
             finally
             {
                 webResponse?.Close();
+                LogManager.GetCurrentClassLogger().Info($"Finished getting cover from MovieDb for '{movieDto.Title}'...");
             }
             return null;
         }
@@ -166,18 +180,20 @@ namespace Moviekus.Services
             request.AddParameter("api_key", Settings.MovieDb_ApiKey);
             request.AddParameter("language", Settings.MovieDb_Language);
 
+            LogManager.GetCurrentClassLogger().Info("Getting genres from MovieDb...");
+
             try
             {
                 IRestResponse<MovieDbGenres> response = await client.ExecuteAsync<MovieDbGenres>(request);
+                LogManager.GetCurrentClassLogger().Info("Finished getting genres from MovieDb");
+
                 return response.Data;
             }
             catch (Exception ex)
             {
                 LogManager.GetCurrentClassLogger().Error(ex);
-                throw;
+                throw ex;
             }
         }
-
-
     }
 }

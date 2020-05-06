@@ -2,11 +2,13 @@
 using Moviekus.Models;
 using Moviekus.Services;
 using Moviekus.Views.Movies;
+using NLog;
 using System;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
@@ -84,6 +86,19 @@ namespace Moviekus.ViewModels.Movies
                 await MovieService.DeleteAsync(Movie);
                 RaisePropertyChanged(nameof(Movie));
                 await Navigation.PopAsync();
+            }
+        });
+
+        public ICommand HomepageClickedCommand => new Command<string>(async (url) =>
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(url))
+                    await Browser.OpenAsync(new Uri(url), BrowserLaunchMode.SystemPreferred);
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().Error(ex);
             }
         });
 

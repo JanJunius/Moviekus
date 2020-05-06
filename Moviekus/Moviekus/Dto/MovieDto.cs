@@ -40,6 +40,8 @@ namespace Moviekus.Dto
 
         public string CoverUri { get; set; }
 
+        public string Homepage { get; set; }
+
         public override bool Equals(object obj)
         {
             return obj is MovieDto dto &&
@@ -51,7 +53,8 @@ namespace Moviekus.Dto
                    EqualityComparer<IList<string>>.Default.Equals(Genres, dto.Genres) &&
                    Runtime == dto.Runtime &&
                    EqualityComparer<byte[]>.Default.Equals(Cover, dto.Cover) &&
-                   CoverUri == dto.CoverUri;
+                   CoverUri == dto.CoverUri && 
+                   Homepage == dto.Homepage;
         }
 
         public override int GetHashCode()
@@ -66,6 +69,7 @@ namespace Moviekus.Dto
             hash.Add(Runtime);
             hash.Add(Cover);
             hash.Add(CoverUri);
+            hash.Add(Homepage);
             return hash.ToHashCode();
         }
     }

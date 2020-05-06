@@ -102,9 +102,29 @@ namespace Moviekus.ViewModels.Movies
             }
         });
 
+        public ICommand TrailerClickedCommand => new Command<string>(async (trailerKey) =>
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(trailerKey))
+                {
+                    Uri uri = new Uri($"https://www.youtube.com/watch?v={trailerKey}");
+                    await Browser.OpenAsync(uri, BrowserLaunchMode.SystemPreferred);
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().Error(ex);
+            }
+        });
+
         public MovieDetailViewModel(MovieService movieService)
         {
             MovieService = movieService;
         }
+
+        public bool HasTrailer => Movie != null ? !string.IsNullOrEmpty(Movie.Trailer) : false;
+
     }
 }

@@ -32,6 +32,8 @@ namespace Moviekus.Models
 
         public string Homepage { get; set; }
 
+        public string Trailer { get; set; }
+
         public virtual ICollection<MovieGenre> MovieGenres { get; set; }
 
         public Movie()
@@ -55,6 +57,7 @@ namespace Moviekus.Models
                    Remarks == movie.Remarks &&
                    EqualityComparer<byte[]>.Default.Equals(Cover, movie.Cover) &&
                    Homepage == movie.Homepage &&
+                   Trailer == movie.Trailer &&
                    EqualityComparer<ICollection<MovieGenre>>.Default.Equals(MovieGenres, movie.MovieGenres);
         }
 
@@ -72,6 +75,7 @@ namespace Moviekus.Models
             hash.Add(Remarks);
             hash.Add(Cover);
             hash.Add(Homepage);
+            hash.Add(Trailer);
             hash.Add(MovieGenres);
             return hash.ToHashCode();
         }

@@ -74,6 +74,7 @@ namespace Moviekus.ViewModels.Movies
         {
             var result = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig
             {
+                Title = "Film löschen",
                 Message = "Diesen Film wirklich löschen?",
                 OkText = "Ja",
                 CancelText = "Nein"

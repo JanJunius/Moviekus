@@ -7,6 +7,8 @@ namespace Moviekus
 {
     public class MoviekusDefines
     {
+        public static readonly string DbFileName = "Moviekus.db3";
+
         public static CultureInfo MoviekusCultureInfo = new CultureInfo("de-DE");
 
         public static readonly DateTime MinDate = new DateTime(1900, 1, 1);

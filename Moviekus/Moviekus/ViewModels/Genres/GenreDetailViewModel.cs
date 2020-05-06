@@ -28,6 +28,7 @@ namespace Moviekus.ViewModels.Genres
         {
             var result = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig
             {
+                Title = "Genre löschen",
                 Message = "Dieses Genre wirklich löschen?",
                 OkText = "Ja",
                 CancelText = "Nein"

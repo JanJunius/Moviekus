@@ -25,7 +25,7 @@ namespace Moviekus.EntityFramework
             if (!optionsBuilder.IsConfigured)
             {
                 string documentPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-                string databasePath = Path.Combine(documentPath, "Moviekus.db3");
+                string databasePath = Path.Combine(documentPath, MoviekusDefines.DbFileName);
                 // Specify that we will use sqlite and the path of the database here
                 optionsBuilder.UseSqlite($"Filename={databasePath}");
             }

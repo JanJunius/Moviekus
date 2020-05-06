@@ -68,7 +68,10 @@
 
                 <Label Text="Bemerkungen" FontSize="Medium" />
                 <Entry Text="{Binding Movie.Remarks}" d:Text="Eigene Kommentare zu diesem Film" FontSize="Small" />
-                
+
+                <Label Text="Homepage des Films" FontSize="Medium" />
+                <Entry Text="{Binding Movie.Homepage}" d:Text="Adresse der Webseite zum Film" FontSize="Small" />
+
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

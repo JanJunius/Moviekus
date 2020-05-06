@@ -1,4 +1,5 @@
 ﻿using Microsoft.Graph;
+using Moviekus.EntityFramework;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -30,7 +31,7 @@ namespace Moviekus.OneDrive
 				{
 					if (stream != null)
 					{
-						if (stream.Length < 4 * 1024 * 1024)    // Ab 4MB müssen Chunks übertragen werden
+						if (stream.Length > 4 * 1024 * 1024)    // Ab 4MB müssen Chunks übertragen werden
 						{
 							var session = await GraphClientManager.Ref.GraphClient.Drive.Root.ItemWithPath(remotePath).CreateUploadSession().Request().PostAsync();
 							var maxSizeChunk = 320 * 4 * 1024;
@@ -71,7 +72,7 @@ namespace Moviekus.OneDrive
 			LogManager.GetCurrentClassLogger().Info("Signing in to OneDrive...");
 			await GraphClientManager.Ref.SignIn();
 
-			LogManager.GetCurrentClassLogger().Info("Starting Db-Download to OneDrive...");
+			LogManager.GetCurrentClassLogger().Info("Starting Db-Download from OneDrive...");
 			LogManager.GetCurrentClassLogger().Info($"Local path is: {localPath}");
 			LogManager.GetCurrentClassLogger().Info($"Remote path is: {remotePath}");
 
@@ -79,6 +80,12 @@ namespace Moviekus.OneDrive
 			{
 				var stream = await GraphClientManager.Ref.GraphClient.Drive.Root.ItemWithPath(remotePath).Content.Request().GetAsync();
 				System.IO.File.WriteAllBytes(localPath, GetStreamBytes(stream));
+
+				// Migrationen durchführen, falls eine alte DB geladen wurde
+				using (var context = new MoviekusDbContext())
+				{
+					context.Migrate();					
+				}
 			}
 			catch (Exception ex)
 			{
@@ -86,7 +93,7 @@ namespace Moviekus.OneDrive
 				return false;
 			}
 
-			LogManager.GetCurrentClassLogger().Info("Finished Db-Download to OneDrive.");
+			LogManager.GetCurrentClassLogger().Info("Finished Db-Download from OneDrive.");
 
 			return true;
 		}

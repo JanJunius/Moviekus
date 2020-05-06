@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Moviekus.Models;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,7 +10,7 @@ namespace Moviekus.EntityFramework
 {
     public class MoviekusDbContext : DbContext
     {
-        // Für jede von EF zu verwaltende Entity ist hier ein DbSet anzulegen
+        private string _databasePath;
 
         public virtual DbSet<Genre> Genres { get; set; }
         public virtual DbSet<Movie> Movies { get; set; }
@@ -20,14 +21,34 @@ namespace Moviekus.EntityFramework
         public virtual DbSet<FilterEntry> FilterEntries{ get; set; }
         public virtual DbSet<FilterEntryType> FilterEntryTypes { get; set; }
 
+        public MoviekusDbContext()
+        {
+            string documentPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            _databasePath = Path.Combine(documentPath, MoviekusDefines.DbFileName);
+        }
+
+        // Wird bei Migrationen aufgerufen und greift dann auf die Dummy-DB (Config.db) aus dem Console-Projekt zu
+        // Das Console-Projekt ist notwendig, um die EntityFramework-Core-Migration im Xamarin-Projekt verwenden zu können, da dies 
+        // kein Core-Framework verwendet
+        public MoviekusDbContext(string databasePath)
+        {
+            _databasePath = databasePath;
+            Migrate();
+        }
+
+        public void Migrate()
+        {
+			LogManager.GetCurrentClassLogger().Info("Starting Migration of database...");
+            Database.Migrate();
+            LogManager.GetCurrentClassLogger().Info("Finished Migration of database.");
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                string documentPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-                string databasePath = Path.Combine(documentPath, MoviekusDefines.DbFileName);
                 // Specify that we will use sqlite and the path of the database here
-                optionsBuilder.UseSqlite($"Filename={databasePath}");
+                optionsBuilder.UseSqlite($"Filename={_databasePath}");
             }
         }
 

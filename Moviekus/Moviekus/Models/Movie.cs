@@ -30,6 +30,8 @@ namespace Moviekus.Models
 
         public byte[] Cover { get; set; }
 
+        public string Homepage { get; set; }
+
         public virtual ICollection<MovieGenre> MovieGenres { get; set; }
 
         public Movie()
@@ -51,12 +53,14 @@ namespace Moviekus.Models
                    Rating == movie.Rating &&
                    LastSeen == movie.LastSeen &&
                    Remarks == movie.Remarks &&
+                   EqualityComparer<byte[]>.Default.Equals(Cover, movie.Cover) &&
+                   Homepage == movie.Homepage &&
                    EqualityComparer<ICollection<MovieGenre>>.Default.Equals(MovieGenres, movie.MovieGenres);
         }
 
         public override int GetHashCode()
         {
-            var hash = new HashCode();
+            HashCode hash = new HashCode();
             hash.Add(base.GetHashCode());
             hash.Add(Title);
             hash.Add(Source);
@@ -66,6 +70,8 @@ namespace Moviekus.Models
             hash.Add(Rating);
             hash.Add(LastSeen);
             hash.Add(Remarks);
+            hash.Add(Cover);
+            hash.Add(Homepage);
             hash.Add(MovieGenres);
             return hash.ToHashCode();
         }

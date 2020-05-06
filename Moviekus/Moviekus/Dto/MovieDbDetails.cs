@@ -13,5 +13,7 @@ namespace Moviekus.Dto
         public int runtime { get; set; }
 
         public bool video { get; set; }
+
+        public string homepage { get; set; }
     }
 }

@@ -12,20 +12,6 @@ namespace Moviekus.EntityFramework
     {
         public static async Task InitializeData(MoviekusDbContext context)
         {
-            if (context.Genres.Count() == 0)
-            {
-                var genres = new List<Genre>()
-                {
-                    new Genre { Id = "dca20c06-5b6e-4a43-a850-ac5343ecc465", Name = "Musik" },
-                    new Genre { Id = "47a65cb0-7f35-490d-9749-2bd923939438", Name = "Action" },
-                    new Genre { Id = "6ab67134-55f4-4c39-9e5e-704606b82460", Name = "Komödie" },
-                    new Genre { Id = "de0fe707-128f-47db-be0b-63815bc61a64", Name = "Drama" }
-                };
-                genres.ForEach(g => g.IsNew = true);
-                genres.ForEach(g => context.Add(g));
-                await context.SaveChangesAsync();
-            }
-
             if (context.Sources.Count() == 0)
             {
                 var sources = new List<Source>();
@@ -66,70 +52,6 @@ namespace Moviekus.EntityFramework
                 filterEntryTypes.ForEach(f => context.Add(f));
                 await context.SaveChangesAsync();
             }
-
-            /*
-            Filter filter = Filter.CreateNew<Filter>();
-            filter.Name = "Filter 1";
-            context.Filter.Add(filter);
-            await context.SaveChangesAsync();
-
-            FilterEntry entry1 = FilterEntry.CreateNew<FilterEntry>();
-            entry1.Filter = filter;
-            entry1.FilterEntryType = filterEntryTypes[8];
-            entry1.ValueFrom = "Krieger";
-            context.FilterEntries.Add(entry1);
-            FilterEntry entry2 = FilterEntry.CreateNew<FilterEntry>();
-            entry2.Filter = filter;
-            entry2.FilterEntryType = filterEntryTypes[2];
-            entry2.ValueFrom = MoviekusDefines.MinDate.ToString("d");
-            entry2.ValueTo = MoviekusDefines.MinDate.ToString("d");
-            context.FilterEntries.Add(entry2);
-            FilterEntry entry3 = FilterEntry.CreateNew<FilterEntry>();
-            entry3.Filter = filter;
-            entry3.FilterEntryType = filterEntryTypes[4];
-            entry3.ValueFrom = "4";
-            context.FilterEntries.Add(entry3);
-            FilterEntry entry4 = FilterEntry.CreateNew<FilterEntry>();
-            entry4.Filter = filter;
-            entry4.FilterEntryType = filterEntryTypes[5];
-            entry4.ValueFrom = DateTime.Today.AddMonths(-10).ToString("d");
-            entry4.ValueTo = DateTime.Today.AddMonths(-4).ToString("d");
-            context.FilterEntries.Add(entry4);
-            FilterEntry entry5 = FilterEntry.CreateNew<FilterEntry>();
-            entry5.Filter = filter;
-            entry5.FilterEntryType = filterEntryTypes[7];
-            entry5.ValueFrom = sources[1].Id;
-            context.FilterEntries.Add(entry5);
-            FilterEntry entry6 = FilterEntry.CreateNew<FilterEntry>();
-            entry6.Filter = filter;
-            entry6.FilterEntryType = filterEntryTypes[1];
-            entry6.ValueFrom = genres[1].Id;
-            context.FilterEntries.Add(entry6);
-            await context.SaveChangesAsync();
-            */
-
-            //var movies = new List<Movie>()
-            //{
-            //    new Movie { Title = "Mein erster Film von Netflix", Source = sources[1] },
-            //    new Movie { Title = "Mein erster Film von Amazon", Source = sources[2], Description="Dies ist mein erster Film bei Amazon Prime, der aber nur zum Testen angelegt wurde.\r\nSpäter kommen echte Filme dazu", ReleaseDate=DateTime.Today.AddMonths(-24), Runtime=123, Rating=4 }
-            //};
-            //movies.ForEach(m => m.IsNew = true);
-            //movies.ForEach(m => context.Add(m));
-            //await context.SaveChangesAsync();
-
-            //movies[0].MovieGenres = new List<MovieGenre>
-            //{
-            //    new MovieGenre() { Genre = genres[1], Movie = movies[0] }
-            //};
-            //await context.SaveChangesAsync();
-
-            //movies[1].MovieGenres = new List<MovieGenre>
-            //{
-            //    new MovieGenre() { Genre = genres[1], Movie = movies[1] },
-            //    new MovieGenre() { Genre = genres[2], Movie = movies[1] }
-            //};
-            //await context.SaveChangesAsync();
-
         }
 
         public static void RecreateDatabase(MoviekusDbContext context)

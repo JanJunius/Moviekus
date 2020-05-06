@@ -35,6 +35,7 @@ namespace Moviekus.ViewModels.Sources
         {
             var result = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig
             { 
+                Title = "Quelle löschen",
                 Message = "Diese Quelle wirklich löschen?",
                 OkText = "Ja",
                 CancelText = "Nein"
@@ -58,6 +59,7 @@ namespace Moviekus.ViewModels.Sources
                     }
                     await UserDialogs.Instance.AlertAsync(new AlertConfig
                     {
+                        Title = "Quelle löschen",
                         Message = errorMsg
                     });
                 }

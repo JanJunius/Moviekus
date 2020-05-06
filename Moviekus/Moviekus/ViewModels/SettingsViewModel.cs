@@ -32,7 +32,8 @@ namespace Moviekus.ViewModels
             await SettingsService.SaveChangesAsync(Settings);
             await UserDialogs.Instance.AlertAsync(new AlertConfig
             {
-                Message = "Einstellungen wurden gespeichert."
+                Title = "Einstellungen speichern",
+                Message = "Einstellungen wurden erfolgreich gespeichert."
             });
         });
 

@@ -12,6 +12,7 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Neu" Command="{Binding AddMovieCommand}" IconImageSource="addnew.png"/>
         <ToolbarItem Text="Filter" Command="{Binding FilterCommand}" IconImageSource="filter.png"/>
+        <ToolbarItem Text="OneDrive" Command="{Binding OneDriveCommand}" IconImageSource="onedrive.png"/>
     </ContentPage.ToolbarItems>
 
     <ContentPage.Resources>

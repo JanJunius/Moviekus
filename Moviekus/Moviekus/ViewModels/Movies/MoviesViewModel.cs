@@ -15,6 +15,8 @@ using Moviekus.ViewModels.Filter;
 using System.Linq.Expressions;
 using System.Collections.Generic;
 using NLog;
+using Acr.UserDialogs;
+using Moviekus.OneDrive;
 
 namespace Moviekus.ViewModels.Movies
 {
@@ -61,6 +63,42 @@ namespace Moviekus.ViewModels.Movies
             };
 
             await Navigation.PushAsync(filterView);
+        });
+
+        public ICommand OneDriveCommand => new Command(async () =>
+        {
+            var actionResult = await UserDialogs.Instance.ActionSheetAsync("Möchten Sie die Datenbank hoch- oder herunterladen?", "Abbrechen", null, null, "Hochladen", "Herunterladen");
+            if (actionResult == "Hochladen")
+            {
+                Device.BeginInvokeOnMainThread(() => UserDialogs.Instance.ShowLoading("Lade Datenbank hoch..."));
+                bool success = await DbFileManager.UploadDbToOneDrive();
+                Device.BeginInvokeOnMainThread(() => UserDialogs.Instance.HideLoading());
+                if (success)
+                    UserDialogs.Instance.Toast("Upload erfolgreich");
+                else await UserDialogs.Instance.AlertAsync("Datenbank konnte nicht auf OneDrive geladen werden (Details siehe Log).", "OneDrive-Upload");
+            }
+            else if (actionResult == "Herunterladen")
+            {
+                var result = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig
+                {
+                    Title = "Datenbank-Download",
+                    Message = "ACHTUNG! Hierdurch werden alle lokale Daten überschrieben! Fortfahren?",
+                    OkText = "Ja",
+                    CancelText = "Nein"
+                });
+                if (result)
+                {
+                    Device.BeginInvokeOnMainThread(() => UserDialogs.Instance.ShowLoading("Lade Datenbank herunter..."));
+                    bool success = await DbFileManager.DownloadDbFromOneDrive();
+                    Device.BeginInvokeOnMainThread(() => UserDialogs.Instance.HideLoading());
+                    if (success)
+                    {
+                        UserDialogs.Instance.Toast("Download erfolgreich");
+                        LoadMoviesCommand.Execute(null);
+                    }
+                    else await UserDialogs.Instance.AlertAsync("Datenbank konnte nicht auf OneDrive geladen werden (Details siehe Log).", "OneDrive-Upload");
+                }
+            }
         });
 
         private Movie CreateNewMovie()

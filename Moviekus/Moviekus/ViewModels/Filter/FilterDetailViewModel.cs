@@ -57,6 +57,7 @@ namespace Moviekus.ViewModels.Filter
                 LogManager.GetCurrentClassLogger().Error(ex);
                 await UserDialogs.Instance.AlertAsync(new AlertConfig
                 {
+                    Title ="Filter speichern",
                     Message = ex.Message
                 }); 
             }
@@ -66,6 +67,7 @@ namespace Moviekus.ViewModels.Filter
         {
             var result = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig
             {
+                Title = "Filter löschen",
                 Message = "Diesen Filter wirklich löschen?",
                 OkText = "Ja",
                 CancelText = "Nein"

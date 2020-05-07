@@ -22,14 +22,14 @@ namespace Moviekus.Views.Controls
         private Image star3;
         private Image star4;
         private Image star5;
-        
+
         private StackLayout StarContainer = new StackLayout() { Orientation = StackOrientation.Horizontal };
 
         public int Rating
-        { 
+        {
             get { return (int)GetValue(RatingProperty); }
 
-            set 
+            set
             {
                 if (Rating != value)
                     SetValue(RatingProperty, value);
@@ -40,7 +40,7 @@ namespace Moviekus.Views.Controls
               propertyName: "Rating",
               returnType: typeof(int),
               declaringType: typeof(RatingBar),
-              defaultValue: 0,
+              defaultValue: -1,
               defaultBindingMode: BindingMode.TwoWay,
               propertyChanged: RatingPropertyChanged
             );
@@ -65,9 +65,18 @@ namespace Moviekus.Views.Controls
             StarContainer.Children.Add(star4);
             StarContainer.Children.Add(star5);
 
+            ratingbar.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(x => Rating = 0)
+            });
+
             star1.GestureRecognizers.Add(new TapGestureRecognizer
             {
-                Command = new Command(x => Rating = 1)
+               Command = new Command(() =>
+               {
+                   if (Rating == 1) Rating = 0;
+                        else Rating = 1;
+               })
             }); 
 
             star2.GestureRecognizers.Add(new TapGestureRecognizer
@@ -89,112 +98,20 @@ namespace Moviekus.Views.Controls
             });            
         }
 
-        /*
-        #region  Image Height Width Property
-        public static readonly BindableProperty ImageHeightProperty = BindableProperty.Create(
-        propertyName: "ImageHeight",
-        returnType: typeof(double),
-        declaringType: typeof(RatingBar),
-        defaultBindingMode: BindingMode.TwoWay,
-        propertyChanged: ImageHeightPropertyChanged
-         );
-
-        public double ImageHeight
-        {
-            get { return (double)base.GetValue(ImageHeightProperty); }
-            set { base.SetValue(ImageHeightProperty, value); }
-        }
-
-        private void ImageHeightPropertyChanged(BindableObject bindable, object oldValue, object newValue)
-        {
-            // set all images height  equal
-            star1.HeightRequest = (double)newValue;
-            star2.HeightRequest = (double)newValue;
-            star3.HeightRequest = (double)newValue;
-            star4.HeightRequest = (double)newValue;
-            star5.HeightRequest = (double)newValue;
-        }
-
-
-        //image width
-        public static readonly BindableProperty ImageWidthProperty = BindableProperty.Create(
-        propertyName: "ImageWidth",
-        returnType: typeof(double),
-        declaringType: typeof(RatingBar),
-        defaultBindingMode: BindingMode.TwoWay,
-        propertyChanged: ImageWidthPropertyChanged
-         );
-
-        public double ImageWidth
-        {
-            get { return (double)base.GetValue(ImageWidthProperty); }
-            set { base.SetValue(ImageWidthProperty, value); }
-        }
-
-        private static void ImageWidthPropertyChanged(BindableObject bindable, object oldValue, object newValue)
-        {
-            // set all images width  equal
-            star1.WidthRequest = (double)newValue;
-            star2.WidthRequest = (double)newValue;
-            star3.WidthRequest = (double)newValue;
-            star4.WidthRequest = (double)newValue;
-            star5.WidthRequest = (double)newValue;
-        }
-        #endregion
-
-        #region Horizontal Vertical Alignment 
-        public static readonly BindableProperty HorizontalOptionsProperty = BindableProperty.Create(
-        propertyName: "HorizontalOptions",
-        returnType: typeof(LayoutOptions),
-        declaringType: typeof(RatingBar),
-        defaultBindingMode: BindingMode.TwoWay,
-        propertyChanged: HorizontalOptionsPropertyChanged
-         );
-
-        public LayoutOptions HorizontalOptions
-        {
-            get { return (LayoutOptions)base.GetValue(HorizontalOptionsProperty); }
-            set { base.SetValue(HorizontalOptionsProperty, value); }
-        }
-
-        private static void HorizontalOptionsPropertyChanged(BindableObject bindable, object oldValue, object newValue)
-        {
-            var control = (RatingBar)bindable;
-            control.stkRatingbar.HorizontalOptions = (LayoutOptions)newValue;
-        }
-
-        //VERTICLE option set
-
-        public static readonly BindableProperty VerticalOptionsProperty = BindableProperty.Create(
-        propertyName: "VerticalOptions",
-        returnType: typeof(LayoutOptions),
-        declaringType: typeof(RatingBar),
-        defaultBindingMode: BindingMode.TwoWay,
-        propertyChanged: VerticalOptionsPropertyChanged
-         );
-
-        public LayoutOptions VerticalOptions
-        {
-            get { return (LayoutOptions)base.GetValue(VerticalOptionsProperty); }
-            set { base.SetValue(VerticalOptionsProperty, value); }
-        }
-
-        private static void VerticalOptionsPropertyChanged(BindableObject bindable, object oldValue, object newValue)
-        {
-            var control = (RatingBar)bindable;
-            control.stkRatingbar.VerticalOptions = (LayoutOptions)newValue;
-        }
-        #endregion
-        */
 
         // this function will replace empty star with fill star
         private void fillStar()
         {
             switch (Rating)
             {
+                case 0:
+                    star1.Source = emptyStarImage;
+                    star2.Source = emptyStarImage;
+                    star3.Source = emptyStarImage;
+                    star4.Source = emptyStarImage;
+                    star5.Source = emptyStarImage;
+                    break;
                 case 1:
-                    star1.Source = null;
-                    
                     star1.Source = fillStarImage;
                     star2.Source = emptyStarImage;
                     star3.Source = emptyStarImage;

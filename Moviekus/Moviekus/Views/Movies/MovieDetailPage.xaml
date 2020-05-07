@@ -57,9 +57,9 @@
 
             <Label Text="Bewertung:" FontSize="Medium" />
             <customcontrol:RatingBar x:Name="ratingBarDetail" 
-            HorizontalOptions="Start"  
-            IsEnabled="False"
-            Rating ="{Binding Movie.Rating}" />
+                HorizontalOptions="Start"  
+                IsEnabled="False"
+                Rating ="{Binding Movie.Rating}" />
 
             <Label Text="Genres" />
             <Label Text="{Binding Genres}" FontSize="Medium"/>

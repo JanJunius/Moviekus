@@ -6,6 +6,7 @@ using Moviekus.ViewModels.Genres;
 using Moviekus.Views.Genres;
 using Moviekus.Views.Movies;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -77,6 +78,31 @@ namespace Moviekus.ViewModels.Movies
             await Navigation.PushAsync(selectionView);
 
         });
+
+        public ICommand CoverClickedCommand => new Command(async () =>
+        {
+            Stream stream = await DependencyService.Get<IPhotoPickerService>().GetImageStreamAsync();
+            if (stream != null)
+            {
+                Movie.Cover = GetImageBytes(stream);
+                OnMovieChanged?.Invoke(this, Movie);
+                RaisePropertyChanged(nameof(Movie));
+            }
+        });
+
+        private byte[] GetImageBytes(Stream input)
+        {
+            byte[] buffer = new byte[16 * 1024];
+            using (MemoryStream ms = new MemoryStream())
+            {
+                int read;
+                while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    ms.Write(buffer, 0, read);
+                }
+                return ms.ToArray();
+            }
+        }
 
         private async Task ApplyMovieSelection(MovieDto movieDto)
         {

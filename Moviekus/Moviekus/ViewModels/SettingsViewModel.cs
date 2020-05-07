@@ -1,5 +1,6 @@
 ﻿using Acr.UserDialogs;
 using Moviekus.Models;
+using Moviekus.OneDrive;
 using Moviekus.Services;
 using Moviekus.Views;
 using System.Linq;
@@ -43,6 +44,16 @@ namespace Moviekus.ViewModels
             var viewModel = logViewerPage.BindingContext as LogViewerViewModel;
             viewModel.Title = "Logdatei";
             await Navigation.PushAsync(logViewerPage);
+        });
+
+        public ICommand ResetOneDriveVCommand => new Command(async () =>
+        {
+            await GraphClientManager.Ref.SignOut();
+            await UserDialogs.Instance.AlertAsync(new AlertConfig
+            {
+                Title = "OneDrive-Verbindung",
+                Message = "Die Verbindung zu OneDrive wurde zurückgesetzt."
+            });
         });
 
         public SettingsViewModel(SettingsService settingsService)

@@ -20,7 +20,11 @@
             <Entry Text="{Binding Settings.MovieDb_ApiKey}" Margin="5"/>
             <Label Text="Language" Margin="5"/>
             <Entry Text="{Binding Settings.MovieDb_Language}" Margin="5"/>
+            
+            <Label Text="OneDrive Einstellungen" FontSize="Medium" FontAttributes="Bold" />
+            <Button Text="OneDrive-Verbindung zurücksetzen" Command="{Binding ResetOneDriveVCommand}"/>
         </StackLayout>
 
+        
     </ContentPage.Content>
 </ContentPage>

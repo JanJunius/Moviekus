@@ -114,6 +114,7 @@ namespace Moviekus.ViewModels.Movies
             Movie.Runtime = movieDto.Runtime;
             Movie.Cover = movieDto.Cover;
             Movie.Homepage = movieDto.Homepage;
+            Movie.Trailer = movieDto.Trailer;
             Movie.MovieGenres = await MovieService.GetMovieGenres(Movie, movieDto.Genres);
 
             OnMovieChanged?.Invoke(this, Movie);
@@ -167,5 +168,6 @@ namespace Moviekus.ViewModels.Movies
             Movie = Movie.CreateNew<Movie>();
             Movie.Title = "Neuer Film";
         }
+
     }
 }

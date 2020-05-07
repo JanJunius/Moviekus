@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Moviekus.EntityFramework;
 
 namespace Moviekus.Migrations
 {
     [DbContext(typeof(MoviekusDbContext))]
-    partial class MoviekusDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200506140438_Trailer in Movie aufgenommen")]
+    partial class TrailerinMovieaufgenommen
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

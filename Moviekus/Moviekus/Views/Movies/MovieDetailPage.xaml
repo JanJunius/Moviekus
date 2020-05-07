@@ -33,7 +33,14 @@
                     <Label Text="Beschreibung:" FontSize="Medium" />
                     <Label Text="{Binding Movie.Description}" FontSize="Small"/>
                 </StackLayout>
-                <Image x:Name="coverImage" Source="{Binding Movie.Cover, Converter={StaticResource ByteArrayToImage}}" VerticalOptions="Center" HorizontalOptions="Center" WidthRequest="120" HeightRequest="200" Grid.Column="1"/>
+                <StackLayout Grid.Column="1">
+                    <Image x:Name="coverImage" Source="{Binding Movie.Cover, Converter={StaticResource ByteArrayToImage}}" VerticalOptions="Center" HorizontalOptions="Center" WidthRequest="120" HeightRequest="200" />
+                    <Label TextColor="Blue" FontSize="Small" TextDecorations="Underline" Text="Trailer" IsVisible="{Binding HasTrailer}">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding TrailerClickedCommand}" CommandParameter="{Binding Movie.Trailer}"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                </StackLayout>
             </Grid>
 
             <Label Text="Veröffentlichungsdatum:" FontSize="Medium" />
@@ -64,7 +71,7 @@
             <Label Text="{Binding Movie.Remarks}" FontSize="Small"/>
 
             <Label Text="Homepage:" FontSize="Medium" />
-            <Label TextColor="Blue" Text="{Binding Movie.Homepage}">
+            <Label TextColor="Blue" FontSize="Small" TextDecorations="Underline" Text="{Binding Movie.Homepage}">
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding HomepageClickedCommand}" CommandParameter="{Binding Movie.Homepage}"/>
                 </Label.GestureRecognizers>

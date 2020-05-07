@@ -94,7 +94,38 @@ namespace Moviekus.Services
                     movieDto.Homepage = details.Data.homepage;
                 }
                 LogManager.GetCurrentClassLogger().Info($"Finished searching MovieDb for details on '{movieDto.Title}'...");
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().Error(ex);
+                throw;
+            }
+        }
 
+        public async Task FillMovieVideos(MovieDto movieDto)
+        {
+            string url = $"https://api.themoviedb.org/3/movie/{movieDto.MovieDbId}/videos";
+            var client = new RestClient(url);
+            var request = new RestRequest(Method.GET);
+
+            request.AddParameter("api_key", Settings.MovieDb_ApiKey);
+
+            LogManager.GetCurrentClassLogger().Info($"Searching MovieDb for trailer on '{movieDto.Title}'...");
+
+            try
+            {
+                IRestResponse<MovieDbVideos> details = await client.ExecuteAsync<MovieDbVideos>(request);
+
+                if (details.Data != null)
+                {
+                    // Gibt es deutsche Videos, nehmen wir das größte deutsche, sonst das größte englische, sonst gar nichts
+                    if (details.Data.results.Any(d => d.iso_639_1 == "de"))
+                        movieDto.Trailer = details.Data.results.Where(d => d.iso_639_1 == "de").OrderByDescending(r => r.size).First().key;
+                    else if (details.Data.results.Any(d => d.iso_639_1 == "en"))
+                        movieDto.Trailer = details.Data.results.Where(d => d.iso_639_1 == "en").OrderByDescending(r => r.size).First().key;
+                }                
+
+                LogManager.GetCurrentClassLogger().Info($"Finished searching MovieDb for trailer on '{movieDto.Title}'.");
             }
             catch (Exception ex)
             {

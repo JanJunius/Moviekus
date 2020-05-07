@@ -150,6 +150,7 @@
     <Content Include="remove_entry.png" />
     <Content Include="search.png" />
     <Content Include="settings.png" />
+    <Content Include="sorting.png" />
     <Content Include="sources.png" />
     <Content Include="star.png" />
     <Content Include="star_empty.png" />

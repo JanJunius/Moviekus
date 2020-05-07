@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Moviekus.Services
 {
-    public class MovieService : BaseService<Movie>, IMovieService
+    public class MovieService : BaseService<Movie>
     {
         public async Task<IEnumerable<Movie>> GetWithSourceAsync()
         {
@@ -27,12 +27,26 @@ namespace Moviekus.Services
             }
         }
 
-        public async Task<IEnumerable<Movie>> GetWithGenresAndSourcesAsync()
+        public async Task<IEnumerable<Movie>> GetWithGenresAndSourcesAsync(MovieSortOrder sortOrder)
         {
             using (var context = new MoviekusDbContext())
             {
-
-                return await context.Movies.Include(s => s.Source).Include(m => m.MovieGenres).ThenInclude(g => g.Genre).ToListAsync();
+                switch(sortOrder)
+                {
+                    case MovieSortOrder.Title:
+                        return await context.Movies.OrderBy(m => m.Title).Include(s => s.Source).Include(m => m.MovieGenres).ThenInclude(g => g.Genre).ToListAsync();
+                    case MovieSortOrder.LastSeen:
+                        return await context.Movies.OrderBy(m => m.LastSeen).Include(s => s.Source).Include(m => m.MovieGenres).ThenInclude(g => g.Genre).ToListAsync();
+                    case MovieSortOrder.Rating:
+                        return await context.Movies.OrderBy(m => m.Rating).Include(s => s.Source).Include(m => m.MovieGenres).ThenInclude(g => g.Genre).ToListAsync();
+                    case MovieSortOrder.ReleaseDate:
+                        return await context.Movies.OrderBy(m => m.ReleaseDate).Include(s => s.Source).Include(m => m.MovieGenres).ThenInclude(g => g.Genre).ToListAsync();
+                    case MovieSortOrder.Runtime:
+                        return await context.Movies.OrderBy(m => m.Runtime).Include(s => s.Source).Include(m => m.MovieGenres).ThenInclude(g => g.Genre).ToListAsync();
+                    default:
+                        return await context.Movies.Include(s => s.Source).Include(m => m.MovieGenres).ThenInclude(g => g.Genre).ToListAsync();
+                }
+               
             }
         }
 

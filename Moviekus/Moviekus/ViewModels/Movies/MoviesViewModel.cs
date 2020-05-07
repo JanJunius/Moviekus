@@ -22,7 +22,9 @@ namespace Moviekus.ViewModels.Movies
 {
     public class MoviesViewModel : BaseViewModel
     {
-        private IMovieService MoviesService;
+        private MovieService MoviesService;
+
+        private MovieSortOrder MovieSortOrder = MovieSortOrder.None;
 
         public ObservableCollection<MoviesItemViewModel> Movies { get; set; }
 
@@ -101,6 +103,24 @@ namespace Moviekus.ViewModels.Movies
             }
         });
 
+        public ICommand OrderCommand => new Command(async () =>
+        {
+            var actionResult = await UserDialogs.Instance.ActionSheetAsync("Nach was soll sortiert werden?", "Abbrechen", null, null, "Nichts", "Titel", "Laufzeit", "Bewertung", "Zuletzt gesehen", "Veröffentlichungsdatum");
+            if (actionResult == "Nichts")
+                MovieSortOrder = MovieSortOrder.None;
+            else if (actionResult == "Titel")
+                MovieSortOrder = MovieSortOrder.Title;
+            if (actionResult == "Laufzeit")
+                MovieSortOrder = MovieSortOrder.Runtime;
+            if (actionResult == "Bewertung")
+                MovieSortOrder = MovieSortOrder.Rating;
+            if (actionResult == "Zuletzt gesehen")
+                MovieSortOrder = MovieSortOrder.LastSeen;
+            if (actionResult == "Veröffentlichungsdatum")
+                MovieSortOrder = MovieSortOrder.ReleaseDate;
+            await LoadMovies();
+        });
+
         private Movie CreateNewMovie()
         {
             Movie movie = Movie.CreateNew<Movie>();
@@ -151,7 +171,7 @@ namespace Moviekus.ViewModels.Movies
             {
                 //var movies = await MoviesService.GetAsync();
                 //var movies = await MoviesService.GetWithSourceAsync();
-                var movies = await MoviesService.GetWithGenresAndSourcesAsync();
+                var movies = await MoviesService.GetWithGenresAndSourcesAsync(MovieSortOrder);
 
                 Movies = new ObservableCollection<MoviesItemViewModel>(movies.Select(m => CreateMoviesItemViewModel(m)));
             }
@@ -188,5 +208,14 @@ namespace Moviekus.ViewModels.Movies
             await LoadMovies();
         }
 
+        private async Task OrderMovies(MovieSortOrder sortOrder)
+        {
+            switch(sortOrder)
+            {
+                case MovieSortOrder.Title:
+                    Movies = new ObservableCollection<MoviesItemViewModel>(Movies.OrderBy(m => m.Title));
+                    break;
+            }
+        }
     }
 }

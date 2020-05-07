@@ -138,7 +138,7 @@ namespace Moviekus.ViewModels.Movies
         }
 
         private List<Source> _sources;
-        private IMovieService MovieService;
+        private MovieService MovieService;
 
         public IList<Source> Sources
         {

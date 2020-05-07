@@ -72,7 +72,7 @@ namespace Moviekus.ViewModels.Movies
                 {
                     Task t = Task.Run(() => MovieDbService.Ref.FillMovieDetails(value));
                     t.Wait();
-                    t = Task.Run(() => MovieDbService.Ref.FillMovieVideos(value));
+                    t = Task.Run(() => MovieDbService.Ref.FillMovieTrailer(value));
                     t.Wait();
                 }
 

@@ -102,7 +102,7 @@ namespace Moviekus.Services
             }
         }
 
-        public async Task FillMovieVideos(MovieDto movieDto)
+        public async Task FillMovieTrailer(MovieDto movieDto)
         {
             string url = $"https://api.themoviedb.org/3/movie/{movieDto.MovieDbId}/videos";
             var client = new RestClient(url);
@@ -118,11 +118,11 @@ namespace Moviekus.Services
 
                 if (details.Data != null)
                 {
-                    // Gibt es deutsche Videos, nehmen wir das größte deutsche, sonst das größte englische, sonst gar nichts
+                    // Gibt es deutsche YouTube-Videos, nehmen wir das größte deutsche, sonst das größte englische, sonst gar nichts
                     if (details.Data.results.Any(d => d.iso_639_1 == "de"))
-                        movieDto.Trailer = details.Data.results.Where(d => d.iso_639_1 == "de").OrderByDescending(r => r.size).First().key;
+                        movieDto.Trailer = details.Data.results.Where(d => d.site == "YouTube" && d.iso_639_1 == "de").OrderByDescending(r => r.size).First().key;
                     else if (details.Data.results.Any(d => d.iso_639_1 == "en"))
-                        movieDto.Trailer = details.Data.results.Where(d => d.iso_639_1 == "en").OrderByDescending(r => r.size).First().key;
+                        movieDto.Trailer = details.Data.results.Where(d => d.site == "YouTube" && d.iso_639_1 == "en").OrderByDescending(r => r.size).First().key;
                 }                
 
                 LogManager.GetCurrentClassLogger().Info($"Finished searching MovieDb for trailer on '{movieDto.Title}'.");

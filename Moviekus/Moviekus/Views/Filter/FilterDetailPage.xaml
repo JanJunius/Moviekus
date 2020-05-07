@@ -23,7 +23,7 @@
 
     <ContentPage.Content>
         <StackLayout Padding="14">
-            <Label Text="Name" FontSize="Title" />
+            <Label Text="Name" Style="{StaticResource HeadingLabelStyle}" />
             <Entry Text="{Binding Filter.Name}"/>
 
             <ListView 

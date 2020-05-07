@@ -14,17 +14,16 @@
     <ContentPage.Content>
 
         <StackLayout>
-            <Label Text="MovieDB Einstellungen" FontSize="Medium" FontAttributes="Bold" />
+            <Label Text="MovieDB Einstellungen" Style="{StaticResource HeadingLabelStyle}" />
             <BoxView Color="Gray" HeightRequest="2" HorizontalOptions="Fill" />
             <Label Text="Api-Key" Margin="5"/>
             <Entry Text="{Binding Settings.MovieDb_ApiKey}" Margin="5"/>
             <Label Text="Language" Margin="5"/>
             <Entry Text="{Binding Settings.MovieDb_Language}" Margin="5"/>
-            
-            <Label Text="OneDrive Einstellungen" FontSize="Medium" FontAttributes="Bold" />
+
+            <Label Text="OneDrive Einstellungen" Style="{StaticResource HeadingLabelStyle}" />
             <Button Text="OneDrive-Verbindung zurücksetzen" Command="{Binding ResetOneDriveVCommand}"/>
         </StackLayout>
 
-        
     </ContentPage.Content>
 </ContentPage>

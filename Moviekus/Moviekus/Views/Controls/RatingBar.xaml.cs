@@ -14,8 +14,8 @@ namespace Moviekus.Views.Controls
     {
         private static string emptyStarImage = "star_empty.png";
         private static string fillStarImage = "star.png";
-        private static int imageHeight = 30;
-        private static int imageWidth = 30;
+        //private static int imageHeight = 30;
+        //private static int imageWidth = 30;
 
         private Image star1;
         private Image star2;
@@ -45,6 +45,20 @@ namespace Moviekus.Views.Controls
               propertyChanged: RatingPropertyChanged
             );
 
+        public int StarSize
+        {
+            get { return (int)GetValue(StarSizeProperty); }
+            set { SetValue(StarSizeProperty, value); }
+        }
+
+        public static readonly BindableProperty StarSizeProperty = BindableProperty.Create(
+              propertyName: "StarSize",
+              returnType: typeof(int),
+              declaringType: typeof(RatingBar),
+              defaultValue: 30,
+              defaultBindingMode: BindingMode.OneWay,
+              propertyChanged: StarSizePropertyChanged
+            );
 
         public RatingBar()
         {
@@ -52,18 +66,7 @@ namespace Moviekus.Views.Controls
 
             ratingbar.Children.Add(StarContainer);
 
-            star1 = new Image() { HeightRequest = imageHeight, WidthRequest = imageWidth };
-            star2 = new Image() { HeightRequest = imageHeight, WidthRequest = imageWidth };
-            star3 = new Image() { HeightRequest = imageHeight, WidthRequest = imageWidth };
-            star4 = new Image() { HeightRequest = imageHeight, WidthRequest = imageWidth };
-            star5 = new Image() { HeightRequest = imageHeight, WidthRequest = imageWidth };
-
-            StarContainer.Children.Clear();
-            StarContainer.Children.Add(star1);
-            StarContainer.Children.Add(star2);
-            StarContainer.Children.Add(star3);
-            StarContainer.Children.Add(star4);
-            StarContainer.Children.Add(star5);
+            InitStars();
 
             ratingbar.GestureRecognizers.Add(new TapGestureRecognizer
             {
@@ -150,15 +153,35 @@ namespace Moviekus.Views.Controls
             }
         }
 
+        private void InitStars()
+        {
+            star1 = new Image() { HeightRequest = StarSize, WidthRequest = StarSize };
+            star2 = new Image() { HeightRequest = StarSize, WidthRequest = StarSize };
+            star3 = new Image() { HeightRequest = StarSize, WidthRequest = StarSize };
+            star4 = new Image() { HeightRequest = StarSize, WidthRequest = StarSize };
+            star5 = new Image() { HeightRequest = StarSize, WidthRequest = StarSize };
+
+            StarContainer.Children.Clear();
+            StarContainer.Children.Add(star1);
+            StarContainer.Children.Add(star2);
+            StarContainer.Children.Add(star3);
+            StarContainer.Children.Add(star4);
+            StarContainer.Children.Add(star5);
+        }
+
         private static void RatingPropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
             var control = (RatingBar)bindable;
-            //control.Rating = (int)newValue;
             control.SetValue(RatingProperty, (int)newValue);
             control.fillStar();                
         }
 
- 
+        private static void StarSizePropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            var control = (RatingBar)bindable;
+            control.InitStars();
+        }
+
     }
 
 }

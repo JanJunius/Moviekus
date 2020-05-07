@@ -22,47 +22,34 @@
 
     <ContentPage.Content>
         <ScrollView>
-            <StackLayout Spacing="20" Padding="15">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="120"/>
-                    </Grid.ColumnDefinitions>
-                    <StackLayout Grid.Column="0">
-                        <Label Text="Titel" FontSize="Medium" />
-                        <Entry Text="{Binding Movie.Title}" d:Text="Name des Films" FontSize="Small" />
-                        <Label Text="Beschreibung" FontSize="Medium" />
-                        <Editor Text="{Binding Movie.Description}" d:Text="Beschreibung des Films" HeightRequest="250" FontSize="Small" AutoSize="TextChanges" />
-                    </StackLayout>
-                    <Image x:Name="coverImage" Source="{Binding Movie.Cover, Converter={StaticResource ByteArrayToImage}}" VerticalOptions="Center" HorizontalOptions="Center" WidthRequest="120" HeightRequest="200" Grid.Column="1">
-                        <Image.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding CoverClickedCommand}"/>
-                        </Image.GestureRecognizers>
-                    </Image>
-                </Grid>
+            <StackLayout Spacing="20" Padding="15" BackgroundColor="#e0eeee">
+                <Label Text="Titel" Style="{StaticResource HeadingLabelStyle}" />
+                <Entry Text="{Binding Movie.Title}" d:Text="Name des Films" FontSize="Small" />
+                <Label Text="Beschreibung" Style="{StaticResource HeadingLabelStyle}" />
+                <Editor Text="{Binding Movie.Description}" d:Text="Beschreibung des Films" HeightRequest="250" FontSize="Small" AutoSize="TextChanges" />
 
-                <Label Text="Veröffentlichungsdatum" FontSize="Medium" />
+                <Label Text="Veröffentlichungsdatum" Style="{StaticResource HeadingLabelStyle}" />
                 <customcontrol:NullableDatePicker DateFrom="{Binding Movie.ReleaseDate}" ShowRange="False"/>
 
-                <Label Text="Zuletzt gesehen" FontSize="Medium" />
+                <Label Text="Zuletzt gesehen" Style="{StaticResource HeadingLabelStyle}" />
                 <customcontrol:NullableDatePicker DateFrom="{Binding Movie.LastSeen}" DateTo="{Binding Movie.LastSeen}" ShowRange="False"/>
 
-                <Label Text="Laufzeit (Minuten)" FontSize="Medium" />
+                <Label Text="Laufzeit (Minuten)" Style="{StaticResource HeadingLabelStyle}" />
                 <Entry Text="{Binding Movie.Runtime}" Keyboard="Numeric" MaxLength="3" FontSize="Small" />
 
-                <Label Text="Bewertung:" FontSize="Medium" />
+                <Label Text="Bewertung:" Style="{StaticResource HeadingLabelStyle}" />
                 <customcontrol:RatingBar x:Name="ratingBarEdit" 
                     HorizontalOptions="Start"  
                     IsEnabled="True"
                     Rating ="{Binding Movie.Rating}" />
 
-                <Label Text="Genres" />
+                <Label Text="Genres" Style="{StaticResource HeadingLabelStyle}"/>
                 <StackLayout Orientation="Horizontal" Padding="5">
-                    <Label Text="{Binding Genres}" FontSize="Medium"/>
+                    <Label Text="{Binding Genres}"/>
                     <Button Text="..." WidthRequest="40" HorizontalOptions="EndAndExpand" Command="{Binding GenreEditButtonClicked}"></Button>
                 </StackLayout>
 
-                <Label Text="Verfügbar bei" />
+                <Label Text="Verfügbar bei" Style="{StaticResource HeadingLabelStyle}"/>
                 <Picker 
                     FontSize="Small"
                     TitleColor="Blue"                    
@@ -70,11 +57,17 @@
                     ItemDisplayBinding="{Binding Name}"                     
                     SelectedItem="{Binding SelectedSource, Mode=TwoWay}"/>
 
-                <Label Text="Bemerkungen" FontSize="Medium" />
+                <Label Text="Bemerkungen" Style="{StaticResource HeadingLabelStyle}" />
                 <Entry Text="{Binding Movie.Remarks}" d:Text="Eigene Kommentare zu diesem Film" FontSize="Small" />
 
-                <Label Text="Homepage des Films" FontSize="Medium" />
+                <Label Text="Homepage" Style="{StaticResource HeadingLabelStyle}" />
                 <Entry Text="{Binding Movie.Homepage}" d:Text="Adresse der Webseite zum Film" FontSize="Small" />
+
+                <StackLayout Orientation="Horizontal" Padding="5">
+                    <Label Text="Cover" Style="{StaticResource HeadingLabelStyle}" />
+                    <Button Text="..." WidthRequest="40" HorizontalOptions="EndAndExpand" Command="{Binding CoverButtonCommand}"/>
+                </StackLayout>
+                <Image x:Name="coverImage" Source="{Binding Movie.Cover, Converter={StaticResource ByteArrayToImage}}" VerticalOptions="Center" HorizontalOptions="Center" WidthRequest="120" HeightRequest="180"/>
 
             </StackLayout>
         </ScrollView>

@@ -124,6 +124,7 @@ namespace Moviekus.ViewModels.Movies
             MovieService = movieService;
         }
 
+        public bool HasHomepage => Movie != null ? !string.IsNullOrEmpty(Movie.Homepage) : false;
         public bool HasTrailer => Movie != null ? !string.IsNullOrEmpty(Movie.Trailer) : false;
 
     }

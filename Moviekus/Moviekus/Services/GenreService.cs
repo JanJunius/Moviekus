@@ -1,5 +1,6 @@
 ﻿using Moviekus.Models;
 using NLog;
+using RestSharp.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,5 +33,6 @@ namespace Moviekus.Services
             }
             return genre;
         }
+
     }
 }

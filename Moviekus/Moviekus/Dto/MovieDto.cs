@@ -12,7 +12,7 @@ namespace Moviekus.Dto
             Genres = new List<string>();
         }
 
-        public string MovieDbId { get; set; }
+        public string ProviderMovieId { get; set; }
         
         public string ImDbId { get; set; }
 
@@ -34,6 +34,17 @@ namespace Moviekus.Dto
 
         public IList<string> Genres { get; set; }
 
+        public string Genre
+        {
+            get
+            {
+                string genre = string.Empty;
+                foreach(var g in Genres)
+                    genre += g+"; ";
+                return genre.Length > 1 ? genre.Substring(0, genre.Length - 2) : genre;
+            }
+        }
+
         public int Runtime { get; set; }
 
         public byte[] Cover { get; set; }
@@ -42,13 +53,13 @@ namespace Moviekus.Dto
 
         public string Homepage { get; set; }
         
-        public string Trailer { get; set; }
+        public string TrailerUrl { get; set; }
 
 
         public override bool Equals(object obj)
         {
             return obj is MovieDto dto &&
-                   MovieDbId == dto.MovieDbId &&
+                   ProviderMovieId == dto.ProviderMovieId &&
                    ImDbId == dto.ImDbId &&
                    Title == dto.Title &&
                    Overview == dto.Overview &&
@@ -58,13 +69,13 @@ namespace Moviekus.Dto
                    EqualityComparer<byte[]>.Default.Equals(Cover, dto.Cover) &&
                    CoverUri == dto.CoverUri && 
                    Homepage == dto.Homepage &&
-                   Trailer == dto.Trailer;
+                   TrailerUrl == dto.TrailerUrl;
         }
 
         public override int GetHashCode()
         {
             var hash = new HashCode();
-            hash.Add(MovieDbId);
+            hash.Add(ProviderMovieId);
             hash.Add(ImDbId);
             hash.Add(Title);
             hash.Add(Overview);
@@ -74,7 +85,7 @@ namespace Moviekus.Dto
             hash.Add(Cover);
             hash.Add(CoverUri);
             hash.Add(Homepage);
-            hash.Add(Trailer);
+            hash.Add(TrailerUrl);
             return hash.ToHashCode();
         }
     }

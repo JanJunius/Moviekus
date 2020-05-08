@@ -110,6 +110,7 @@
     <Content Include="edit.png" />
     <Content Include="filter.png" />
     <Content Include="genres.png" />
+    <Content Include="imdb.png" />
     <Content Include="local.png" />
     <Content Include="logfile.png" />
     <Content Include="movie.png" />

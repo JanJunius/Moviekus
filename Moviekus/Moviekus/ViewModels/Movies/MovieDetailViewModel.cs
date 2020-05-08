@@ -28,30 +28,16 @@ namespace Moviekus.ViewModels.Movies
                     var genreList = Movie.MovieGenres.Select(g => g.Genre);
                     genreList.ForEach(g => genres += g.Name + "; ");
                 }
-                return genres.Length > 1 ? genres.Substring(0, genres.Length-2) : genres;
+                return genres.Length > 1 ? genres.Substring(0, genres.Length - 2) : genres;
             }
             set { }
         }
-        private Movie _movie;
 
-        public Movie Movie
-        {
-            get { return _movie; }
-            set
-            {
-                _movie = value;
-            }
-        }
+        public Movie Movie { get; set; }
 
-        public string ReleaseDateText 
-        {
-            get { return Movie != null && Movie.ReleaseDate != MoviekusDefines.MinDate ? Movie.ReleaseDate.ToString("d", MoviekusDefines.MoviekusCultureInfo) : "<unbekannt>"; }
-        }
+        public string ReleaseDateText => Movie != null && Movie.ReleaseDate != MoviekusDefines.MinDate ? Movie.ReleaseDate.ToString("d", MoviekusDefines.MoviekusCultureInfo) : "<unbekannt>";
 
-        public string LastSeenText
-        {
-            get { return Movie != null && Movie.LastSeen != MoviekusDefines.MinDate ? Movie.LastSeen.ToString("d", MoviekusDefines.MoviekusCultureInfo) : "<noch nicht gesehen>"; }
-        }
+        public string LastSeenText => Movie != null && Movie.LastSeen != MoviekusDefines.MinDate? Movie.LastSeen.ToString("d", MoviekusDefines.MoviekusCultureInfo) : "<noch nicht gesehen>";
 
         public ICommand EditCommand => new Command(async () =>
         {
@@ -102,16 +88,15 @@ namespace Moviekus.ViewModels.Movies
             }
         });
 
-        public ICommand TrailerClickedCommand => new Command<string>(async (trailerKey) =>
+        public ICommand TrailerClickedCommand => new Command<string>(async (trailerUrl) =>
         {
             try
             {
-                if (!string.IsNullOrEmpty(trailerKey))
+                if (!string.IsNullOrEmpty(trailerUrl))
                 {
-                    Uri uri = new Uri($"https://www.youtube.com/watch?v={trailerKey}");
+                    Uri uri = new Uri(trailerUrl);
                     await Browser.OpenAsync(uri, BrowserLaunchMode.SystemPreferred);
-                }
-                
+                }                
             }
             catch (Exception ex)
             {

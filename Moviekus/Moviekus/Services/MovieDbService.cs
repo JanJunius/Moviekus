@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Moviekus.Services
 {
-    public class MovieDbService
+    public class MovieDbService : IMovieProvider
     {
         private static MovieDbService TheInstance = null;
 
@@ -30,6 +30,8 @@ namespace Moviekus.Services
                 return TheInstance;
             }
         }
+
+        public string Name => "MovieDb";
 
         private MovieDbService()
         {
@@ -75,7 +77,7 @@ namespace Moviekus.Services
 
         public async Task FillMovieDetails(MovieDto movieDto)
         {
-            string url = $"https://api.themoviedb.org/3/movie/{movieDto.MovieDbId}";
+            string url = $"https://api.themoviedb.org/3/movie/{movieDto.ProviderMovieId}";
             var client = new RestClient(url);
             var request = new RestRequest(Method.GET);
 
@@ -104,7 +106,7 @@ namespace Moviekus.Services
 
         public async Task FillMovieTrailer(MovieDto movieDto)
         {
-            string url = $"https://api.themoviedb.org/3/movie/{movieDto.MovieDbId}/videos";
+            string url = $"https://api.themoviedb.org/3/movie/{movieDto.ProviderMovieId}/videos";
             var client = new RestClient(url);
             var request = new RestRequest(Method.GET);
 
@@ -115,16 +117,20 @@ namespace Moviekus.Services
             try
             {
                 IRestResponse<MovieDbVideos> details = await client.ExecuteAsync<MovieDbVideos>(request);
+                string trailerKey = string.Empty;
 
                 if (details.Data != null)
                 {
                     // Gibt es deutsche YouTube-Videos, nehmen wir das größte deutsche, sonst das größte englische, sonst gar nichts
                     if (details.Data.results.Any(d => d.iso_639_1 == "de"))
-                        movieDto.Trailer = details.Data.results.Where(d => d.site == "YouTube" && d.iso_639_1 == "de").OrderByDescending(r => r.size).First().key;
+                        trailerKey = details.Data.results.Where(d => d.site == "YouTube" && d.iso_639_1 == "de").OrderByDescending(r => r.size).First().key;
                     else if (details.Data.results.Any(d => d.iso_639_1 == "en"))
-                        movieDto.Trailer = details.Data.results.Where(d => d.site == "YouTube" && d.iso_639_1 == "en").OrderByDescending(r => r.size).First().key;
-                }                
+                        trailerKey = details.Data.results.Where(d => d.site == "YouTube" && d.iso_639_1 == "en").OrderByDescending(r => r.size).First().key;
 
+                    if (!string.IsNullOrEmpty(trailerKey))
+                        movieDto.TrailerUrl = $"https://www.youtube.com/watch?v={trailerKey}";
+                }
+                
                 LogManager.GetCurrentClassLogger().Info($"Finished searching MovieDb for trailer on '{movieDto.Title}'.");
             }
             catch (Exception ex)
@@ -136,6 +142,9 @@ namespace Moviekus.Services
 
         public byte[] GetMovieCover(MovieDto movieDto)
         {
+            if (string.IsNullOrEmpty(movieDto.CoverUri))
+                return null;
+
             string url = $"https://image.tmdb.org/t/p/w500/{movieDto.CoverUri}";
             HttpWebRequest webRequest;
             WebResponse webResponse = null;
@@ -150,7 +159,7 @@ namespace Moviekus.Services
 
                 webResponse = webRequest.GetResponse();
                 Stream stream = webResponse.GetResponseStream();
-                return GetImageBytes(stream);
+                return Utils.GetImageBytes(stream);
             }
             catch (Exception ex)
             {
@@ -164,25 +173,11 @@ namespace Moviekus.Services
             return null;
         }
 
-        private byte[] GetImageBytes(Stream input)
-        {
-            byte[] buffer = new byte[16 * 1024];
-            using (MemoryStream ms = new MemoryStream())
-            {
-                int read;
-                while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
-                {
-                    ms.Write(buffer, 0, read);
-                }
-                return ms.ToArray();
-            }
-        }
-
         private MovieDto BuildMovieDto(MovieDbResult movieDbResult, MovieDbGenres movieDbGenres)
         {
             MovieDto movieDto = new MovieDto()
             {
-                MovieDbId = movieDbResult.id,
+                ProviderMovieId = movieDbResult.id,
                 Overview = movieDbResult.overview,
                 Title = movieDbResult.title,
                 ReleaseDate = movieDbResult.release_date,

@@ -47,16 +47,12 @@
                             
                             <StackLayout Grid.Column="1">
                                 <Label Text="{Binding Movie.Title}"  FontSize="Title"/>
-                                <StackLayout Orientation="Horizontal">
-                                    <Label Text="{Binding SubTitle}" TextColor="#7e90a8" FontAttributes="Italic" FontSize="Subtitle"/>
-                                    <customcontrol:RatingBar x:Name="ratingBarDetail" 
+                                <customcontrol:RatingBar x:Name="ratingBarDetail" 
                                         HorizontalOptions="Start"  
                                         IsEnabled="False"
                                         StarSize="20"
                                         Rating ="{Binding Movie.Rating}" />
-
-                                </StackLayout>
-
+                                <Label Text="{Binding SubTitle}" TextColor="#7e90a8" FontAttributes="Italic" FontSize="Subtitle"/>
                                 <Label Text="{Binding Movie.Description}" MaxLines="6" FontSize="Micro"/>
                             </StackLayout>
                         </Grid>

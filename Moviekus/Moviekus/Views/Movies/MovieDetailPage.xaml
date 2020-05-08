@@ -21,61 +21,61 @@
     </ContentPage.Resources>
 
     <ScrollView>
-        <StackLayout Spacing="20" Padding="15">
+        <StackLayout Spacing="20" BackgroundColor="#e0eeee" Padding="15">
+            <Label Text="{Binding Movie.Title}" TextColor="#3d5f8a" FontAttributes="Bold" FontSize="Title"/>
+
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <StackLayout Grid.Column="0">
-                    <Label Text="Titel:" FontSize="Medium" />
-                    <Label Text="{Binding Movie.Title}" FontSize="Small"/>
-                    <Label Text="Beschreibung:" FontSize="Medium" />
-                    <Label Text="{Binding Movie.Description}" FontSize="Small"/>
-                </StackLayout>
-                <StackLayout Grid.Column="1">
-                    <Image x:Name="coverImage" Source="{Binding Movie.Cover, Converter={StaticResource ByteArrayToImage}}" VerticalOptions="Center" HorizontalOptions="Center" WidthRequest="120" HeightRequest="200" />
+                    <Frame Style="{StaticResource CoverFrameStyle}">
+                        <Image x:Name="coverImage" Source="{Binding Movie.Cover, Converter={StaticResource ByteArrayToImage}}" Style="{StaticResource CoverImageStyle}" />
+                    </Frame>
                     <Label TextColor="Blue" FontSize="Small" TextDecorations="Underline" Text="Trailer" IsVisible="{Binding HasTrailer}">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding TrailerClickedCommand}" CommandParameter="{Binding Movie.Trailer}"/>
                         </Label.GestureRecognizers>
                     </Label>
+                    <Label TextColor="Blue" FontSize="Small" TextDecorations="Underline" Text="Homepage" IsVisible="{Binding HasHomepage}">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding HomepageClickedCommand}" CommandParameter="{Binding Movie.Homepage}"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                </StackLayout>
+                <StackLayout Grid.Column="1">
+                    <Label Text="Veröffentlichungsdatum:" Style="{StaticResource HeadingLabelStyle}" />
+                    <Label Text="{Binding ReleaseDateText}" FontSize="Small"/>
+
+                    <Label Text="Zuletzt gesehen:" Style="{StaticResource HeadingLabelStyle}" />
+                    <Label Text="{Binding LastSeenText}" FontSize="Small"/>
+
+                    <Label Text="Laufzeit:" Style="{StaticResource HeadingLabelStyle}" />
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="{Binding Movie.Runtime}" FontSize="Small"/>
+                        <Label Text="Minuten" FontSize="Small" />
+                    </StackLayout>
+
+                    <Label Text="Bewertung:" Style="{StaticResource HeadingLabelStyle}" />
+                    <customcontrol:RatingBar x:Name="ratingBarDetail" 
+                        HorizontalOptions="Start"  
+                        StarSize="25"
+                        IsEnabled="False"
+                        Rating ="{Binding Movie.Rating}" />
+
+                    <Label Text="Genres" Style="{StaticResource HeadingLabelStyle}"/>
+                    <Label Text="{Binding Genres}" FontSize="Small"/>
+
+                    <Label Text="Verfügbar bei" Style="{StaticResource HeadingLabelStyle}"/>
+                    <Label Text="{Binding Movie.Source.Name}" FontSize="Small"/>
                 </StackLayout>
             </Grid>
 
-            <Label Text="Veröffentlichungsdatum:" FontSize="Medium" />
-            <Label Text="{Binding ReleaseDateText}" FontSize="Small"/>
+            <Label Text="{Binding Movie.Description}" TextColor="#7e90a8" FontAttributes="Italic" FontSize="Small"/>
 
-            <Label Text="Zuletzt gesehen:" FontSize="Medium" />
-            <Label Text="{Binding LastSeenText}" FontSize="Small"/>
-
-            <Label Text="Laufzeit:" FontSize="Medium" />
-            <StackLayout Orientation="Horizontal">
-                <Label Text="{Binding Movie.Runtime}" FontSize="Small"/>
-                <Label Text="Minuten" FontSize="Small" />
-            </StackLayout>
-
-            <Label Text="Bewertung:" FontSize="Medium" />
-            <customcontrol:RatingBar x:Name="ratingBarDetail" 
-            HorizontalOptions="Start"  
-            IsEnabled="False"
-            Rating ="{Binding Movie.Rating}" />
-
-            <Label Text="Genres" />
-            <Label Text="{Binding Genres}" FontSize="Medium"/>
-
-            <Label Text="Verfügbar bei" />
-            <Label Text="{Binding Movie.Source.Name}" FontSize="Medium"/>
-
-            <Label Text="Bemerkungen:" FontSize="Medium" />
+            <Label Text="Bemerkungen:" Style="{StaticResource HeadingLabelStyle}" />
             <Label Text="{Binding Movie.Remarks}" FontSize="Small"/>
-
-            <Label Text="Homepage:" FontSize="Medium" />
-            <Label TextColor="Blue" FontSize="Small" TextDecorations="Underline" Text="{Binding Movie.Homepage}">
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding HomepageClickedCommand}" CommandParameter="{Binding Movie.Homepage}"/>
-                </Label.GestureRecognizers>
-            </Label>
 
         </StackLayout>
     </ScrollView>

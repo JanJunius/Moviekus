@@ -15,9 +15,7 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <Label 
-                            Text="{Binding Name}"
-                            FontSize="Small" />
+                        <Label Text="{Binding Name}" Style="{StaticResource HeadingLabelStyle}" />
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>

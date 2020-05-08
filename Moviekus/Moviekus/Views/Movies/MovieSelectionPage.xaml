@@ -30,13 +30,12 @@
                     <Grid Padding="10">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="180"/>
+                            <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="40" />
-                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <Label Text="Titel" Font="Bold, 14" BackgroundColor="LightGray" TextColor="Black" Grid.Column="1" />
-                        <Label Text="Jahr" Font="Bold, 14" BackgroundColor="LightGray" TextColor="Black" Grid.Column="2" />
-                        <Label Text="Beschreibung" Font="Bold, 14" BackgroundColor="LightGray" TextColor="Black" Grid.Column="3" />
+                        <Label Text="Cover" Font="Bold, 14" BackgroundColor="#63b8ff" TextColor="Black" Grid.Column="0" />
+                        <Label Text="Titel" Font="Bold, 14" BackgroundColor="#63b8ff" TextColor="Black" Grid.Column="1" />
+                        <Label Text="Jahr" Font="Bold, 14" BackgroundColor="#63b8ff" TextColor="Black" Grid.Column="2" />
                     </Grid>
                 </ListView.Header>
                 <ListView.ItemTemplate>
@@ -46,16 +45,14 @@
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="100"/>
-                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="40" />
-                                        <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
                                     <Image x:Name="coverImage" Source="{Binding Cover, Converter={StaticResource ByteArrayToImage}}" VerticalOptions="Center" HorizontalOptions="Center" WidthRequest="80" HeightRequest="120" Grid.Column="0"/>
-                                    <Label Text="{Binding Title}" FontSize="14" MaxLines="2" Grid.Column="1" />
-                                    <Label Text="{Binding ReleaseYear}" FontSize="14" Grid.Column="2" />
-                                    <Label Text="{Binding Overview}" FontSize="14" MaxLines="8" Grid.Column="3" />
+                                    <Label Text="{Binding Title}" FontSize="Subtitle" MaxLines="2" Grid.Column="1" />
+                                    <Label Text="{Binding ReleaseYear}" FontSize="Subtitle" Grid.Column="2" />
                                 </Grid>
-                                    
+                                <Label Text="{Binding Overview}" FontSize="Micro" MaxLines="10" />
                             </StackLayout>
                         </ViewCell>
                     </DataTemplate>

@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:customcontrol="clr-namespace:Moviekus.Views.Controls"
              xmlns:local="clr-namespace:Moviekus.ViewModels"
              mc:Ignorable="d"
              x:Class="Moviekus.Views.Movies.MoviesPage"
@@ -40,12 +41,19 @@
                                 <ColumnDefinition Width="120"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Image x:Name="coverImage" Source="{Binding Movie.Cover, Converter={StaticResource ByteArrayToImage}}" VerticalOptions="Center" HorizontalOptions="Start" WidthRequest="120" HeightRequest="200" Grid.Column="0"/>
+                            <Frame Style="{StaticResource CoverFrameStyle}">
+                                <Image x:Name="coverImage" Source="{Binding Movie.Cover, Converter={StaticResource ByteArrayToImage}}" Style="{StaticResource CoverImageStyle}" />
+                            </Frame>
+                            
                             <StackLayout Grid.Column="1">
-                                <Label Text="{Binding Movie.Title}" TextColor="#3d5f8a" FontAttributes="Bold" FontSize="Title"/>
+                                <Label Text="{Binding Movie.Title}"  FontSize="Title"/>
+                                <customcontrol:RatingBar x:Name="ratingBarDetail" 
+                                        HorizontalOptions="Start"  
+                                        IsEnabled="False"
+                                        StarSize="20"
+                                        Rating ="{Binding Movie.Rating}" />
                                 <Label Text="{Binding SubTitle}" TextColor="#7e90a8" FontAttributes="Italic" FontSize="Subtitle"/>
-                                
-                                <Label Text="{Binding Movie.Description}" FontSize="Micro"/>
+                                <Label Text="{Binding Movie.Description}" MaxLines="6" FontSize="Micro"/>
                             </StackLayout>
                         </Grid>
                     </ViewCell>

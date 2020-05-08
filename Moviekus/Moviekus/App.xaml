@@ -10,10 +10,39 @@
         <ResourceDictionary>
             <!--Global Styles-->
             <Color x:Key="NavigationPrimary">#2196F3</Color>
+            <Color x:Key="BackgroundPrimary">#e0eeee</Color>
             <Style TargetType="NavigationPage">
                 <Setter Property="BarBackgroundColor" Value="{StaticResource NavigationPrimary}" />
                 <Setter Property="BarTextColor" Value="White" />
             </Style>
+            <Style TargetType="ListView">
+                <Setter Property="BackgroundColor" Value="{StaticResource BackgroundPrimary}" />
+            </Style>
+            <Style x:Key="HeadingLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="#3d5f8a" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="FontSize" Value="Subtitle" />
+            </Style>
+            <Style x:Key="CoverFrameStyle" TargetType="Frame">
+                <Setter Property="BorderColor" Value="#191970" />
+                <Setter Property="BackgroundColor" Value="#1e90ff" />
+                <Setter Property="Margin" Value="2" />
+                <Setter Property="Padding" Value="0" />
+                <Setter Property="HasShadow" Value="True" />
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+            </Style>
+            <Style x:Key="CoverImageStyle" TargetType="Image">
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="WidthRequest" Value="120" />
+                <Setter Property="HeightRequest" Value="160" />
+                <Setter Property="Aspect" Value="AspectFill" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="VerticalOptions" Value="FillAndExpand" />
+                <Setter Property="Margin" Value="0,10,0,10" />
+            </Style>
+
         </ResourceDictionary>
     </Application.Resources>
     

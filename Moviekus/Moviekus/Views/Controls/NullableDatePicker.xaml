@@ -7,14 +7,23 @@
              x:Class="Moviekus.Views.Controls.NullableDatePicker">
   <ContentView.Content>
       <StackLayout>
-            <StackLayout Orientation="Horizontal">
-                <CheckBox x:Name="chkNotSet" />
-                <Label x:Name="lblNotSet" Text="Nicht gesetzt" HorizontalTextAlignment="Center" />
+
+            <StackLayout Orientation="Horizontal" >
+
+                <StackLayout>
+                    <Label x:Name="lblFrom" Text="Vom" />
+                    <DatePicker x:Name="datePickerFrom" Date="{Binding DateFrom}" Format="d" HorizontalOptions="Start" />
+                    <Label x:Name="lblTo" Text="bis" />
+                    <DatePicker x:Name="datePickerTo" Date="{Binding DateTo}" Format="d" HorizontalOptions="Start" />
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal" Margin="5,0,0,0" VerticalOptions="Start">
+                    <CheckBox x:Name="chkNotSet" />
+                    <Label x:Name="lblNotSet" Text="Nicht gesetzt" VerticalTextAlignment="Center" />
+                </StackLayout>
+
             </StackLayout>
-            <Label x:Name="lblFrom" Text="Vom" />
-            <DatePicker x:Name="datePickerFrom" Date="{Binding DateFrom}" Format="d" HorizontalOptions="Start" />
-            <Label x:Name="lblTo" Text="bis" />
-            <DatePicker x:Name="datePickerTo" Date="{Binding DateTo}" Format="d" HorizontalOptions="Start" />
+          
         </StackLayout>
   </ContentView.Content>
 </ContentView>

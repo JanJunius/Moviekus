@@ -79,7 +79,7 @@ namespace Moviekus.ViewModels.Movies
 
         });
 
-        public ICommand CoverClickedCommand => new Command(async () =>
+        public ICommand CoverButtonCommand => new Command(async () =>
         {
             Stream stream = await DependencyService.Get<IPhotoPickerService>().GetImageStreamAsync();
             if (stream != null)

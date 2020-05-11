@@ -60,23 +60,17 @@ namespace Moviekus.ViewModels.Movies
 
         public ICommand MovieDbCommand => new Command(async () =>
         {
-            if (string.IsNullOrEmpty(Movie.Title) || Movie.Title.Length < 3)
+            if (string.IsNullOrEmpty(Movie.Title) || Movie.Title.Length < 2)
             {
                 await UserDialogs.Instance.AlertAsync(new AlertConfig
                 {
-                    Message = "Bitte einen Titel mit mindestens 3 Zeichen eingeben."
+                    Title = "MovieDb durchsuchen",
+                    Message = "Bitte einen Titel mit mindestens 2 Zeichen eingeben."
                 });
                 return;
             }
 
-            var selectionView = Resolver.Resolve<MovieSelectionPage>();
-            var viewModel = selectionView.BindingContext as MovieSelectionViewModel;
-            viewModel.Title = "Filmauswahl";
-            viewModel.Movie = Movie;
-            viewModel.LoadCommand.Execute(null);
-            viewModel.OnMovieSelectionChanged += async (movie) => await ApplyMovieSelection(movie);
-            await Navigation.PushAsync(selectionView);
-
+            await OpenSelectionPage(MovieDbService.Ref);
         });
 
         public ICommand CoverButtonCommand => new Command(async () =>
@@ -84,24 +78,21 @@ namespace Moviekus.ViewModels.Movies
             Stream stream = await DependencyService.Get<IPhotoPickerService>().GetImageStreamAsync();
             if (stream != null)
             {
-                Movie.Cover = GetImageBytes(stream);
+                Movie.Cover = Utils.GetImageBytes(stream);
                 OnMovieChanged?.Invoke(this, Movie);
                 RaisePropertyChanged(nameof(Movie));
             }
         });
 
-        private byte[] GetImageBytes(Stream input)
+        private async Task OpenSelectionPage(IMovieProvider movieProvider)
         {
-            byte[] buffer = new byte[16 * 1024];
-            using (MemoryStream ms = new MemoryStream())
-            {
-                int read;
-                while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
-                {
-                    ms.Write(buffer, 0, read);
-                }
-                return ms.ToArray();
-            }
+            var selectionView = Resolver.Resolve<MovieSelectionPage>();
+            var viewModel = selectionView.BindingContext as MovieSelectionViewModel;
+            viewModel.Title = "Filmauswahl";
+            viewModel.Movie = Movie;
+            viewModel.LoadCommand.Execute(movieProvider);
+            viewModel.OnMovieSelectionChanged += async (movie) => await ApplyMovieSelection(movie);
+            await Navigation.PushAsync(selectionView);
         }
 
         private async Task ApplyMovieSelection(MovieDto movieDto)
@@ -114,7 +105,7 @@ namespace Moviekus.ViewModels.Movies
             Movie.Runtime = movieDto.Runtime;
             Movie.Cover = movieDto.Cover;
             Movie.Homepage = movieDto.Homepage;
-            Movie.Trailer = movieDto.Trailer;
+            Movie.Trailer = movieDto.TrailerUrl;
             Movie.MovieGenres = await MovieService.GetMovieGenres(Movie, movieDto.Genres);
 
             OnMovieChanged?.Invoke(this, Movie);

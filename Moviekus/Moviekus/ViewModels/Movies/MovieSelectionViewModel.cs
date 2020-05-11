@@ -1,13 +1,10 @@
-﻿using Moviekus.Dto;
+﻿using Acr.UserDialogs;
+using Moviekus.Dto;
 using Moviekus.Models;
 using Moviekus.Services;
 using NLog;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -24,25 +21,37 @@ namespace Moviekus.ViewModels.Movies
 
         public bool IsLoading { get; set; }
 
-        public ICommand LoadCommand => new Command(async () =>
+        private IMovieProvider MovieProvider;
+
+        public ICommand LoadCommand => new Command<IMovieProvider>(async (provider) =>
         {
             if (Movie == null)
                 return;
 
+            MovieProvider = provider;
             IsLoading = true;
 
             try
             {
-                var movies = await MovieDbService.Ref.SearchMovieAsync(Movie.Title);
+                var movies = await MovieProvider.SearchMovieAsync(Movie.Title);
                 Movies = new ObservableCollection<MovieDto>();
 
                 await Task.Run(() =>
                 {
                     foreach (MovieDto movieDto in movies)
                     {
-                        movieDto.Cover = MovieDbService.Ref.GetMovieCover(movieDto);
+                        movieDto.Cover = MovieProvider.GetMovieCover(movieDto);
                         Device.BeginInvokeOnMainThread(() => Movies.Add(movieDto));
                     }
+                });
+            }
+            catch(MaximumUsageException ex)
+            {
+                LogManager.GetCurrentClassLogger().Warn(ex);
+                await UserDialogs.Instance.AlertAsync(new AlertConfig
+                {
+                    Title = "Remote Abfrage",
+                    Message = "Die maximale Anzahl erlaubter Zugriffe auf den gewählten Dienst ist überschritten."
                 });
             }
             catch (Exception ex)
@@ -68,11 +77,11 @@ namespace Moviekus.ViewModels.Movies
                 MovieDto dto = value;
 
                 // Details zum Film nachladen bei Auswahl
-                if (!string.IsNullOrEmpty(value.MovieDbId))
+                if (!string.IsNullOrEmpty(value.ProviderMovieId))
                 {
-                    Task t = Task.Run(() => MovieDbService.Ref.FillMovieDetails(value));
+                    Task t = Task.Run(() => MovieProvider.FillMovieDetails(value));
                     t.Wait();
-                    t = Task.Run(() => MovieDbService.Ref.FillMovieTrailer(value));
+                    t = Task.Run(() => MovieProvider.FillMovieTrailer(value));
                     t.Wait();
                 }
 

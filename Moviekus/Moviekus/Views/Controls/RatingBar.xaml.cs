@@ -14,8 +14,6 @@ namespace Moviekus.Views.Controls
     {
         private static string emptyStarImage = "star_empty.png";
         private static string fillStarImage = "star.png";
-        //private static int imageHeight = 30;
-        //private static int imageWidth = 30;
 
         private Image star1;
         private Image star2;
@@ -84,20 +82,36 @@ namespace Moviekus.Views.Controls
 
             star2.GestureRecognizers.Add(new TapGestureRecognizer
             {
-                Command = new Command(x => Rating = 2)               
+                Command = new Command(() =>
+                {
+                    if (Rating == 2) Rating = 0;
+                        else Rating = 2;
+                })
             });
 
             star3.GestureRecognizers.Add(new TapGestureRecognizer
             {
-                Command = new Command(x => Rating = 3)
+                Command = new Command(() =>
+                {
+                    if (Rating == 3) Rating = 0;
+                        else Rating = 3;
+                })
             });
             star4.GestureRecognizers.Add(new TapGestureRecognizer
             {
-                Command = new Command(x => Rating = 4)
+                Command = new Command(() =>
+                {
+                    if (Rating == 4) Rating = 0;
+                        else Rating = 4;
+                })
             });
             star5.GestureRecognizers.Add(new TapGestureRecognizer
             {
-                Command = new Command(x => Rating = 5)
+                Command = new Command(() =>
+                {
+                    if (Rating == 5) Rating = 0;
+                        else Rating = 5;
+                })
             });            
         }
 

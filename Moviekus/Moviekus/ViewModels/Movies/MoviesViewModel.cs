@@ -30,7 +30,10 @@ namespace Moviekus.ViewModels.Movies
 
         public ICommand LoadMoviesCommand => new Command(async () =>
         {
-            await LoadMovies();
+            var defaultFilter = new FilterService().GetDefault();
+            if (defaultFilter != null)
+                await ApplyFilter(defaultFilter);
+            else await LoadMovies();
         });
 
         public ICommand AddMovieCommand => new Command(async () =>
@@ -53,13 +56,13 @@ namespace Moviekus.ViewModels.Movies
             viewModel.FilterSelected += async (sender, filter) => 
             {
                 if (filter != null)
-                {
-                    Title = $"Filme ({filter.Name})";
+                {                    
+                    filter = await new FilterService().SetDefault(filter);
                     await ApplyFilter(filter);
                 }
                 else
                 {
-                    Title = "Filme";
+                    await new FilterService().ResetDefault();
                     await RemoveFilter();
                 }                
             };
@@ -169,10 +172,7 @@ namespace Moviekus.ViewModels.Movies
         {
             try
             {
-                //var movies = await MoviesService.GetAsync();
-                //var movies = await MoviesService.GetWithSourceAsync();
                 var movies = await MoviesService.GetWithGenresAndSourcesAsync(MovieSortOrder);
-
                 Movies = new ObservableCollection<MoviesItemViewModel>(movies.Select(m => CreateMoviesItemViewModel(m)));
             }
             catch (Exception ex)
@@ -191,6 +191,7 @@ namespace Moviekus.ViewModels.Movies
         {
             await RemoveFilter();
 
+            Title = $"Filme ({filter.Name})";
             var titleEntries = filter.FilterEntries.Where(v => v.FilterEntryType.Property == FilterEntryProperty.Title);
 
             try
@@ -205,17 +206,9 @@ namespace Moviekus.ViewModels.Movies
 
         private async Task RemoveFilter()
         {
+            Title = "Filme";
             await LoadMovies();
         }
 
-        private async Task OrderMovies(MovieSortOrder sortOrder)
-        {
-            switch(sortOrder)
-            {
-                case MovieSortOrder.Title:
-                    Movies = new ObservableCollection<MoviesItemViewModel>(Movies.OrderBy(m => m.Title));
-                    break;
-            }
-        }
     }
 }

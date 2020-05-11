@@ -45,15 +45,6 @@ namespace Moviekus.ViewModels.Movies
                     }
                 });
             }
-            catch(MaximumUsageException ex)
-            {
-                LogManager.GetCurrentClassLogger().Warn(ex);
-                await UserDialogs.Instance.AlertAsync(new AlertConfig
-                {
-                    Title = "Remote Abfrage",
-                    Message = "Die maximale Anzahl erlaubter Zugriffe auf den gewählten Dienst ist überschritten."
-                });
-            }
             catch (Exception ex)
             {
                 LogManager.GetCurrentClassLogger().Error(ex);

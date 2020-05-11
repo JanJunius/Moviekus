@@ -50,9 +50,12 @@ namespace Moviekus.ViewModels.Movies
             {
                 Movie = movie;
                 RaisePropertyChanged(nameof(Movie));
+                // Die folgenden Properties stammen nicht aus Movie, sondern dem ViewModel selbst und benötigen daher ein eigenes Event
                 RaisePropertyChanged(nameof(ReleaseDateText));
                 RaisePropertyChanged(nameof(LastSeenText));
                 RaisePropertyChanged(nameof(Genres));
+                RaisePropertyChanged(nameof(HasHomepage));
+                RaisePropertyChanged(nameof(HasTrailer));
             };
 
             await Navigation.PushAsync(movieEditView);

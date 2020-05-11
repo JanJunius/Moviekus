@@ -31,6 +31,22 @@ namespace Moviekus.Services
         {
             using (var context = new MoviekusDbContext())
             {
+                var movies = await context.Movies.Include(s => s.Source).ToListAsync();
+
+                foreach(var movie in movies)
+                {
+                    // Dieser Aufruf führt dazu, dass die bereits geladenen Movie-Objekte mit den MovieGenres angereichert werden
+                    // Ein manuelles Add ist nicht erforderlich!
+                    var movieGenres = context.MovieGenres.Where(mg => mg.Movie == movie).Include(g => g.Genre).ToList();
+                }
+                return movies;
+            }
+
+            /*
+             * Diese Variante funktioniert nur bei kleinen Datenmengen. Danach kommt es zu folgendem, nicht näher erklärbarem Fehler:
+             * SQLite Error 1: 'SQL logic error' 
+            using (var context = new MoviekusDbContext())
+            {
                 switch(sortOrder)
                 {
                     case MovieSortOrder.Title:
@@ -44,10 +60,14 @@ namespace Moviekus.Services
                     case MovieSortOrder.Runtime:
                         return await context.Movies.OrderBy(m => m.Runtime).Include(s => s.Source).Include(m => m.MovieGenres).ThenInclude(g => g.Genre).ToListAsync();
                     default:
-                        return await context.Movies.Include(s => s.Source).Include(m => m.MovieGenres).ThenInclude(g => g.Genre).ToListAsync();
-                }
-               
+                        return await context.Movies
+                            .Include(s => s.Source)
+                            .Include(m => m.MovieGenres)
+                            .ThenInclude(g => g.Genre)
+                            .ToListAsync();
+                }               
             }
+            */
         }
 
         public async Task<Movie> SaveMovieAsync(Movie movie)
@@ -61,14 +81,24 @@ namespace Moviekus.Services
             List<MovieGenre> movieGenres = new List<MovieGenre>();
             GenreService genreService = new GenreService();
 
-            foreach(string genreName in genres)
+            // Bestimmen der Genres, die dem Film neu zugeordnet werden müssen
+            var existingGenres = movie.MovieGenres.Where(x => x.Movie == movie).Select(mg => mg.Genre);
+            var existingGenreNames = existingGenres.Select(s => s.Name);
+            var newGenreNames = (from genre in genres select genre).Except(from existingGenre in existingGenreNames select existingGenre);
+
+            foreach (string genreName in newGenreNames)
             {
+                // Genres anlegen, falls es noch nicht existiert
                 Genre genre = await genreService.GetOrCreateGenre(genreName);
+
                 MovieGenre movieGenre = MovieGenre.CreateNew<MovieGenre>();
                 movieGenre.Movie = movie;
                 movieGenre.Genre = genre;
                 movieGenres.Add(movieGenre);
             }
+
+            // Auch die bereits vorhandenen, zugeordneten Genres zurückgeben, damit diese angezeigt werden
+            movieGenres.AddRange(movie.MovieGenres);
 
             return movieGenres;
         }

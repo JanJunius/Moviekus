@@ -28,6 +28,52 @@ namespace Moviekus.Services
             }
         }
 
+        public Filter GetDefault()
+        {
+            using (var context = new MoviekusDbContext())
+            {
+                return context.Filter.Where(f => f.IsDefault == true).Include(fe => fe.FilterEntries).ThenInclude(fet => fet.FilterEntryType).FirstOrDefault();
+            }
+        }
+
+        public async Task<Filter> SetDefault(Filter filter)
+        {
+            try
+            {
+                using (var context = new MoviekusDbContext())
+                {
+                    await ResetDefault();
+                    filter.IsDefault = true;
+                    return await SaveChangesAsync(filter);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().Error(ex);
+            }
+            return filter;
+        }
+
+        public async Task ResetDefault()
+        {
+            try
+            {
+                using (var context = new MoviekusDbContext())
+                {
+                    var defaultFilter = GetDefault();
+                    if (defaultFilter != null)
+                    {
+                        defaultFilter.IsDefault = false;
+                        await SaveChangesAsync(defaultFilter);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().Error(ex);
+            }
+        }
+
         protected override async Task InsertAsync(MoviekusDbContext context, Filter filter)
         {
             try

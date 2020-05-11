@@ -101,7 +101,7 @@ namespace Moviekus.ViewModels.Movies
             Movie.Description = movieDto.Overview;
             Movie.ReleaseDate = movieDto.ReleaseDate;
             Movie.LastSeen = MoviekusDefines.MinDate;
-            Movie.Rating = 1;
+            Movie.Rating = 0;
             Movie.Runtime = movieDto.Runtime;
             Movie.Cover = movieDto.Cover;
             Movie.Homepage = movieDto.Homepage;

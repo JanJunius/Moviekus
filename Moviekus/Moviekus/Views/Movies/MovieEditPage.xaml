@@ -32,7 +32,7 @@
                 <customcontrol:NullableDatePicker DateFrom="{Binding Movie.ReleaseDate}" ShowRange="False"/>
 
                 <Label Text="Zuletzt gesehen" Style="{StaticResource HeadingLabelStyle}" />
-                <customcontrol:NullableDatePicker DateFrom="{Binding Movie.LastSeen}" DateTo="{Binding Movie.LastSeen}" ShowRange="False"/>
+                <customcontrol:NullableDatePicker DateFrom="{Binding Movie.LastSeen}" ShowRange="False"/>
 
                 <Label Text="Laufzeit (Minuten)" Style="{StaticResource HeadingLabelStyle}" />
                 <Entry Text="{Binding Movie.Runtime}" Keyboard="Numeric" MaxLength="3" FontSize="Small" />
@@ -62,6 +62,9 @@
 
                 <Label Text="Homepage" Style="{StaticResource HeadingLabelStyle}" />
                 <Entry Text="{Binding Movie.Homepage}" d:Text="Adresse der Webseite zum Film" FontSize="Small" />
+
+                <Label Text="Trailer" Style="{StaticResource HeadingLabelStyle}" />
+                <Entry Text="{Binding Movie.Trailer}" d:Text="Adresse des Trailers zum Film" FontSize="Small" />
 
                 <StackLayout Orientation="Horizontal" Padding="5">
                     <Label Text="Cover" Style="{StaticResource HeadingLabelStyle}" />

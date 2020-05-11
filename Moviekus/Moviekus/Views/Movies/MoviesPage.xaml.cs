@@ -34,8 +34,8 @@ namespace Moviekus.Views.Movies
         {
             base.OnAppearing();
 
-            if (viewModel.Movies.Count == 0)
-                viewModel.LoadMoviesCommand.Execute(null);
+            //if (viewModel.Movies.Count == 0)
+            viewModel.LoadMoviesCommand.Execute(null);
 
         }
 

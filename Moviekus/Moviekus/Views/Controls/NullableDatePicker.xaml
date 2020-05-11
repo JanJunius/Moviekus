@@ -12,9 +12,9 @@
 
                 <StackLayout>
                     <Label x:Name="lblFrom" Text="Vom" />
-                    <DatePicker x:Name="datePickerFrom" Date="{Binding DateFrom}" Format="d" HorizontalOptions="Start" />
+                    <DatePicker x:Name="datePickerFrom" Date="{Binding DateFrom}" DateSelected="OnDateFromSelected" Format="d" HorizontalOptions="Start" />
                     <Label x:Name="lblTo" Text="bis" />
-                    <DatePicker x:Name="datePickerTo" Date="{Binding DateTo}" Format="d" HorizontalOptions="Start" />
+                    <DatePicker x:Name="datePickerTo" Date="{Binding DateTo}" DateSelected="OnDateToSelected" Format="d" HorizontalOptions="Start" />
                 </StackLayout>
 
                 <StackLayout Orientation="Horizontal" Margin="5,0,0,0" VerticalOptions="Start">

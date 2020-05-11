@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog.Config;
+using System;
 using System.Runtime.CompilerServices;
 
 using Xamarin.Forms;
@@ -17,7 +18,7 @@ namespace Moviekus.Views.Controls
 
             DateFrom = DateTo = MoviekusDefines.MinDate;
 
-            // Die Checkbox muss beim Öffnen einmalig initialisiert werden
+            // Die CheckBox muss beim Öffnen einmalig initialisiert werden
             InitializeNotSetCheckbox = true;
 
             chkNotSet.CheckedChanged += (sender, args) =>
@@ -81,7 +82,7 @@ namespace Moviekus.Views.Controls
                 datePickerFrom.Date = DateFrom;
                 ShowRelevantControls();
 
-                if (InitializeNotSetCheckbox && DateFrom != DateTime.MinValue)
+                if (/*InitializeNotSetCheckbox &&*/ DateFrom != DateTime.MinValue)
                 {
                     chkNotSet.IsChecked = DateFrom == MoviekusDefines.MinDate;
                     InitializeNotSetCheckbox = false;
@@ -105,5 +106,16 @@ namespace Moviekus.Views.Controls
             
             lblNotSet.Text = DateFrom == MoviekusDefines.MinDate ? "Nicht gesetzt" : "Zurücksetzen";
         }
+
+        private void OnDateFromSelected(object sender, DateChangedEventArgs args)
+        {
+            DateFrom = args.NewDate;
+        }
+ 
+        private void OnDateToSelected(object sender, DateChangedEventArgs args)
+        {
+            DateTo = args.NewDate;
+        }
+
     }
 }

@@ -13,6 +13,8 @@ namespace Moviekus.Models
         [Required]
         public string Name { get; set;  }
 
+        public bool IsDefault { get; set; }
+
         public ICollection<FilterEntry> FilterEntries { get; set; }
 
         public Filter()
@@ -24,12 +26,14 @@ namespace Moviekus.Models
         {
             return obj is Filter filter &&
                    base.Equals(obj) &&
-                   Name == filter.Name;
+                   Name == filter.Name &&
+                   IsDefault == filter.IsDefault &&
+                   EqualityComparer<ICollection<FilterEntry>>.Default.Equals(FilterEntries, filter.FilterEntries);
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(base.GetHashCode(), Name);
+            return HashCode.Combine(base.GetHashCode(), Name, IsDefault, FilterEntries);
         }
     }
 }

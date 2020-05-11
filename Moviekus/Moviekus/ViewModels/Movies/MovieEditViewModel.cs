@@ -73,21 +73,6 @@ namespace Moviekus.ViewModels.Movies
             await OpenSelectionPage(MovieDbService.Ref);
         });
 
-        public ICommand ImDbCommand => new Command(async () =>
-        {
-            if (string.IsNullOrEmpty(Movie.Title) || Movie.Title.Length < 2)
-            {
-                await UserDialogs.Instance.AlertAsync(new AlertConfig
-                {
-                    Title = "ImDb durchsuchen",
-                    Message = "Bitte einen Titel mit mindestens 2 Zeichen eingeben."
-                });
-                return;
-            }
-
-            await OpenSelectionPage(ImDbService.Ref);
-        });
-
         public ICommand CoverButtonCommand => new Command(async () =>
         {
             Stream stream = await DependencyService.Get<IPhotoPickerService>().GetImageStreamAsync();

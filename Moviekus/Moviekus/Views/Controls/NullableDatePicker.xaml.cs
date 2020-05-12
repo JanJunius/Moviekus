@@ -10,21 +10,18 @@ namespace Moviekus.Views.Controls
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class NullableDatePicker : ContentView
     {
-        private bool InitializeNotSetCheckbox;
-
         public NullableDatePicker()
         {
             InitializeComponent();
 
             DateFrom = DateTo = MoviekusDefines.MinDate;
 
-            // Die CheckBox muss beim Öffnen einmalig initialisiert werden
-            InitializeNotSetCheckbox = true;
-
             chkNotSet.CheckedChanged += (sender, args) =>
             {
                 if (args.Value == true)
+                {
                     DateFrom = DateTo = MoviekusDefines.MinDate;
+                }                    
                 else
                 {
                     if (DateFrom == MoviekusDefines.MinDate) DateFrom = DateTime.Today;
@@ -39,7 +36,15 @@ namespace Moviekus.Views.Controls
             propertyName: nameof(ShowRange),
             returnType: typeof(bool),
             declaringType: typeof(NullableDatePicker),
-            defaultBindingMode: BindingMode.OneWay);
+            propertyChanged: ShowRangePropertyChanged,
+            defaultBindingMode: BindingMode.TwoWay);
+
+        private static void ShowRangePropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            var ctrl = (NullableDatePicker)bindable;
+            ctrl.ShowRange = (bool)newValue;
+            ctrl.ShowRelevantControls();
+        }
 
         public bool ShowRange
         {
@@ -57,7 +62,10 @@ namespace Moviekus.Views.Controls
         public DateTime DateFrom
         {
             get { return (DateTime)GetValue(DateFromProperty); }
-            set { SetValue(DateFromProperty, value); }
+            set 
+            { 
+                SetValue(DateFromProperty, value);
+            }
         }
 
         public static readonly BindableProperty DateToProperty =
@@ -82,17 +90,15 @@ namespace Moviekus.Views.Controls
                 datePickerFrom.Date = DateFrom;
                 ShowRelevantControls();
 
-                if (/*InitializeNotSetCheckbox &&*/ DateFrom != DateTime.MinValue)
-                {
+                if (DateFrom != DateTime.MinValue)
                     chkNotSet.IsChecked = DateFrom == MoviekusDefines.MinDate;
-                    InitializeNotSetCheckbox = false;
-                }
             }
             if (propertyName == DateToProperty.PropertyName)
             {
                 datePickerTo.Date = DateTo;
                 ShowRelevantControls();
             }
+
         }
 
         private void ShowRelevantControls()
@@ -100,21 +106,21 @@ namespace Moviekus.Views.Controls
             if (DateFrom != MoviekusDefines.MinDate)
             {
                 datePickerFrom.IsVisible = true;
-                datePickerTo.IsVisible = lblFrom.IsVisible = lblTo.IsVisible = ShowRange;
+                datePickerTo.IsVisible = lblTo.IsVisible = ShowRange;
             }
-            else datePickerFrom.IsVisible = datePickerTo.IsVisible = lblFrom.IsVisible = lblTo.IsVisible = false;
+            else datePickerFrom.IsVisible = datePickerTo.IsVisible = lblTo.IsVisible = false;
             
             lblNotSet.Text = DateFrom == MoviekusDefines.MinDate ? "Nicht gesetzt" : "Zurücksetzen";
         }
 
         private void OnDateFromSelected(object sender, DateChangedEventArgs args)
         {
-            DateFrom = args.NewDate;
+            //DateFrom = args.NewDate;
         }
  
         private void OnDateToSelected(object sender, DateChangedEventArgs args)
         {
-            DateTo = args.NewDate;
+            //DateTo = args.NewDate;
         }
 
     }

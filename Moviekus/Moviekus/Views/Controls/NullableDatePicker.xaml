@@ -8,12 +8,11 @@
   <ContentView.Content>
       <StackLayout>
 
-            <StackLayout Orientation="Horizontal" >
+            <StackLayout Orientation="Vertical" >
 
-                <StackLayout>
-                    <Label x:Name="lblFrom" Text="Vom" />
+                <StackLayout Orientation="Horizontal">
                     <DatePicker x:Name="datePickerFrom" Date="{Binding DateFrom}" DateSelected="OnDateFromSelected" Format="d" HorizontalOptions="Start" />
-                    <Label x:Name="lblTo" Text="bis" />
+                    <Label x:Name="lblTo" Text="und" />
                     <DatePicker x:Name="datePickerTo" Date="{Binding DateTo}" DateSelected="OnDateToSelected" Format="d" HorizontalOptions="Start" />
                 </StackLayout>
 

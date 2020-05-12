@@ -1,4 +1,6 @@
-﻿using Moviekus.Views.Filter;
+﻿using Moviekus.Dto;
+using Moviekus.Models;
+using Moviekus.Views.Filter;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,6 +26,24 @@ namespace Moviekus.ViewModels.Filter
             FilterEntryRatingCellTemplate = new DataTemplate(typeof(FilterEntryRatingCellTemplate));
             FilterEntryRuntimeCellTemplate = new DataTemplate(typeof(FilterEntryRuntimeCellTemplate));
         }
+
+        public static IList<FilterEntryOperator> GetAllowedOperators(FilterEntry filterEntry)
+        {
+            switch (filterEntry.FilterEntryType.Property)
+            {
+                case FilterEntryProperty.Title: 
+                case FilterEntryProperty.Description:
+                case FilterEntryProperty.Remarks: return new List<FilterEntryOperator>() { FilterEntryOperator.Equal, FilterEntryOperator.NotEqual, FilterEntryOperator.Contains };
+                case FilterEntryProperty.Source:
+                case FilterEntryProperty.Genre: return new List<FilterEntryOperator>() { FilterEntryOperator.Equal, FilterEntryOperator.NotEqual };
+                case FilterEntryProperty.Rating:
+                case FilterEntryProperty.Runtime:
+                case FilterEntryProperty.ReleaseDate:
+                case FilterEntryProperty.LastSeen: return new List<FilterEntryOperator>() { FilterEntryOperator.Equal, FilterEntryOperator.NotEqual, FilterEntryOperator.Between, FilterEntryOperator.Greater, FilterEntryOperator.Lesser }; 
+                default: return new List<FilterEntryOperator>();
+            }
+        }
+
         protected override DataTemplate OnSelectTemplate(object item, BindableObject container)
         {
             var viewModel = item as FilterDetailItemViewModel;

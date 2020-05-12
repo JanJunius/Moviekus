@@ -7,21 +7,24 @@
              mc:Ignorable="d"
              x:Class="Moviekus.Views.Filter.FilterEntryRatingCellTemplate">
   <ViewCell.View>
-      <StackLayout>
-            <StackLayout Orientation="Horizontal" Spacing="5">
-                <Label Text="Von" />
+        <StackLayout Padding="5">
+            <StackLayout Orientation="Horizontal">
+                <Picker 
+                    FontSize="Small"
+                    VerticalOptions="Start"
+                    ItemsSource="{Binding Operators}"
+                    ItemDisplayBinding="{Binding OperatorName}"
+                    SelectedItem="{Binding SelectedOperator, Mode=TwoWay}"/>
                 <customcontrol:RatingBar 
                         HorizontalOptions="Start"  
                         IsEnabled="True"
                         IsVisible="True"                     
                         Rating ="{Binding RatingFrom}" />
-            </StackLayout>
-            <StackLayout Orientation="Horizontal" Spacing="5">
-                <Label Text="Bis" />
+                <Label Text="und" Margin="5,0,5,0" VerticalOptions="Center" IsVisible="{Binding ShowRange}"/>
                 <customcontrol:RatingBar 
                         HorizontalOptions="Start"  
                         IsEnabled="True"
-                        IsVisible="True"
+                        IsVisible="{Binding ShowRange}"
                         Rating ="{Binding RatingTo}"/>
             </StackLayout>
         </StackLayout>

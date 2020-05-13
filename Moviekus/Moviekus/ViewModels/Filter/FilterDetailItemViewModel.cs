@@ -44,6 +44,8 @@ namespace Moviekus.ViewModels.Filter
 
         public bool HasDate => DateFrom != MoviekusDefines.MinDate;
 
+        public bool IsSelected { get; set; }
+
         public DateTime DateFrom
         {
             get

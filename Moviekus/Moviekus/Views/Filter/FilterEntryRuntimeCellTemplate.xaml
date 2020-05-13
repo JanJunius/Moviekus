@@ -8,15 +8,17 @@
   <ViewCell.View>
         <StackLayout Padding="5">
             <StackLayout Orientation="Horizontal">
+                <CheckBox IsChecked="{Binding IsSelected}" HorizontalOptions="Start"/>
                 <Picker 
                     FontSize="Small"
                     VerticalOptions="Start"
+                    WidthRequest="120"
                     ItemsSource="{Binding Operators}"
                     ItemDisplayBinding="{Binding OperatorName}"
                     SelectedItem="{Binding SelectedOperator, Mode=TwoWay}"/>
-                <Entry Text="{Binding FilterEntry.ValueFrom}" HorizontalOptions="Start" />
+                <Entry Text="{Binding FilterEntry.ValueFrom}" HorizontalOptions="FillAndExpand" />
                 <Label Text="und" Margin="5,0,5,0" VerticalOptions="Center" IsVisible="{Binding ShowRange}"/>
-                <Entry Text="{Binding FilterEntry.ValueTo}"  HorizontalOptions="Start" IsVisible="{Binding ShowRange}"/>
+                <Entry Text="{Binding FilterEntry.ValueTo}" HorizontalOptions="FillAndExpand" IsVisible="{Binding ShowRange}"/>
                 <Label Text="Minuten" VerticalOptions="Center"/>
             </StackLayout>
         </StackLayout>

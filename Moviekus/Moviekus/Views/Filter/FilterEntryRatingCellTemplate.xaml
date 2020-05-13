@@ -9,24 +9,35 @@
   <ViewCell.View>
         <StackLayout Padding="5">
             <StackLayout Orientation="Horizontal">
+                <CheckBox IsChecked="{Binding IsSelected}" HorizontalOptions="Start"/>
                 <Picker 
                     FontSize="Small"
                     VerticalOptions="Start"
+                    WidthRequest="120"
                     ItemsSource="{Binding Operators}"
                     ItemDisplayBinding="{Binding OperatorName}"
                     SelectedItem="{Binding SelectedOperator, Mode=TwoWay}"/>
-                <customcontrol:RatingBar 
-                        HorizontalOptions="Start"  
-                        IsEnabled="True"
-                        IsVisible="True"                     
-                        Rating ="{Binding RatingFrom}" />
-                <Label Text="und" Margin="5,0,5,0" VerticalOptions="Center" IsVisible="{Binding ShowRange}"/>
-                <customcontrol:RatingBar 
+                <StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="5">
+                        <customcontrol:RatingBar 
+                            HorizontalOptions="Start"  
+                            IsEnabled="True"
+                            IsVisible="True"                     
+                            StarSize="25"
+                            Rating ="{Binding RatingFrom}" />
+                        <Label Text="und" VerticalOptions="Center" IsVisible="{Binding ShowRange}" />
+                    </StackLayout>
+                    <customcontrol:RatingBar 
                         HorizontalOptions="Start"  
                         IsEnabled="True"
                         IsVisible="{Binding ShowRange}"
+                        StarSize="25"
                         Rating ="{Binding RatingTo}"/>
+                </StackLayout>
             </StackLayout>
         </StackLayout>
   </ViewCell.View>
 </ViewCell>
+
+
+

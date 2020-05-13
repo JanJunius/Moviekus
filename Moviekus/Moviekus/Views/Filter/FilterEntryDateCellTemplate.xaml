@@ -9,9 +9,11 @@
   <ViewCell.View>
         <StackLayout Padding="5">
             <StackLayout Orientation="Horizontal">
+                <CheckBox IsChecked="{Binding IsSelected}" HorizontalOptions="Start"/>
                 <Picker 
                     FontSize="Small"
                     VerticalOptions="Start"
+                    WidthRequest="120"
                     ItemsSource="{Binding Operators}"
                     ItemDisplayBinding="{Binding OperatorName}"
                     IsVisible="{Binding HasDate}"

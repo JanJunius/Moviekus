@@ -20,7 +20,7 @@
                     <ViewCell>
                         <StackLayout Orientation="Vertical">
                             <Label Text="{Binding Filter.Name}" TextColor="#3d5f8a" FontAttributes="Bold" FontSize="Title" />
-                            <Label Text="{Binding Description}" Padding="0,0,0,10" FontSize="Micro" FontAttributes="Italic"/>
+                            <Label Text="{Binding Description}" Padding="0,0,0,10" FontSize="Micro" FontAttributes="Italic" HorizontalTextAlignment="Start" />
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>

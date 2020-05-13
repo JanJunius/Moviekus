@@ -22,21 +22,34 @@
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
-        <StackLayout Padding="14">
-            <Label Text="Name" Style="{StaticResource HeadingLabelStyle}" />
-            <Entry Text="{Binding Filter.Name}"/>
+            <StackLayout Padding="14">
+                <Label Text="Name" Style="{StaticResource HeadingLabelStyle}" />
+                <Entry Text="{Binding Filter.Name}"/>
 
-            <ListView 
+                <ListView 
                 ItemsSource="{Binding FilterEntries}"
                 GroupDisplayBinding="{Binding Key}"
                 IsGroupingEnabled="True"
                 VerticalOptions="FillAndExpand"
                 HasUnevenRows="true"
-                SelectedItem="{Binding SelectedFilterEntry}"
-                ItemTemplate="{StaticResource FilterEntryDataTemplateSelector}">
-            </ListView>
+                Margin="10,10,10,10"
+                ItemTemplate="{StaticResource FilterEntryDataTemplateSelector}"
+                SelectedItem="{Binding SelectedFilterEntry}">
 
-        </StackLayout>
+                    <ListView.GroupHeaderTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <ContentView Padding="5,5,5,5">
+                                    <Label Text="{Binding Key}" FontSize="Subtitle" TextColor="#000066" FontAttributes="Italic" />
+                                </ContentView>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.GroupHeaderTemplate>
+
+                </ListView>
+
+            </StackLayout>
+
 
     </ContentPage.Content>
 </ContentPage>

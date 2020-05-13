@@ -8,13 +8,16 @@
   <ViewCell.View>
         <StackLayout Padding="5">
             <StackLayout Orientation="Horizontal">
+                <CheckBox IsChecked="{Binding IsSelected}" HorizontalOptions="Start"/>
                 <Picker 
                     FontSize="Small"
                     ItemsSource="{Binding Operators}"
                     ItemDisplayBinding="{Binding OperatorName}"
+                    WidthRequest="120"
                     SelectedItem="{Binding SelectedOperator, Mode=TwoWay}"/>
                 <Picker FontSize="Small"
                     ItemsSource="{Binding Genres}"
+                    HorizontalOptions="FillAndExpand"
                     ItemDisplayBinding="{Binding Name}"                     
                     SelectedItem="{Binding Genre, Mode=TwoWay}"/>
             </StackLayout>

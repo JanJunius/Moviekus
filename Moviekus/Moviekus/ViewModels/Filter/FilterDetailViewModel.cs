@@ -123,10 +123,7 @@ namespace Moviekus.ViewModels.Filter
             await Navigation.PushAsync(selectionView);
         });
 
-        public ICommand RemoveEntryCommand => new Command(async () =>
-        {
-            await RemoveFilterEntry();
-        });
+        public ICommand RemoveEntryCommand => new Command(() => RemoveFilterEntries());
 
         private FilterEntry AddFilterEntry()
         {
@@ -137,24 +134,29 @@ namespace Moviekus.ViewModels.Filter
             return filterEntry;
         }
 
-        private async Task RemoveFilterEntry()        
+        private void RemoveFilterEntries()        
         {
-            if (SelectedFilterEntry == null)
+            foreach (var groupedItems in FilterEntries.Select(g => g.Items))
             {
-                await UserDialogs.Instance.AlertAsync(new AlertConfig
-                {
-                    Message = "Bitte den zu entfernenden Eintrag auswählen"
-                });
-                return;
+                var selectedEntries = groupedItems.Where(m => m.IsSelected == true).ToList();
+                for (int i=selectedEntries.Count-1;i>=0;i--)
+                    RemoveFilterEntry(selectedEntries[i]);
             }
-            // Ein neu angelegtes, noch nicht in der DB gespeichertes Objekt muss nicht gelöscht werden
-            if (!SelectedFilterEntry.FilterEntry.IsNew)
-                SelectedFilterEntry.FilterEntry.IsDeleted = true;
-            SelectedFilterEntry.FilterEntry.IsNew = SelectedFilterEntry.FilterEntry.IsModified = false;
+        }
 
-            var grouping = FilterEntries.Where(g => g.Key == SelectedFilterEntry.FilterEntry.FilterEntryType.Name).FirstOrDefault();
+        private void RemoveFilterEntry(FilterDetailItemViewModel selectedViewModel)
+        {
+            if (selectedViewModel == null)
+                return;
+
+            // Ein neu angelegtes, noch nicht in der DB gespeichertes Objekt muss nicht gelöscht werden
+            if (!selectedViewModel.FilterEntry.IsNew)
+                selectedViewModel.FilterEntry.IsDeleted = true;
+            selectedViewModel.FilterEntry.IsNew = selectedViewModel.FilterEntry.IsModified = false;
+
+            var grouping = FilterEntries.Where(g => g.Key == selectedViewModel.FilterEntry.FilterEntryType.Name).FirstOrDefault();
             if (grouping != null)
-                grouping.Remove(CreateFilterDetailItemViewModel(SelectedFilterEntry.FilterEntry));
+                grouping.Remove(CreateFilterDetailItemViewModel(selectedViewModel.FilterEntry));
         }
 
         private void LoadFilterEntries()

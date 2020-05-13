@@ -29,21 +29,7 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <Grid Padding="15,10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="50"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <Image 
-                                Grid.Column="0"
-                                Source="{Binding ImageUri}" />
-                            <Label 
-                                Grid.Column="1"
-                                Text="{Binding Source.Name}"
-                                FontSize="Medium" />
-
-                        </Grid>
+                        <Label Text="{Binding Source.Name}" Padding="5" FontSize="Medium" />
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>

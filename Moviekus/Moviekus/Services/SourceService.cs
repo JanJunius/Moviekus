@@ -10,13 +10,5 @@ namespace Moviekus.Services
 {
     public class SourceService : BaseService<Source>
     {
-        public static Source GetDefaultSource()
-        {
-            
-            using (var context = new MoviekusDbContext())
-            {
-                return context.Sources.Where(s => s.SourceTypeName == SourceType.DefaultSourceType.Name).FirstOrDefault();
-            }
-        }
     }
 }

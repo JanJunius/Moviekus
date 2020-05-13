@@ -142,10 +142,13 @@ namespace Moviekus.ViewModels.Filter
         {
             GenreService genreService = new GenreService();
 
-            switch(filterEntry.Operator)
+            var genre = genreService.Get(filterEntry.ValueFrom);
+            string genreName = genre != null ? genre.Name : "unbekanntes Genre";
+
+            switch (filterEntry.Operator)
             {
-                case FilterEntryOperator.Equal: return $" ist '{genreService.Get(filterEntry.ValueFrom).Name}'";
-                case FilterEntryOperator.NotEqual: return $" ist nicht '{genreService.Get(filterEntry.ValueFrom).Name}'";
+                case FilterEntryOperator.Equal: return $" ist '{genreName}'";
+                case FilterEntryOperator.NotEqual: return $" ist nicht '{genreName}'";
                 default: return "Ungültiger Filter-Operator";
             }
         }
@@ -154,10 +157,13 @@ namespace Moviekus.ViewModels.Filter
         {
             SourceService sourceService = new SourceService();
 
-            switch(filterEntry.Operator)
+            var source = sourceService.Get(filterEntry.ValueFrom);
+            string sourceName = source != null ? source.Name : "unbekannte Quelle";
+
+            switch (filterEntry.Operator)
             {
-                case FilterEntryOperator.Equal: return $" bei '{sourceService.Get(filterEntry.ValueFrom).Name}'";
-                case FilterEntryOperator.NotEqual: return $" nicht bei'{sourceService.Get(filterEntry.ValueFrom).Name}'";
+                case FilterEntryOperator.Equal: return $" '{sourceName}'";
+                case FilterEntryOperator.NotEqual: return $" nicht '{sourceName}'";
                 default: return "Ungültiger Filter-Operator";
             }
         }

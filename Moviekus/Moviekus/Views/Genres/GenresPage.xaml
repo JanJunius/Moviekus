@@ -28,10 +28,7 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <Label 
-                            Text="{Binding Genre.Name}"
-                            Padding="14"
-                            FontSize="Medium" />
+                        <Label Text="{Binding Genre.Name}" Padding="5" FontSize="Medium" />
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>

@@ -17,14 +17,6 @@
         <StackLayout Padding="14">
             <Label Text="Name" Style="{StaticResource HeadingLabelStyle}"/>
             <Entry Text="{Binding Source.Name}"/>
-            <Label Text="Art der Quelle" Style="{StaticResource HeadingLabelStyle}"/>
-            <Label Text="{Binding Source.SourceTypeName}" FontSize="Medium"/>
-            <Picker FontSize="Small"
-                    TitleColor="Blue"                    
-                    ItemsSource="{Binding SourceTypes}"
-                    ItemDisplayBinding="{Binding Name}"                     
-                    SelectedItem="{Binding SelectedSourceType, Mode=TwoWay}"/>
-            
         </StackLayout>
 
     </ContentPage.Content>

@@ -34,9 +34,9 @@ namespace Moviekus.ViewModels.Sources
         public ICommand DeleteCommand => new Command(async () =>
         {
             var result = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig
-            { 
+            {
                 Title = "Quelle löschen",
-                Message = "Diese Quelle wirklich löschen?",
+                Message = "Diese Quelle und ALLE verbundenen Filme wirklich löschen?",
                 OkText = "Ja",
                 CancelText = "Nein"
             });
@@ -63,42 +63,9 @@ namespace Moviekus.ViewModels.Sources
                         Message = errorMsg
                     });
                 }
-                
+
                 await Navigation.PopAsync();
             }
         });
-
-        public IList<SourceType> SourceTypes
-        {
-            get
-            {
-                return SourceType.AvailableSourceTypes;
-            }
-        }
-
-        private SourceType _selectedSourceType;
-
-        public SourceType SelectedSourceType
-        {
-            get 
-            {
-                /*
-                if (Source == null)
-                    return null;
-                return SourceType.AvailableSourceTypes.FirstOrDefault(s => s.Name == Source.SourceTypeName);
-                */
-                return _selectedSourceType;
-            }
-            set
-            {
-                if (Source != null && value != null)
-                {
-                    SetProperty(ref _selectedSourceType, value);
-                    Source.SourceTypeName = value.Name;
-                }
-                    
-            }
-        }
-
     }
 }

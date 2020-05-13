@@ -42,8 +42,6 @@ namespace Moviekus.ViewModels.Filter
         private readonly ObservableRangeCollection<Grouping<string, FilterDetailItemViewModel>> _filterEntries = new ObservableRangeCollection<Grouping<string, FilterDetailItemViewModel>>();
         public ObservableCollection<Grouping<string, FilterDetailItemViewModel>> FilterEntries => _filterEntries;
 
-        public FilterDetailItemViewModel SelectedFilterEntry { get; set; }
-
         public ICommand SaveCommand => new Command(async () =>
         {
             try

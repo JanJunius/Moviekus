@@ -33,8 +33,7 @@
                 VerticalOptions="FillAndExpand"
                 HasUnevenRows="true"
                 Margin="10,10,10,10"
-                ItemTemplate="{StaticResource FilterEntryDataTemplateSelector}"
-                SelectedItem="{Binding SelectedFilterEntry}">
+                ItemTemplate="{StaticResource FilterEntryDataTemplateSelector}">
 
                     <ListView.GroupHeaderTemplate>
                         <DataTemplate>

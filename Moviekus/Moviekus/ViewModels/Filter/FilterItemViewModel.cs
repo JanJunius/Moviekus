@@ -66,16 +66,16 @@ namespace Moviekus.ViewModels.Filter
                 case FilterEntryProperty.Description:
                 case FilterEntryProperty.Remarks:
                 case FilterEntryProperty.Title:
-                    return $" enthält '{filterEntry.ValueFrom}'";
+                    return GetStringText(filterEntry);
                 case FilterEntryProperty.Genre:
                     return GetGenreText(filterEntry);
                 case FilterEntryProperty.LastSeen:
                 case FilterEntryProperty.ReleaseDate:
                     return GetDateText(filterEntry);
                 case FilterEntryProperty.Rating:
-                    return GetRatingText(filterEntry);
+                    return GetIntegerText(filterEntry, "Sterne");
                 case FilterEntryProperty.Runtime:
-                    return GetRuntimeText(filterEntry); ;
+                    return GetIntegerText(filterEntry, "Minuten"); 
                 case FilterEntryProperty.Source:
                     return GetSourceText(filterEntry);
                 default:
@@ -83,60 +83,83 @@ namespace Moviekus.ViewModels.Filter
             }
         }
 
+        private string GetStringText(FilterEntry filterEntry)
+        {
+            switch(filterEntry.Operator)
+            {
+                case FilterEntryOperator.Equal: return $" ist gleich '{filterEntry.ValueFrom}'";
+                case FilterEntryOperator.NotEqual: return $" ist nicht gleich '{filterEntry.ValueFrom}'";
+                case FilterEntryOperator.Contains: return $" enthält '{filterEntry.ValueFrom}'";
+                default: return "Ungültiger Filter-Operator";
+            }
+        }
+
         private string GetDateText(FilterEntry filterEntry)
         {
             DateTime dateFrom = DateTime.Parse(filterEntry.ValueFrom);
-            DateTime dateTo = DateTime.Parse(filterEntry.ValueTo);
+            DateTime dateTo = MoviekusDefines.MinDate;
+                
+            if (dateFrom == MoviekusDefines.MinDate)
+                return " ist nicht gesetzt";            
 
-            if (dateFrom != MoviekusDefines.MinDate)
-                return $" liegt zwischen dem {dateFrom:d} und dem {dateTo:d}";
-            else return " ist nicht gesetzt";
-                    
-        }
-
-        private string GetRuntimeText(FilterEntry filterEntry)
-        {
-            int from = int.Parse(filterEntry.ValueFrom);
-            int to = 0;
-
-            if (int.TryParse(filterEntry.ValueTo, out to))
+            switch (filterEntry.Operator)
             {
-                if (int.TryParse(filterEntry.ValueFrom, out from))
-                    return $" liegt zwischen {from} und {to} Minuten";
-                else return $" ist kleiner als {to} Minuten";
+                case FilterEntryOperator.Equal: return $" ist am {dateFrom:d}";
+                case FilterEntryOperator.NotEqual: return $" ist nicht am {dateFrom:d}";
+                case FilterEntryOperator.Greater: return $" liegt nach dem {dateFrom:d}";
+                case FilterEntryOperator.Lesser: return $" liegt vor dem {dateFrom:d}";
+                case FilterEntryOperator.Between:
+                    if (DateTime.TryParse(filterEntry.ValueTo, out dateTo))
+                        return $" liegt zwischen dem {dateFrom:d} und dem {dateTo:d}";
+                    else return "Ungültige Filterwerte";
+                default: return "Ungültiger Filter-Operator";
             }
-            
-            if (int.TryParse(filterEntry.ValueFrom, out from))
-                return $" ist größer als {from} Minuten";
-            return string.Empty;
         }
 
-        private string GetRatingText(FilterEntry filterEntry)
+        private string GetIntegerText(FilterEntry filterEntry, string units)
         {
-            int from = int.Parse(filterEntry.ValueFrom);
-            int to = 1;
+            int from, to = 0;
 
-            int.TryParse(filterEntry.ValueTo, out to);
+            if (!int.TryParse(filterEntry.ValueFrom, out from))
+                return "Ungültige Filterwerte";
 
-            if (to > 1)
+            switch (filterEntry.Operator)
             {
-                if (from > 1)
-                    return $" hat zwischen {from} und {to} Sterne";
-                else return $" ist kleiner als {to} Sterne";
+                case FilterEntryOperator.Equal: return $" ist {from} {units}";
+                case FilterEntryOperator.NotEqual: return $" ist nicht {from} {units}";
+                case FilterEntryOperator.Greater: return $" ist größer als {from} {units}";
+                case FilterEntryOperator.Lesser: return $" ist kleiner als {from} {units}";
+                case FilterEntryOperator.Between:
+                    if (int.TryParse(filterEntry.ValueTo, out to))
+                        return $" liegt zwischen {from} und {to} {units}";
+                    else return "Ungültige Filterwerte";
+                default: return "Ungültiger Filter-Operator";
             }
-            return $" ist {from} Sterne";
         }
+
 
         private string GetGenreText(FilterEntry filterEntry)
         {
             GenreService genreService = new GenreService();
-            return $" ist '{genreService.Get(filterEntry.ValueFrom).Name}'";
+
+            switch(filterEntry.Operator)
+            {
+                case FilterEntryOperator.Equal: return $" ist '{genreService.Get(filterEntry.ValueFrom).Name}'";
+                case FilterEntryOperator.NotEqual: return $" ist nicht '{genreService.Get(filterEntry.ValueFrom).Name}'";
+                default: return "Ungültiger Filter-Operator";
+            }
         }
 
         private string GetSourceText(FilterEntry filterEntry)
         {
             SourceService sourceService = new SourceService();
-            return $" '{sourceService.Get(filterEntry.ValueFrom).Name}'";
+
+            switch(filterEntry.Operator)
+            {
+                case FilterEntryOperator.Equal: return $" bei '{sourceService.Get(filterEntry.ValueFrom).Name}'";
+                case FilterEntryOperator.NotEqual: return $" nicht bei'{sourceService.Get(filterEntry.ValueFrom).Name}'";
+                default: return "Ungültiger Filter-Operator";
+            }
         }
     }
 }

@@ -6,12 +6,21 @@
              mc:Ignorable="d"
              x:Class="Moviekus.Views.Filter.FilterEntrySourceCellTemplate">
   <ViewCell.View>
-      <StackLayout Padding="5">
-            <Picker FontSize="Small"
-                    TitleColor="Blue"                    
+        <StackLayout Padding="5">
+            <StackLayout Orientation="Horizontal">
+                <CheckBox IsChecked="{Binding IsSelected}" HorizontalOptions="Start"/>
+                <Picker 
+                    FontSize="Small"
+                    ItemsSource="{Binding Operators}"
+                    ItemDisplayBinding="{Binding OperatorName}"
+                    WidthRequest="120"
+                    SelectedItem="{Binding SelectedOperator, Mode=TwoWay}"/>
+                <Picker FontSize="Small"
                     ItemsSource="{Binding Sources}"
-                    ItemDisplayBinding="{Binding Name}"                     
+                    ItemDisplayBinding="{Binding Name}"           
+                    HorizontalOptions="FillAndExpand"
                     SelectedItem="{Binding Source, Mode=TwoWay}"/>
+            </StackLayout>
         </StackLayout>
   </ViewCell.View>
 </ViewCell>

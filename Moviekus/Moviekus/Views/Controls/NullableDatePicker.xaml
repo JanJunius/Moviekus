@@ -8,14 +8,13 @@
   <ContentView.Content>
       <StackLayout>
 
-            <StackLayout Orientation="Horizontal" >
+            <StackLayout Orientation="Vertical" >
 
-                <StackLayout>
-                    <Label x:Name="lblFrom" Text="Vom" />
+                <StackLayout Orientation="Horizontal">
                     <DatePicker x:Name="datePickerFrom" Date="{Binding DateFrom}" DateSelected="OnDateFromSelected" Format="d" HorizontalOptions="Start" />
-                    <Label x:Name="lblTo" Text="bis" />
-                    <DatePicker x:Name="datePickerTo" Date="{Binding DateTo}" DateSelected="OnDateToSelected" Format="d" HorizontalOptions="Start" />
+                    <Label x:Name="lblTo" Text="und" VerticalOptions="Center" Margin="5,0,5,0"/>
                 </StackLayout>
+                <DatePicker x:Name="datePickerTo" Date="{Binding DateTo}" DateSelected="OnDateToSelected" Format="d" HorizontalOptions="Start" />
 
                 <StackLayout Orientation="Horizontal" Margin="5,0,0,0" VerticalOptions="Start">
                     <CheckBox x:Name="chkNotSet" />

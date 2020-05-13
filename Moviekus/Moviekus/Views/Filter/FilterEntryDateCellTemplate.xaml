@@ -8,7 +8,18 @@
              x:Class="Moviekus.Views.Filter.FilterEntryDateCellTemplate">
   <ViewCell.View>
         <StackLayout Padding="5">
-            <customcontrol:NullableDatePicker DateFrom="{Binding DateFrom}" DateTo="{Binding DateTo}" ShowRange="True" />
+            <StackLayout Orientation="Horizontal">
+                <CheckBox IsChecked="{Binding IsSelected}" HorizontalOptions="Start"/>
+                <Picker 
+                    FontSize="Small"
+                    VerticalOptions="Start"
+                    WidthRequest="120"
+                    ItemsSource="{Binding Operators}"
+                    ItemDisplayBinding="{Binding OperatorName}"
+                    IsVisible="{Binding HasDate}"
+                    SelectedItem="{Binding SelectedOperator, Mode=TwoWay}"/>
+                <customcontrol:NullableDatePicker DateFrom="{Binding DateFrom}" DateTo="{Binding DateTo}" ShowRange="{Binding ShowRange}"/>
+            </StackLayout>
         </StackLayout>
-  </ViewCell.View>
+    </ViewCell.View>
 </ViewCell>

@@ -42,7 +42,7 @@ namespace Moviekus.ViewModels.Filter
             var filter = Models.Filter.CreateNew<Models.Filter>();
             filter.Name = "Neuer Filter";
             FilterItemViewModel viewModel = CreateFilterItemViewModel(filter);
-            Filter.Add(viewModel);
+            //Filter.Add(viewModel);
             await OpenEditPage(viewModel);
         });
 

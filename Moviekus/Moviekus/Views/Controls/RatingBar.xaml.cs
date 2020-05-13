@@ -65,54 +65,6 @@ namespace Moviekus.Views.Controls
             ratingbar.Children.Add(StarContainer);
 
             InitStars();
-
-            ratingbar.GestureRecognizers.Add(new TapGestureRecognizer
-            {
-                Command = new Command(x => Rating = 0)
-            });
-
-            star1.GestureRecognizers.Add(new TapGestureRecognizer
-            {
-               Command = new Command(() =>
-               {
-                   if (Rating == 1) Rating = 0;
-                        else Rating = 1;
-               })
-            }); 
-
-            star2.GestureRecognizers.Add(new TapGestureRecognizer
-            {
-                Command = new Command(() =>
-                {
-                    if (Rating == 2) Rating = 0;
-                        else Rating = 2;
-                })
-            });
-
-            star3.GestureRecognizers.Add(new TapGestureRecognizer
-            {
-                Command = new Command(() =>
-                {
-                    if (Rating == 3) Rating = 0;
-                        else Rating = 3;
-                })
-            });
-            star4.GestureRecognizers.Add(new TapGestureRecognizer
-            {
-                Command = new Command(() =>
-                {
-                    if (Rating == 4) Rating = 0;
-                        else Rating = 4;
-                })
-            });
-            star5.GestureRecognizers.Add(new TapGestureRecognizer
-            {
-                Command = new Command(() =>
-                {
-                    if (Rating == 5) Rating = 0;
-                        else Rating = 5;
-                })
-            });            
         }
 
 
@@ -181,6 +133,49 @@ namespace Moviekus.Views.Controls
             StarContainer.Children.Add(star3);
             StarContainer.Children.Add(star4);
             StarContainer.Children.Add(star5);
+
+            star1.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() =>
+                {
+                    if (Rating == 1) Rating = 0;
+                    else Rating = 1;
+                })
+            });
+
+            star2.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() =>
+                {
+                    if (Rating == 2) Rating = 0;
+                    else Rating = 2;
+                })
+            });
+
+            star3.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() =>
+                {
+                    if (Rating == 3) Rating = 0;
+                    else Rating = 3;
+                })
+            });
+            star4.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() =>
+                {
+                    if (Rating == 4) Rating = 0;
+                    else Rating = 4;
+                })
+            });
+            star5.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() =>
+                {
+                    if (Rating == 5) Rating = 0;
+                    else Rating = 5;
+                })
+            });
         }
 
         private static void RatingPropertyChanged(BindableObject bindable, object oldValue, object newValue)

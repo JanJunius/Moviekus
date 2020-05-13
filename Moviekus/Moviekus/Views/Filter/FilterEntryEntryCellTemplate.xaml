@@ -7,7 +7,16 @@
              x:Class="Moviekus.Views.Filter.FilterEntryEntryCellTemplate">
   <ViewCell.View>
       <StackLayout Padding="5">
-            <Entry Text="{Binding FilterEntry.ValueFrom}" />
-        </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <CheckBox IsChecked="{Binding IsSelected}" HorizontalOptions="Start"/>
+                <Picker 
+                    FontSize="Small"
+                    ItemsSource="{Binding Operators}"
+                    ItemDisplayBinding="{Binding OperatorName}"
+                    WidthRequest="120" 
+                    SelectedItem="{Binding SelectedOperator, Mode=TwoWay}"/>
+                <Entry Text="{Binding FilterEntry.ValueFrom}" HorizontalOptions="FillAndExpand" />
+            </StackLayout>
+      </StackLayout>
   </ViewCell.View>
 </ViewCell>

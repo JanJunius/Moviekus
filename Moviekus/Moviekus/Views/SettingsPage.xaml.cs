@@ -25,5 +25,10 @@ namespace Moviekus.Views
             ViewModel.LoadSettingsCommand.Execute(null);
         }
 
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            ViewModel.OnViewDisappearing();
+        }
     }
 }

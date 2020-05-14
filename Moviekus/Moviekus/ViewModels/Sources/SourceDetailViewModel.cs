@@ -25,12 +25,6 @@ namespace Moviekus.ViewModels.Sources
             SourceService = sourceService;
         }
 
-        public ICommand SaveCommand => new Command(async () =>
-        {
-            await SourceService.SaveChangesAsync(Source);
-            await Navigation.PopAsync();
-        });
-
         public ICommand DeleteCommand => new Command(async () =>
         {
             var result = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig
@@ -67,5 +61,13 @@ namespace Moviekus.ViewModels.Sources
                 await Navigation.PopAsync();
             }
         });
+
+        public override async void OnViewDisappearing()
+        {
+            base.OnViewDisappearing();
+
+            await SourceService.SaveChangesAsync(Source);
+            await Navigation.PopAsync();
+        }
     }
 }

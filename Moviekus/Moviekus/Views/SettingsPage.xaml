@@ -8,7 +8,6 @@
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Log" IconImageSource="logfile.png" Command="{Binding OpenLogCommand}" />
-        <ToolbarItem Text="Speichern" IconImageSource="save.png" Command="{Binding SaveCommand}" />
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>

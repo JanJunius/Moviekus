@@ -10,7 +10,7 @@
              Title="{Binding Title}">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Löschen" Command="{Binding DeleteCommand}" IconImageSource="delete.png" />
+        <ToolbarItem Text="Löschen" Order="Secondary" Command="{Binding DeleteCommand}" IconImageSource="delete.png" />
         <ToolbarItem Text="Ändern" Command="{Binding EditCommand}" IconImageSource="edit.png" />
     </ContentPage.ToolbarItems>
 

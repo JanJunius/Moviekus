@@ -13,15 +13,20 @@ namespace Moviekus.Views.Sources
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SourceDetailPage : ContentPage
     {
-        private SourceDetailViewModel viewModel;
+        private SourceDetailViewModel ViewModel;
 
         public SourceDetailPage(SourceDetailViewModel viewModel)
         {
             InitializeComponent();
 
-            BindingContext = this.viewModel = viewModel;
+            BindingContext = ViewModel = viewModel;
             viewModel.Navigation = Navigation;
         }
 
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            ViewModel.OnViewDisappearing();
+        }
     }
 }

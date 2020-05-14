@@ -28,15 +28,11 @@ namespace Moviekus.ViewModels
             RaisePropertyChanged(nameof(Settings));
         });
 
-        public ICommand SaveCommand => new Command(async () =>
+        public override async void OnViewDisappearing()
         {
+            base.OnViewDisappearing();
             await SettingsService.SaveChangesAsync(Settings);
-            await UserDialogs.Instance.AlertAsync(new AlertConfig
-            {
-                Title = "Einstellungen speichern",
-                Message = "Einstellungen wurden erfolgreich gespeichert."
-            });
-        });
+        }
 
         public ICommand OpenLogCommand => new Command(async () =>
         {

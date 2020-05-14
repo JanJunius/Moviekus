@@ -17,8 +17,7 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Hinzufügen" IconImageSource="add_entry.png" Command="{Binding AddEntryCommand}" />
         <ToolbarItem Text="Entfernen" IconImageSource="remove_entry.png" Command="{Binding RemoveEntryCommand}" />
-        <ToolbarItem Text="Löschen" IconImageSource="delete.png" Command="{Binding DeleteCommand}" />
-        <ToolbarItem Text="Speichern" IconImageSource="save.png" Command="{Binding SaveCommand}" />
+        <ToolbarItem Text="Löschen" IconImageSource="delete.png" Order="Secondary" Command="{Binding DeleteCommand}" />
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>

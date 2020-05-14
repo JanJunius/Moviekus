@@ -27,11 +27,6 @@ namespace Moviekus.EntityFramework
             _databasePath = Path.Combine(documentPath, MoviekusDefines.DbFileName);
         }
 
-        // Wird bei Migrationen aufgerufen und greift dann auf die Dummy-DB (Config.db) aus dem Console-Projekt zu
-        // Das Console-Projekt ist notwendig, um die EntityFramework-Core-Migration im Xamarin-Projekt verwenden zu können, da dies 
-        // kein Core-Framework verwendet
-        // Aufruf der Migration in NuGet-Package-Manager-Console:
-        // add-migration "Beschreibung" -Project Moviekus -StartupProject DbConfig
         public MoviekusDbContext(string databasePath)
         {
             _databasePath = databasePath;

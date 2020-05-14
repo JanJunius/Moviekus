@@ -67,7 +67,6 @@ namespace Moviekus.Services
             catch (Exception ex)
             {
                 LogManager.GetCurrentClassLogger().Error(ex);
-                throw;
             }
 
             LogManager.GetCurrentClassLogger().Info($"Finished searching MovieDb for '{title}'.");

@@ -54,9 +54,7 @@ namespace Moviekus.ViewModels.Movies
         {
             base.OnViewDisappearing();
 
-            await MovieService.SaveMovieAsync(Movie);
-            await Navigation.PopAsync();
-
+            Movie = await MovieService.SaveMovieAsync(Movie);
             OnMovieChanged?.Invoke(this, Movie);
         }
 

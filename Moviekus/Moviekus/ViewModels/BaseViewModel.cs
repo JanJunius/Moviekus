@@ -5,9 +5,6 @@ using System.Runtime.CompilerServices;
 
 using Xamarin.Forms;
 
-using Moviekus.Models;
-using Moviekus.Services;
-
 namespace Moviekus.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
@@ -37,6 +34,10 @@ namespace Moviekus.ViewModels
             onChanged?.Invoke();
             RaisePropertyChanged(propertyName);
             return true;
+        }
+
+        public virtual void OnViewDisappearing()
+        {
         }
 
         #region INotifyPropertyChanged

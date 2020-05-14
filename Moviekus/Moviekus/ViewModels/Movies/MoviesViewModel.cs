@@ -129,6 +129,7 @@ namespace Moviekus.ViewModels.Movies
             Movie movie = Movie.CreateNew<Movie>();
             movie.LastSeen = DateTime.Today;
             movie.ReleaseDate = DateTime.Today;
+            movie.Source = new SourceService().Get().First();
             return movie;
         }
 

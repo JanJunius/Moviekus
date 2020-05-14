@@ -8,8 +8,7 @@
              x:Class="Moviekus.Views.Genres.GenreDetailPage">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Löschen" IconImageSource="delete.png" Command="{Binding DeleteCommand}" />
-        <ToolbarItem Text="Speichern" IconImageSource="save.png" Command="{Binding SaveCommand}" />
+        <ToolbarItem Text="Löschen" IconImageSource="delete.png" Order="Secondary" Command="{Binding DeleteCommand}" />
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>

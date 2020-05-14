@@ -13,19 +13,25 @@ namespace Moviekus.Views.Movies
     [DesignTimeVisible(false)]
     public partial class MovieEditPage : ContentPage
     {
-        private MovieEditViewModel viewModel;
+        private MovieEditViewModel ViewModel;
 
         public MovieEditPage(MovieEditViewModel viewModel)
         {
             InitializeComponent();
 
-            BindingContext = this.viewModel = viewModel;
+            BindingContext = ViewModel = viewModel;
             viewModel.Navigation = Navigation;
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            ViewModel.OnViewDisappearing();
         }
 
         async void Save_Clicked(object sender, EventArgs e)
         {
-            MessagingCenter.Send(this, "AddItem", viewModel.Movie);
+            MessagingCenter.Send(this, "AddItem", ViewModel.Movie);
             await Navigation.PopModalAsync();
         }
 

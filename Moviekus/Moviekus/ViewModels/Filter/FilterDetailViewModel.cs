@@ -42,25 +42,6 @@ namespace Moviekus.ViewModels.Filter
         private readonly ObservableRangeCollection<Grouping<string, FilterDetailItemViewModel>> _filterEntries = new ObservableRangeCollection<Grouping<string, FilterDetailItemViewModel>>();
         public ObservableCollection<Grouping<string, FilterDetailItemViewModel>> FilterEntries => _filterEntries;
 
-        public ICommand SaveCommand => new Command(async () =>
-        {
-            try
-            {
-                await FilterService.SaveChangesAsync(Filter);
-                await Navigation.PopAsync();
-                FilterChanged?.Invoke(this, Filter);
-            }
-            catch(Exception ex)
-            {
-                LogManager.GetCurrentClassLogger().Error(ex);
-                await UserDialogs.Instance.AlertAsync(new AlertConfig
-                {
-                    Title ="Filter speichern",
-                    Message = ex.Message
-                }); 
-            }
-        });
-
         public ICommand DeleteCommand => new Command(async () =>
         {
             var result = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig
@@ -122,6 +103,27 @@ namespace Moviekus.ViewModels.Filter
         });
 
         public ICommand RemoveEntryCommand => new Command(() => RemoveFilterEntries());
+
+        public override async void OnViewDisappearing()
+        {
+            base.OnViewDisappearing();
+
+            try
+            {
+                await FilterService.SaveChangesAsync(Filter);
+                await Navigation.PopAsync();
+                FilterChanged?.Invoke(this, Filter);
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().Error(ex);
+                await UserDialogs.Instance.AlertAsync(new AlertConfig
+                {
+                    Title = "Filter speichern",
+                    Message = ex.Message
+                });
+            }
+        }
 
         private FilterEntry AddFilterEntry()
         {

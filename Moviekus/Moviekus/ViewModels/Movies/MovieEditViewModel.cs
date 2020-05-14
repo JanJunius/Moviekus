@@ -47,16 +47,16 @@ namespace Moviekus.ViewModels.Movies
                 }
                 return genres.Length > 1 ? genres.Substring(0, genres.Length - 2) : genres;
             }
-            set { } // Setter notwendig fürs DataBinding
+            set { }
         }
 
-        public ICommand SaveCommand => new Command(async () =>
+        public override async void OnViewDisappearing()
         {
-            await MovieService.SaveMovieAsync(Movie);
-            await Navigation.PopAsync();
+            base.OnViewDisappearing();
 
+            Movie = await MovieService.SaveMovieAsync(Movie);
             OnMovieChanged?.Invoke(this, Movie);
-        });
+        }
 
         public ICommand MovieDbCommand => new Command(async () =>
         {

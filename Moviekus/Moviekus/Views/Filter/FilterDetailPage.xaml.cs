@@ -22,5 +22,11 @@ namespace Moviekus.Views.Filter
             BindingContext = ViewModel = viewModel;
             viewModel.Navigation = Navigation;
         }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            ViewModel.OnViewDisappearing();
+        }
     }
 }

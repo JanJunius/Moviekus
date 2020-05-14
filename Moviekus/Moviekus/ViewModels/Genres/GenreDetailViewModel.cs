@@ -1,7 +1,6 @@
 ﻿using Acr.UserDialogs;
 using Moviekus.Models;
 using Moviekus.Services;
-using Moviekus.ViewModels;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -18,12 +17,6 @@ namespace Moviekus.ViewModels.Genres
             GenreService = genreService;
         }
 
-        public ICommand SaveCommand => new Command(async () =>
-        {
-            await GenreService.SaveChangesAsync(Genre);
-            await Navigation.PopAsync();
-        });
-
         public ICommand DeleteCommand => new Command(async () =>
         {
             var result = await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig
@@ -39,6 +32,14 @@ namespace Moviekus.ViewModels.Genres
                 await Navigation.PopAsync();
             }
         });
+
+        public override async void OnViewDisappearing()
+        {
+            base.OnViewDisappearing();
+
+            await GenreService.SaveChangesAsync(Genre);
+            await Navigation.PopAsync();
+        }
 
     }
 }

@@ -17,13 +17,16 @@ namespace Moviekus.Models
         [NotMapped]
         public bool IsModified { get; set; }
 
+        [NotMapped]
+        public bool IsDeleted { get; set; }
+
+
         public BaseModel()
         {
             Id = Guid.NewGuid().ToString();
             // Es ist effizienter, IsNew mit false zu belegen, denn dies gilt für alle geladenen Objekte
             // Für neu erzeugte Models muss es explizit auf true gesetzt werden => CreateNew aufrufen
-            IsNew = false;
-            IsModified = false;
+            IsNew = IsModified = IsDeleted = false;
         }
 
         // Es genügt hier, das Event zu definieren, es muss nicht explizit gefeuert werden, denn das macht FodyWeavers
@@ -43,12 +46,13 @@ namespace Moviekus.Models
             return obj is BaseModel model &&
                    Id == model.Id &&
                    IsNew == model.IsNew &&
-                   IsModified == model.IsModified;
+                   IsModified == model.IsModified &&
+                   IsDeleted == model.IsDeleted;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Id, IsNew, IsModified);
+            return HashCode.Combine(Id, IsNew, IsModified, IsDeleted);
         }
     }
 }

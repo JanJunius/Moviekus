@@ -68,12 +68,6 @@ namespace Moviekus.ViewModels.Filter
         private Expression<Func<MoviesItemViewModel, bool>> BuildTitleFilter(IEnumerable<FilterEntry> filterEntries)
         {
             var predicate = PredicateBuilder.False<MoviesItemViewModel>();
-            //foreach (string title in titleEntries.Select(s => s.ValueFrom))
-            //{
-            //    string temp = title;
-
-            //    predicate = predicate.Or(p => p.Movie.Title.Contains(temp));
-            //}
 
             foreach(var filterEntry in filterEntries)
             {
@@ -92,11 +86,6 @@ namespace Moviekus.ViewModels.Filter
         private Expression<Func<MoviesItemViewModel, bool>> BuildRemarkFilter(IEnumerable<FilterEntry> filterEntries)
         {
             var predicate = PredicateBuilder.False<MoviesItemViewModel>();
-            //foreach (string remark in filterEntries.Select(s => s.ValueFrom))
-            //{
-            //    string temp = remark;
-            //    predicate = predicate.Or(p => p.Movie.Remarks != null && p.Movie.Remarks.Contains(temp));
-            //}
 
             foreach (var filterEntry in filterEntries)
             {
@@ -116,11 +105,6 @@ namespace Moviekus.ViewModels.Filter
         private Expression<Func<MoviesItemViewModel, bool>> BuildDescriptionFilter(IEnumerable<FilterEntry> filterEntries)
         {
             var predicate = PredicateBuilder.False<MoviesItemViewModel>();
-            //foreach (string remark in filterEntries.Select(s => s.ValueFrom))
-            //{
-            //    string temp = remark;
-            //    predicate = predicate.Or(p => p.Movie.Description != null && p.Movie.Description.Contains(temp));
-            //}
 
             foreach (var filterEntry in filterEntries)
             {
@@ -144,13 +128,7 @@ namespace Moviekus.ViewModels.Filter
             {
                 FilterEntry temp = filterEntry;
                 DateTime dateFrom = DateTime.Parse(temp.ValueFrom);
-                DateTime dateTo = DateTime.Parse(temp.ValueTo);
-
-                //if (dateFrom != MoviekusDefines.MinDate && dateTo == MoviekusDefines.MinDate)
-                //    predicate = predicate.Or(p => p.Movie.ReleaseDate >= dateFrom);
-                //else if (dateFrom == MoviekusDefines.MinDate && dateTo != MoviekusDefines.MinDate)
-                //    predicate = predicate.Or(p => p.Movie.ReleaseDate <= dateFrom);
-                //else predicate = predicate.Or(p => p.Movie.ReleaseDate >= dateFrom && p.Movie.ReleaseDate <= dateTo);
+                DateTime dateTo = MoviekusDefines.MinDate;
 
                 switch(filterEntry.Operator)
                 {
@@ -158,7 +136,11 @@ namespace Moviekus.ViewModels.Filter
                     case FilterEntryOperator.NotEqual: predicate = predicate.Or(p => !p.Movie.ReleaseDate.Equals(dateFrom)); break;
                     case FilterEntryOperator.Greater: predicate = predicate.Or(p => p.Movie.ReleaseDate > dateFrom); break;
                     case FilterEntryOperator.Lesser: predicate = predicate.Or(p => p.Movie.ReleaseDate < dateFrom); break;
-                    case FilterEntryOperator.Between: predicate = predicate.Or(p => p.Movie.ReleaseDate >= dateFrom && p.Movie.ReleaseDate <= dateTo); break;
+                    case FilterEntryOperator.Between:
+                        if (DateTime.TryParse(temp.ValueTo, out dateTo))
+                            predicate = predicate.Or(p => p.Movie.ReleaseDate >= dateFrom && p.Movie.ReleaseDate <= dateTo);
+                        else throw new InvalidFilterException("Unvollständige Werte ist für das Veröffentlichungsdatum !");
+                        break;
                     default: throw new InvalidFilterException($"Der Operator '{filterEntry.Operator}' ist für das Veröffentlichungsdatum nicht zulässig!");
                 }
             }
@@ -172,13 +154,7 @@ namespace Moviekus.ViewModels.Filter
             {
                 FilterEntry temp = filterEntry;
                 DateTime dateFrom = DateTime.Parse(temp.ValueFrom);
-                DateTime dateTo = DateTime.Parse(temp.ValueTo);
-
-                //if (dateFrom != MoviekusDefines.MinDate && dateTo == MoviekusDefines.MinDate)
-                //    predicate = predicate.Or(p => p.Movie.LastSeen >= dateFrom);
-                //else if (dateFrom == MoviekusDefines.MinDate && dateTo != MoviekusDefines.MinDate)
-                //    predicate = predicate.Or(p => p.Movie.LastSeen <= dateFrom);
-                //else predicate = predicate.Or(p => p.Movie.LastSeen >= dateFrom && p.Movie.LastSeen <= dateTo);
+                DateTime dateTo = MoviekusDefines.MinDate;
 
                 switch (filterEntry.Operator)
                 {
@@ -186,7 +162,11 @@ namespace Moviekus.ViewModels.Filter
                     case FilterEntryOperator.NotEqual: predicate = predicate.Or(p => !p.Movie.LastSeen.Equals(dateFrom)); break;
                     case FilterEntryOperator.Greater: predicate = predicate.Or(p => p.Movie.LastSeen > dateFrom); break;
                     case FilterEntryOperator.Lesser: predicate = predicate.Or(p => p.Movie.LastSeen < dateFrom); break;
-                    case FilterEntryOperator.Between: predicate = predicate.Or(p => p.Movie.LastSeen >= dateFrom && p.Movie.LastSeen <= dateTo); break;
+                    case FilterEntryOperator.Between: 
+                        if (DateTime.TryParse(temp.ValueTo, out dateTo))
+                            predicate = predicate.Or(p => p.Movie.LastSeen >= dateFrom && p.Movie.LastSeen <= dateTo);
+                        else throw new InvalidFilterException("Unvollständige Werte ist für 'Zuletzt gesehen' !"); 
+                        break;
                     default: throw new InvalidFilterException($"Der Operator '{filterEntry.Operator}' ist für 'Zuletzt gesehen' nicht zulässig!");
                 }
 
@@ -202,12 +182,6 @@ namespace Moviekus.ViewModels.Filter
                 FilterEntry temp = filterEntry;
                 int ratingFrom = int.Parse(temp.ValueFrom);
                 int ratingTo = int.Parse(temp.ValueTo);
-
-                //if (ratingFrom != 0 && ratingTo == 0)
-                //    predicate = predicate.Or(p => p.Movie.Rating >= ratingFrom);
-                //else if (ratingFrom == 0 && ratingTo != 0)
-                //    predicate = predicate.Or(p => p.Movie.Rating <= ratingFrom);
-                //else predicate = predicate.Or(p => p.Movie.Rating >= ratingFrom && p.Movie.Rating <= ratingTo);
 
                 switch (filterEntry.Operator)
                 {
@@ -236,12 +210,6 @@ namespace Moviekus.ViewModels.Filter
                 if (!int.TryParse(temp.ValueTo, out runtimeTo))
                     runtimeTo = -1;
 
-                //if (runtimeFrom != -1 && runtimeTo == -1)
-                //    predicate = predicate.Or(p => p.Movie.Runtime >= runtimeFrom);
-                //else if (runtimeFrom == -1 && runtimeTo != -1)
-                //    predicate = predicate.Or(p => p.Movie.Runtime <= runtimeFrom);
-                //else predicate = predicate.Or(p => p.Movie.Runtime >= runtimeFrom && p.Movie.Runtime <= runtimeTo);
-
                 switch (filterEntry.Operator)
                 {
                     case FilterEntryOperator.Equal: predicate = predicate.Or(p => p.Movie.Runtime == runtimeFrom); break;
@@ -259,19 +227,14 @@ namespace Moviekus.ViewModels.Filter
         private Expression<Func<MoviesItemViewModel, bool>> BuildSourceFilter(IEnumerable<FilterEntry> filterEntries)
         {
             var predicate = PredicateBuilder.False<MoviesItemViewModel>();
-            //foreach (string sourceId in filterEntries.Select(s => s.ValueFrom))
-            //{
-            //    string temp = sourceId;
-            //    predicate = predicate.Or(p => p.Movie.Source.Id == temp);
-            //}
 
             foreach (var filterEntry in filterEntries)
             {
                 string sourceId = filterEntry.ValueFrom;
                 switch (filterEntry.Operator)
                 {
-                    case FilterEntryOperator.Equal: predicate = predicate.Or(p => p.Movie.Source.Id == sourceId); break;
-                    case FilterEntryOperator.NotEqual: predicate = predicate.Or(p => p.Movie.Source.Id != sourceId); break;
+                    case FilterEntryOperator.Equal: predicate = predicate.Or(p => p.Movie.Source != null && p.Movie.Source.Id == sourceId); break;
+                    case FilterEntryOperator.NotEqual: predicate = predicate.Or(p => p.Movie.Source != null && p.Movie.Source.Id != sourceId); break;
                     default: throw new InvalidFilterException($"Der Operator '{filterEntry.Operator}' ist für die Quelle nicht zulässig!");
                 }
             }
@@ -282,19 +245,13 @@ namespace Moviekus.ViewModels.Filter
         private Expression<Func<MoviesItemViewModel, bool>> BuildGenreFilter(IEnumerable<FilterEntry> filterEntries)
         {
             var predicate = PredicateBuilder.False<MoviesItemViewModel>();
-            //foreach (string genreId in filterEntries.Select(s => s.ValueFrom))
-            //{
-            //    string temp = genreId;
-            //    predicate = predicate.Or(p => p.Movie.MovieGenres.Any(b => b.Genre.Id==temp));
-            //}
-
             foreach (var filterEntry in filterEntries)
             {
                 string genreId = filterEntry.ValueFrom;
                 switch (filterEntry.Operator)
                 {
-                    case FilterEntryOperator.Equal: predicate.Or(p => p.Movie.MovieGenres.Any(b => b.Genre.Id == genreId)); break;
-                    case FilterEntryOperator.NotEqual: predicate.Or(p => p.Movie.MovieGenres.Any(b => b.Genre.Id != genreId)); break;
+                    case FilterEntryOperator.Equal: predicate = predicate.Or(p => p.Movie.MovieGenres.Any(b => b.Genre.Id == genreId)); break;
+                    case FilterEntryOperator.NotEqual: predicate = predicate.Or(p => !p.Movie.MovieGenres.Any(b => b.Genre.Id == genreId)); break;
                     default: throw new InvalidFilterException($"Der Operator '{filterEntry.Operator}' ist für das Genre nicht zulässig!");
                 }
             }

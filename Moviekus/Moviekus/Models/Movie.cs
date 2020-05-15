@@ -11,10 +11,9 @@ namespace Moviekus.Models
     {
         [Required]
         public string Title { get; set; }
-        
+
         [ForeignKey("SourceId")]
-        [Required]
-        public Source Source { get; set; }
+        public virtual Source Source { get; set; }
 
         public string Description { get; set; }
 

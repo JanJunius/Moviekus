@@ -8,9 +8,6 @@ namespace Moviekus.Models
     {
         public string Name { get; set; }
 
-        //TODO: Löschen und Migration anpassen
-        public string SourceTypeName { get; set; }
-
         public override bool Equals(object obj)
         {
             return obj is Source source &&

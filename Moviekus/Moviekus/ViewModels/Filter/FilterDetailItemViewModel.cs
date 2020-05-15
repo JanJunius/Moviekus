@@ -106,7 +106,7 @@ namespace Moviekus.ViewModels.Filter
             }
         }
 
-        public IList<Source> Sources => new List<Source>(new SourceService().Get());
+        public IList<Source> Sources => new List<Source>(new SourceService().Get().OrderBy(s => s.Name));
 
         public Source Source
         {
@@ -123,7 +123,7 @@ namespace Moviekus.ViewModels.Filter
             }
         }
 
-        public IList<Genre> Genres => new List<Genre>(new GenreService().Get());
+        public IList<Genre> Genres => new List<Genre>(new GenreService().Get().OrderBy(n => n.Name));
 
         public Genre Genre
         {

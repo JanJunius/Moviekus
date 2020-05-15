@@ -57,6 +57,9 @@ namespace Moviekus.Services
 
         public virtual async Task<T> SaveChangesAsync(T model)
         {
+            if (model.IsDeleted)
+                return model;
+
             using (var context = new MoviekusDbContext())
             {
                 try
@@ -103,7 +106,7 @@ namespace Moviekus.Services
                 catch (Exception ex)
                 {
                     LogManager.GetCurrentClassLogger().Error(ex);
-                    throw;
+                    throw;  
                 }
                 return model;
             }
@@ -111,19 +114,26 @@ namespace Moviekus.Services
 
         public virtual async Task DeleteAsync(T model)
         {
-            using (var context = new MoviekusDbContext())
+            if (!model.IsNew)
             {
-                try
+                using (var context = new MoviekusDbContext())
                 {
-                    context.Set<T>().Remove(model);
-                    await context.SaveChangesAsync();
-                }
-                catch (Exception ex)
-                {
-                    LogManager.GetCurrentClassLogger().Error(ex);
-                    throw;
+                    try
+                    {
+                        context.Set<T>().Remove(model);
+                        DeleteAsync(context, model);
+                        await context.SaveChangesAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        LogManager.GetCurrentClassLogger().Error(ex);
+                        throw;
+                    }
                 }
             }
+            model.IsDeleted = true;
+            model.IsNew = model.IsModified = false;
+            // Event auch feuern, wenn keine DB-Aktion erforderlich ist, damit sich das ViewModel dennoch aktualisieren kann
             OnModelDeleted?.Invoke(this, model);
         }
 
@@ -146,6 +156,8 @@ namespace Moviekus.Services
             context.Entry(model).State = EntityState.Modified;
         }
 
-
+        protected virtual void DeleteAsync(MoviekusDbContext context, T model)
+        {
+        }
     }
 }

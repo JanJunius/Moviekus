@@ -84,7 +84,7 @@ namespace Moviekus.ViewModels.Genres
                 Genres.Clear();
                 var genres = await GenreService.GetAsync();
 
-                var itemViewModels = genres.Select(m => CreateGenresItemViewModel(m));
+                var itemViewModels = genres.Select(m => CreateGenresItemViewModel(m)).OrderBy(g => g.Genre.Name);
                 Genres = new ObservableCollection<GenresItemViewModel>(itemViewModels);
             }
             catch (Exception ex)

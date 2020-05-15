@@ -84,7 +84,7 @@ namespace Moviekus.ViewModels.Sources
                 Sources.Clear();
                 var sources = await SourceService.GetAsync();
 
-                var itemViewModels = sources.Select(m => CreateSourcesItemViewModel(m));
+                var itemViewModels = sources.Select(m => CreateSourcesItemViewModel(m)).OrderBy(s => s.Source.Name);
                 Sources = new ObservableCollection<SourcesItemViewModel>(itemViewModels);
             }
             catch (Exception ex)

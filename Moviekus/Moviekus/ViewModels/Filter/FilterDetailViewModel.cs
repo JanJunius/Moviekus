@@ -111,7 +111,7 @@ namespace Moviekus.ViewModels.Filter
             try
             {
                 await FilterService.SaveChangesAsync(Filter);
-                await Navigation.PopAsync();
+                //await Navigation.PopAsync();
                 FilterChanged?.Invoke(this, Filter);
             }
             catch (Exception ex)
@@ -131,6 +131,8 @@ namespace Moviekus.ViewModels.Filter
             filterEntry.Filter = Filter;
             filterEntry.FilterEntryType = new FilterEntryType();
             Filter.FilterEntries.Add(filterEntry);
+            // Den Filter auf Modified setzen, da sonst nicht gespeichert wird
+            Filter.IsModified = true;
             return filterEntry;
         }
 
@@ -156,7 +158,11 @@ namespace Moviekus.ViewModels.Filter
 
             var grouping = FilterEntries.Where(g => g.Key == selectedViewModel.FilterEntry.FilterEntryType.Name).FirstOrDefault();
             if (grouping != null)
-                grouping.Remove(CreateFilterDetailItemViewModel(selectedViewModel.FilterEntry));
+            {
+                // Den Filter auf Modified setzen, da sonst nicht gespeichert wird
+                if (grouping.Remove(CreateFilterDetailItemViewModel(selectedViewModel.FilterEntry)))
+                    Filter.IsModified = true;
+            }                
         }
 
         private void LoadFilterEntries()

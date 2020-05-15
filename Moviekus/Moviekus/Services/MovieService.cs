@@ -39,7 +39,21 @@ namespace Moviekus.Services
                     // Ein manuelles Add ist nicht erforderlich!
                     var movieGenres = context.MovieGenres.Where(mg => mg.Movie == movie).Include(g => g.Genre).ToList();
                 }
-                return movies;
+
+                switch (sortOrder)
+                {
+                    case MovieSortOrder.Title:
+                        return movies.OrderBy(m => m.Title);
+                    case MovieSortOrder.LastSeen:
+                        return movies.OrderBy(m => m.LastSeen);
+                    case MovieSortOrder.Rating:
+                        return movies.OrderBy(m => m.Rating);
+                    case MovieSortOrder.ReleaseDate:
+                        return movies.OrderBy(m => m.ReleaseDate);
+                    case MovieSortOrder.Runtime:
+                        return movies.OrderBy(m => m.Runtime);
+                    default: return movies;
+                }
             }
 
             /*
@@ -105,13 +119,22 @@ namespace Moviekus.Services
 
         protected override async Task InsertAsync(MoviekusDbContext context, Movie movie)
         {
+            if (string.IsNullOrEmpty(movie.Title))
+            {
+                LogManager.GetCurrentClassLogger().Warn("Skipping insert of new movie because title is null");
+                return;
+            }                
+
             try
             {
                 await context.Movies.AddAsync(movie);
 
-                // Die Standard-Implementierung würde auch die Source als Added kennzeichnen und damit auch dort ein Insert ausführen
-                // Um dies zu verhindern, muss der Status der Source hier manuell umgesetzt werden
-                context.Entry(movie.Source).State = EntityState.Unchanged;
+                if (movie.Source != null)
+                {
+                    // Die Standard-Implementierung würde auch die Source als Added kennzeichnen und damit auch dort ein Insert ausführen
+                    // Um dies zu verhindern, muss der Status der Source hier manuell umgesetzt werden
+                    context.Entry(movie.Source).State = EntityState.Unchanged;
+                }
 
                 // Das gleiche gilt auch für die Genre-Zuordnungen
                 var genres = movie.MovieGenres.Select(mg => mg.Genre);
@@ -134,8 +157,11 @@ namespace Moviekus.Services
 
             try
             {
-                // Stellt sicher, dass der ForeignKey aktualisiert wird, falls sich die Quelle geändert hat
-                context.Entry(movie.Source).State = EntityState.Modified;
+                if (movie.Source != null)
+                {
+                    // Stellt sicher, dass der ForeignKey aktualisiert wird, falls sich die Quelle geändert hat
+                    context.Entry(movie.Source).State = EntityState.Modified;
+                }
 
                 // Spezialbehandlung für die n-m-Relation zwischen Movie und Genre
                 foreach (MovieGenre movieGenre in movie.MovieGenres)

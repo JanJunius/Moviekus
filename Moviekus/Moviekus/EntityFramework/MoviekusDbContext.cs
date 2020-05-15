@@ -48,10 +48,5 @@ namespace Moviekus.EntityFramework
                 optionsBuilder.UseSqlite($"Filename={_databasePath}");
             }
         }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-        }
     }
 }

@@ -26,7 +26,7 @@ namespace Moviekus.ViewModels.Filter
         public ICommand LoadFilterCommand => new Command(async () =>
         {
             var filter = await FilterService.GetAsync();
-            Filter = new ObservableCollection<FilterItemViewModel>(filter?.Select(f => CreateFilterItemViewModel(f)));
+            Filter = new ObservableCollection<FilterItemViewModel>(filter?.Select(f => CreateFilterItemViewModel(f)).OrderBy(f => f.Filter.Name));
 
             Filter.Insert(0, CreateFilterItemViewModel(new Models.Filter()
             {

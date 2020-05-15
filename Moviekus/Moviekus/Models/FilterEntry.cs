@@ -33,9 +33,6 @@ namespace Moviekus.Models
 
         public FilterEntryOperator Operator { get; set; }
 
-        [NotMapped]
-        public bool IsDeleted { get; set; }
-
         public override bool Equals(object obj)
         {
             return obj is FilterEntry entry &&

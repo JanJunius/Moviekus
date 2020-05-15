@@ -24,7 +24,7 @@ namespace Moviekus.ViewModels.Movies
     {
         private MovieService MoviesService;
 
-        private MovieSortOrder MovieSortOrder = MovieSortOrder.None;
+        private MovieSortOrder MovieSortOrder = MovieSortOrder.Title;
 
         public ObservableCollection<MoviesItemViewModel> Movies { get; set; }
 
@@ -129,7 +129,6 @@ namespace Moviekus.ViewModels.Movies
             Movie movie = Movie.CreateNew<Movie>();
             movie.LastSeen = DateTime.Today;
             movie.ReleaseDate = DateTime.Today;
-            movie.Source = new SourceService().Get().First();
             return movie;
         }
 
@@ -192,7 +191,6 @@ namespace Moviekus.ViewModels.Movies
             await RemoveFilter();
 
             Title = $"Filme ({filter.Name})";
-            var titleEntries = filter.FilterEntries.Where(v => v.FilterEntryType.Property == FilterEntryProperty.Title);
 
             try
             {

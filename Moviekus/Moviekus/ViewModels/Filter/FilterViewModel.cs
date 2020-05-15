@@ -29,7 +29,7 @@ namespace Moviekus.ViewModels.Filter
         public ICommand LoadFilterCommand => new Command(async () =>
         {
             var filter = await FilterService.GetAsync();
-            Filter = new ObservableCollection<FilterItemViewModel>(filter.Select(f => CreateFilterItemViewModel(f)));
+            Filter = new ObservableCollection<FilterItemViewModel>(filter.Select(f => CreateFilterItemViewModel(f)).OrderBy(f => f.Filter.Name));
         });
 
         private FilterItemViewModel CreateFilterItemViewModel(Models.Filter filter)
@@ -42,7 +42,6 @@ namespace Moviekus.ViewModels.Filter
             var filter = Models.Filter.CreateNew<Models.Filter>();
             filter.Name = "Neuer Filter";
             FilterItemViewModel viewModel = CreateFilterItemViewModel(filter);
-            //Filter.Add(viewModel);
             await OpenEditPage(viewModel);
         });
 

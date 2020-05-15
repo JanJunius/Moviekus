@@ -129,5 +129,15 @@ namespace Moviekus.Services
                 throw;
             }
         }
+
+        protected override void DeleteAsync(MoviekusDbContext context, Filter filter)
+        {
+            foreach(var filterEntry in filter.FilterEntries)
+            {
+                // Keine Entries löschen, die noch nie gespeichert wurden
+                if (filterEntry.IsNew && context.Entry(filterEntry).State == EntityState.Deleted)
+                    context.Entry(filterEntry).State = EntityState.Detached;
+            }
+        }
     }
 }

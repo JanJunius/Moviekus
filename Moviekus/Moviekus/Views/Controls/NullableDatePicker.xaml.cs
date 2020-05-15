@@ -115,12 +115,12 @@ namespace Moviekus.Views.Controls
 
         private void OnDateFromSelected(object sender, DateChangedEventArgs args)
         {
-            //DateFrom = args.NewDate;
+            DateFrom = args.NewDate;
         }
  
         private void OnDateToSelected(object sender, DateChangedEventArgs args)
         {
-            //DateTo = args.NewDate;
+            DateTo = args.NewDate;
         }
 
     }

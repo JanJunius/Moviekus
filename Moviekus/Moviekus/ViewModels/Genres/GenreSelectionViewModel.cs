@@ -36,7 +36,7 @@ namespace Moviekus.ViewModels.Genres
         {
             var genres = await GenreService.GetAsync();
 
-            var genreSelection = genres.Select(g => CreateGenreSelection(g));
+            var genreSelection = genres.Select(g => CreateGenreSelection(g)).OrderBy(g => g.Genre.Name);
             GenreSelection = new ObservableCollection<GenreSelection>(genreSelection);
 
             GenreSelection.ForEach(g => g.OnGenreSelectionChanged += GenreSelectionChangedHandler);

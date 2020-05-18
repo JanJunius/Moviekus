@@ -19,9 +19,6 @@
         <ListView x:Name="GenresListView"
                   RowHeight="60"
                   ItemsSource="{Binding Genres}"
-                  RefreshCommand="{Binding LoadGenresCommand}"
-                  IsPullToRefreshEnabled="true"
-                  IsRefreshing="{Binding IsBusy, Mode=OneWay}"
                   CachingStrategy="RecycleElement"
                   SelectedItem="{Binding SelectedItem}">
 

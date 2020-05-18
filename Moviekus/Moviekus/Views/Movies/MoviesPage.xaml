@@ -12,8 +12,8 @@
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Neu" Command="{Binding AddMovieCommand}" IconImageSource="addnew.png"/>
-        <ToolbarItem Text="Filter" Command="{Binding FilterCommand}" IconImageSource="filter.png"/>
-        <ToolbarItem Text="Sortierung" Command="{Binding OrderCommand}" IconImageSource="sorting.png" />
+        <ToolbarItem Text="Filter" Command="{Binding FilterCommand}" Order="Secondary" IconImageSource="filter.png"/>
+        <ToolbarItem Text="Sortierung" Command="{Binding OrderCommand}" Order="Secondary" IconImageSource="sorting.png" />
         <ToolbarItem Text="OneDrive" Command="{Binding OneDriveCommand}" Order="Secondary" IconImageSource="onedrive.png"/>
     </ContentPage.ToolbarItems>
 

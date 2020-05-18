@@ -22,8 +22,6 @@
                 ItemsSource="{Binding Movies}"
                 VerticalOptions="FillAndExpand"
                 HasUnevenRows="true"
-                IsPullToRefreshEnabled="true"
-                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
                 CachingStrategy="RecycleElement"
                 SelectedItem="{Binding SelectedItem}">
                 <ListView.Header>

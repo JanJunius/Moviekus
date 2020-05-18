@@ -164,31 +164,36 @@ namespace Moviekus.ViewModels.Movies
         {
             try
             {
+                IsBusy = true;
                 var movies = await MoviesService.GetWithGenresAndSourcesAsync(MovieSortOrder);
                 Movies = new ObservableCollection<MoviesItemViewModel>(movies.Select(m => CreateMoviesItemViewModel(m)));
+
+                if (MovieFilter == null)
+                {
+                    Title = "Filme";
+                    MovieFilter = new FilterService().GetDefault();
+                }
+
+                if (MovieFilter != null)
+                {
+                    Title = MovieFilter.Name;
+                    try
+                    {
+                        Movies = new ObservableCollection<MoviesItemViewModel>(Movies.AsQueryable().Where(FilterBuilder.Ref.BuildFilter(MovieFilter)));
+                    }
+                    catch (Exception ex)
+                    {
+                        LogManager.GetCurrentClassLogger().Error(ex);
+                    }
+                }
             }
             catch (Exception ex)
             {
                 LogManager.GetCurrentClassLogger().Error(ex);
             }
-
-            if (MovieFilter == null)
+            finally
             {
-                Title = "Filme";
-                MovieFilter = new FilterService().GetDefault();
-            }
-
-            if (MovieFilter != null)
-            {
-                Title = MovieFilter.Name;
-                try
-                {
-                    Movies = new ObservableCollection<MoviesItemViewModel>(Movies.AsQueryable().Where(FilterBuilder.Ref.BuildFilter(MovieFilter)));
-                }
-                catch (Exception ex)
-                {
-                    LogManager.GetCurrentClassLogger().Error(ex);
-                }
+                IsBusy = false;
             }
         }
 

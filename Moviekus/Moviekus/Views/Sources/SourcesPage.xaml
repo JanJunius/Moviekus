@@ -21,8 +21,6 @@
                   RowHeight="60"
                   ItemsSource="{Binding Sources}"
                   RefreshCommand="{Binding LoadSourcesCommand}"
-                  IsPullToRefreshEnabled="true"
-                  IsRefreshing="{Binding IsBusy, Mode=OneWay}"
                   CachingStrategy="RecycleElement"
                   SelectedItem="{Binding SelectedItem}">
 

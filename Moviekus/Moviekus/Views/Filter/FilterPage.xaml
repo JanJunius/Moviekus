@@ -21,8 +21,6 @@
                   Margin="5"
                   HasUnevenRows="True"
                   ItemsSource="{Binding Filter}"
-                  RefreshCommand="{Binding LoadFilterCommand}"
-                  IsPullToRefreshEnabled="true"
                   SelectedItem="{Binding SelectedFilter}">
 
             <ListView.ItemTemplate>

@@ -25,15 +25,13 @@ namespace Moviekus.ViewModels.Movies
         private MovieService MoviesService;
 
         private MovieSortOrder MovieSortOrder = MovieSortOrder.Title;
+        private Models.Filter MovieFilter = null;
 
         public ObservableCollection<MoviesItemViewModel> Movies { get; set; }
 
         public ICommand LoadMoviesCommand => new Command(async () =>
         {
-            var defaultFilter = new FilterService().GetDefault();
-            if (defaultFilter != null)
-                await ApplyFilter(defaultFilter);
-            else await LoadMovies();
+            await LoadMovies();
         });
 
         public ICommand AddMovieCommand => new Command(async () =>
@@ -55,16 +53,11 @@ namespace Moviekus.ViewModels.Movies
 
             viewModel.FilterSelected += async (sender, filter) => 
             {
+                MovieFilter = null;
                 if (filter != null)
-                {                    
-                    filter = await new FilterService().SetDefault(filter);
-                    await ApplyFilter(filter);
-                }
-                else
-                {
-                    await new FilterService().ResetDefault();
-                    await RemoveFilter();
-                }                
+                    MovieFilter = await new FilterService().SetDefault(filter);
+                else await new FilterService().ResetDefault();
+                await LoadMovies();
             };
 
             await Navigation.PushAsync(filterView);
@@ -178,6 +171,25 @@ namespace Moviekus.ViewModels.Movies
             {
                 LogManager.GetCurrentClassLogger().Error(ex);
             }
+
+            if (MovieFilter == null)
+            {
+                Title = "Filme";
+                MovieFilter = new FilterService().GetDefault();
+            }
+
+            if (MovieFilter != null)
+            {
+                Title = MovieFilter.Name;
+                try
+                {
+                    Movies = new ObservableCollection<MoviesItemViewModel>(Movies.AsQueryable().Where(FilterBuilder.Ref.BuildFilter(MovieFilter)));
+                }
+                catch (Exception ex)
+                {
+                    LogManager.GetCurrentClassLogger().Error(ex);
+                }
+            }
         }
 
         private MoviesItemViewModel CreateMoviesItemViewModel(Movie movie)
@@ -185,28 +197,5 @@ namespace Moviekus.ViewModels.Movies
             var moviesItemViewModel = new MoviesItemViewModel(movie);
             return moviesItemViewModel;
         }
-
-        private async Task ApplyFilter(Models.Filter filter)
-        {
-            await RemoveFilter();
-
-            Title = $"Filme ({filter.Name})";
-
-            try
-            {
-                Movies = new ObservableCollection<MoviesItemViewModel>(Movies.AsQueryable().Where(FilterBuilder.Ref.BuildFilter(filter)));
-            }
-            catch(Exception ex)
-            {
-                LogManager.GetCurrentClassLogger().Error(ex);
-            }
-        }
-
-        private async Task RemoveFilter()
-        {
-            Title = "Filme";
-            await LoadMovies();
-        }
-
     }
 }

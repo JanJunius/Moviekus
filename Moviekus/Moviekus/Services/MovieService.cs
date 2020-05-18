@@ -47,9 +47,9 @@ namespace Moviekus.Services
                     case MovieSortOrder.LastSeen:
                         return movies.OrderBy(m => m.LastSeen);
                     case MovieSortOrder.Rating:
-                        return movies.OrderBy(m => m.Rating);
+                        return movies.OrderByDescending(m => m.Rating);
                     case MovieSortOrder.ReleaseDate:
-                        return movies.OrderBy(m => m.ReleaseDate);
+                        return movies.OrderByDescending(m => m.ReleaseDate);
                     case MovieSortOrder.Runtime:
                         return movies.OrderBy(m => m.Runtime);
                     default: return movies;

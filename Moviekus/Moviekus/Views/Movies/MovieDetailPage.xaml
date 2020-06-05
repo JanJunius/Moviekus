@@ -51,10 +51,18 @@
                     <Label Text="Zuletzt gesehen:" Style="{StaticResource HeadingLabelStyle}" />
                     <Label Text="{Binding LastSeenText}" FontSize="Small"/>
 
-                    <Label Text="Laufzeit:" Style="{StaticResource HeadingLabelStyle}" />
                     <StackLayout Orientation="Horizontal">
-                        <Label Text="{Binding Movie.Runtime}" FontSize="Small"/>
-                        <Label Text="Minuten" FontSize="Small" />
+                        <StackLayout Orientation="Vertical" Padding="0,0,15,0">
+                            <Label Text="Laufzeit:" Style="{StaticResource HeadingLabelStyle}" />
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="{Binding Movie.Runtime}" FontSize="Small"/>
+                                <Label Text="Minuten" FontSize="Small" />
+                            </StackLayout>
+                        </StackLayout>
+                        <StackLayout Orientation="Vertical">
+                            <Label Text="Disk:" Style="{StaticResource HeadingLabelStyle}" />
+                            <Label Text="{Binding Movie.DiscNumber}" FontSize="Small"/>
+                        </StackLayout>
                     </StackLayout>
 
                     <Label Text="Bewertung:" Style="{StaticResource HeadingLabelStyle}" />
@@ -72,6 +80,7 @@
                 </StackLayout>
             </Grid>
 
+            <Label Text="Beschreibung:" Style="{StaticResource HeadingLabelStyle}" />
             <Label Text="{Binding Movie.Description}" TextColor="#7e90a8" FontAttributes="Italic" FontSize="Small"/>
 
             <Label Text="Bemerkungen:" Style="{StaticResource HeadingLabelStyle}" />

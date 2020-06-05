@@ -33,8 +33,17 @@
                 <Label Text="Zuletzt gesehen" Style="{StaticResource HeadingLabelStyle}" />
                 <customcontrol:NullableDatePicker DateFrom="{Binding Movie.LastSeen}" ShowRange="False"/>
 
-                <Label Text="Laufzeit (Minuten)" Style="{StaticResource HeadingLabelStyle}" />
-                <Entry Text="{Binding Movie.Runtime}" Keyboard="Numeric" MaxLength="3" FontSize="Small" />
+                <StackLayout Orientation="Horizontal">
+                    <StackLayout Orientation="Vertical" Padding="0,0,15,0">
+                        <Label Text="Laufzeit" Style="{StaticResource HeadingLabelStyle}" />
+                        <Entry Text="{Binding Movie.Runtime}" Keyboard="Numeric" MaxLength="3" FontSize="Small" />
+                        <Label Text="Minuten" FontSize="Small" />
+                    </StackLayout>
+                    <StackLayout Orientation="Vertical">
+                        <Label Text="Disk" Style="{StaticResource HeadingLabelStyle}" />
+                        <Entry Text="{Binding Movie.DiscNumber}" Keyboard="Numeric" MaxLength="15" FontSize="Small" />
+                    </StackLayout>
+                </StackLayout>
 
                 <Label Text="Bewertung:" Style="{StaticResource HeadingLabelStyle}" />
                 <customcontrol:RatingBar x:Name="ratingBarEdit" 

@@ -251,7 +251,7 @@ namespace Moviekus.ViewModels.Filter
                 switch (filterEntry.Operator)
                 {
                     case FilterEntryOperator.Equal: predicate = predicate.Or(p => p.Movie.MovieGenres.Any(b => b.Genre.Id == genreId)); break;
-                    case FilterEntryOperator.NotEqual: predicate = predicate.Or(p => !p.Movie.MovieGenres.Any(b => b.Genre.Id == genreId)); break;
+                    case FilterEntryOperator.NotEqual: predicate = predicate.Or(p => p.Movie.MovieGenres.Count(b => b.Genre.Id == genreId)==0); break;
                     default: throw new InvalidFilterException($"Der Operator '{filterEntry.Operator}' ist für das Genre nicht zulässig!");
                 }
             }

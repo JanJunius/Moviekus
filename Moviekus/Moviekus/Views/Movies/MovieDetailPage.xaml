@@ -79,13 +79,13 @@
                     <Label Text="Genres" Style="{StaticResource HeadingLabelStyle}"/>
                     <Label Text="{Binding Genres}" FontSize="Small"/>
 
-                    <Label Text="Verfügbar bei" Style="{StaticResource HeadingLabelStyle}"/>
+                    <Label Text="Verfügbar auf" Style="{StaticResource HeadingLabelStyle}"/>
                     <Label Text="{Binding Movie.Source.Name}" FontSize="Small"/>
                 </StackLayout>
             </Grid>
 
             <Label Text="Beschreibung:" Style="{StaticResource HeadingLabelStyle}" />
-            <Label Text="{Binding Movie.Description}" TextColor="#7e90a8" FontAttributes="Italic" FontSize="Small"/>
+            <Label Text="{Binding Movie.Description}" TextColor="#7e90a8" FontAttributes="Italic" FontSize="Medium"/>
 
             <Label Text="Bemerkungen:" Style="{StaticResource HeadingLabelStyle}" />
             <Label Text="{Binding Movie.Remarks}" TextColor="#7e90a8" FontSize="Small"/>

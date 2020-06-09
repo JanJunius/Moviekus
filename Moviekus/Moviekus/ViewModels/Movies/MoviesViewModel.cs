@@ -119,6 +119,20 @@ namespace Moviekus.ViewModels.Movies
             await LoadMovies();
         });
 
+        public ICommand SearchCommand => new Command(async () =>
+        {
+            var promptResult = await UserDialogs.Instance.PromptAsync("Titel", "Schnellsuche nach Titel", "Suche", "Abbrechen");
+            if (promptResult.Ok)
+            {
+                MovieFilter = new Models.Filter()
+                { Name = "Schnellfilter" };
+                MovieFilter.FilterEntries.Add(
+                    new FilterEntry() { FilterEntryType = new FilterEntryType() 
+                    { Property = FilterEntryProperty.Title }, ValueFrom = promptResult.Text, Operator= FilterEntryOperator.Contains });
+                await LoadMovies();
+            }
+        });
+
         private Movie CreateNewMovie()
         {
             Movie movie = Movie.CreateNew<Movie>();

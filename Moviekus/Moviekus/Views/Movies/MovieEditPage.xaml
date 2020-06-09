@@ -61,7 +61,7 @@
                     <Button Text="..." WidthRequest="40" HorizontalOptions="EndAndExpand" Command="{Binding GenreEditButtonClicked}"></Button>
                 </StackLayout>
 
-                <Label Text="Verfügbar bei" Style="{StaticResource HeadingLabelStyle}"/>
+                <Label Text="Verfügbar auf" Style="{StaticResource HeadingLabelStyle}"/>
                 <Picker 
                     FontSize="Small"
                     TitleColor="Blue"                    

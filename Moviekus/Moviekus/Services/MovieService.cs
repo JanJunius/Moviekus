@@ -52,6 +52,8 @@ namespace Moviekus.Services
                         return movies.OrderByDescending(m => m.ReleaseDate);
                     case MovieSortOrder.Runtime:
                         return movies.OrderBy(m => m.Runtime);
+                    case MovieSortOrder.EpisodeNumber:
+                        return movies.OrderBy(m => m.EpisodeNumber);
                     default: return movies;
                 }
             }

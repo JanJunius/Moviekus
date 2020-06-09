@@ -40,8 +40,12 @@
                         <Label Text="Minuten" FontSize="Small" />
                     </StackLayout>
                     <StackLayout Orientation="Vertical">
-                        <Label Text="Disk" Style="{StaticResource HeadingLabelStyle}" />
+                        <Label Text="Disk Nr." Style="{StaticResource HeadingLabelStyle}" />
                         <Entry Text="{Binding Movie.DiscNumber}" Keyboard="Numeric" MaxLength="15" FontSize="Small" />
+                    </StackLayout>
+                    <StackLayout Orientation="Vertical" Padding="20,0,0,0">
+                        <Label Text="Episode" Style="{StaticResource HeadingLabelStyle}" />
+                        <Entry Text="{Binding Movie.EpisodeNumber}" Keyboard="Numeric" MaxLength="15" FontSize="Small" />
                     </StackLayout>
                 </StackLayout>
 

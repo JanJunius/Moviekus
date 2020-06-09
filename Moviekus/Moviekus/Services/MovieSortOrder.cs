@@ -7,6 +7,7 @@
         Runtime,
         Rating,
         LastSeen,
-        ReleaseDate
+        ReleaseDate,
+        EpisodeNumber
     }
 }

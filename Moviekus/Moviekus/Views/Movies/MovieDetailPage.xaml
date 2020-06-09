@@ -63,6 +63,10 @@
                             <Label Text="Disk:" Style="{StaticResource HeadingLabelStyle}" />
                             <Label Text="{Binding Movie.DiscNumber}" FontSize="Small"/>
                         </StackLayout>
+                        <StackLayout Orientation="Vertical" Padding="15,0,0,0">
+                            <Label Text="Episode:" Style="{StaticResource HeadingLabelStyle}" />
+                            <Label Text="{Binding Movie.EpisodeNumber}" FontSize="Small"/>
+                        </StackLayout>
                     </StackLayout>
 
                     <Label Text="Bewertung:" Style="{StaticResource HeadingLabelStyle}" />

@@ -22,6 +22,8 @@
 
                 <Label Text="OneDrive Einstellungen" Style="{StaticResource HeadingLabelStyle}" FontSize="Title"/>
                 <BoxView Color="Gray" HeightRequest="2" HorizontalOptions="Fill" />
+                <Label Text="Application-Id" Margin="5" Style="{StaticResource HeadingLabelStyle}"/>
+                <Entry Text="{Binding Settings.OneDriveApplicationId}" Margin="5"/>
                 <Button Text="OneDrive-Verbindung zurücksetzen" Command="{Binding ResetOneDriveVCommand}"/>
             </StackLayout>
          </ScrollView>

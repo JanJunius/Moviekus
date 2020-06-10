@@ -28,7 +28,6 @@ namespace Moviekus.EntityFramework
             {
                 Settings settings = Settings.CreateNew<Settings>();
 
-                settings.MovieDb_ApiKey = "121d3dae50d820edc0329e0bcf02c712";
                 settings.MovieDb_Language = "de-DE";
 
                 context.Add(settings);

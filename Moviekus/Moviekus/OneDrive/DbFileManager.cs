@@ -69,15 +69,15 @@ namespace Moviekus.OneDrive
 			var remotePath = MoviekusFolderName + MoviekusDefines.DbFileName;
 			var localPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), MoviekusDefines.DbFileName);
 
-			LogManager.GetCurrentClassLogger().Info("Signing in to OneDrive...");
-			await GraphClientManager.Ref.SignIn();
-
-			LogManager.GetCurrentClassLogger().Info("Starting Db-Download from OneDrive...");
-			LogManager.GetCurrentClassLogger().Info($"Local path is: {localPath}");
-			LogManager.GetCurrentClassLogger().Info($"Remote path is: {remotePath}");
-
 			try
 			{
+				LogManager.GetCurrentClassLogger().Info("Signing in to OneDrive...");
+				await GraphClientManager.Ref.SignIn();
+
+				LogManager.GetCurrentClassLogger().Info("Starting Db-Download from OneDrive...");
+				LogManager.GetCurrentClassLogger().Info($"Local path is: {localPath}");
+				LogManager.GetCurrentClassLogger().Info($"Remote path is: {remotePath}");
+
 				var stream = await GraphClientManager.Ref.GraphClient.Drive.Root.ItemWithPath(remotePath).Content.Request().GetAsync();
 				System.IO.File.WriteAllBytes(localPath, GetStreamBytes(stream));
 

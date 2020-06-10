@@ -10,17 +10,20 @@ namespace Moviekus.Models
         
         public string MovieDb_Language { get; set; }
 
+        public string OneDriveApplicationId { get; set; }
+
         public override bool Equals(object obj)
         {
             return obj is Settings settings &&
                    base.Equals(obj) &&
                    MovieDb_ApiKey == settings.MovieDb_ApiKey &&
-                   MovieDb_Language == settings.MovieDb_Language;
+                   MovieDb_Language == settings.MovieDb_Language &&
+                   OneDriveApplicationId == settings.OneDriveApplicationId;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(base.GetHashCode(), MovieDb_ApiKey, MovieDb_Language);
+            return HashCode.Combine(base.GetHashCode(), MovieDb_ApiKey, MovieDb_Language, OneDriveApplicationId);
         }
     }
 }

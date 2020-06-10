@@ -6,6 +6,8 @@ using Microsoft.Graph;
 using System.Net.Http.Headers;
 using System.Diagnostics;
 using NLog;
+using Moviekus.Models;
+using Moviekus.Services;
 
 namespace Moviekus.OneDrive
 {
@@ -27,6 +29,9 @@ namespace Moviekus.OneDrive
 
         public bool IsSignedOut { get; set; }
 
+        private static Settings Settings;
+
+
         public static GraphClientManager Ref
         {
             get
@@ -39,7 +44,7 @@ namespace Moviekus.OneDrive
                 return TheInstance;
             }
         }
-        private readonly string[] Scopes = OAuthSettings.Scopes.Split(' ');
+        private readonly string[] Scopes = "files.readwrite".Split(' ');
 
         private static GraphClientManager TheInstance = null;
 
@@ -52,6 +57,9 @@ namespace Moviekus.OneDrive
             // they won't have to sign in again.
             try
             {
+                if (PCA == null)
+                    InitInstance();
+
                 var accounts = await PCA.GetAccountsAsync();
 
                 var silentAuthResult = await PCA
@@ -139,16 +147,25 @@ namespace Moviekus.OneDrive
 
         private void InitInstance()
         {
-            var builder = PublicClientApplicationBuilder
-                .Create(OAuthSettings.ApplicationId)
-                .WithRedirectUri(OAuthSettings.RedirectUri);
-
-            if (!string.IsNullOrEmpty(iOSKeychainSecurityGroup))
+            try
             {
-                builder = builder.WithIosKeychainSecurityGroup(iOSKeychainSecurityGroup);
-            }
+                Settings = new SettingsService().GetSettings();
 
-            PCA = builder.Build();
+                var builder = PublicClientApplicationBuilder
+                    .Create(Settings.OneDriveApplicationId)
+                    .WithRedirectUri("msauth://com.companyname.Moviekus");
+
+                if (!string.IsNullOrEmpty(iOSKeychainSecurityGroup))
+                {
+                    builder = builder.WithIosKeychainSecurityGroup(iOSKeychainSecurityGroup);
+                }
+
+                PCA = builder.Build();
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().Error(ex);
+            }
         }
     }
 

@@ -25,7 +25,7 @@
                 <Label Text="Titel" Style="{StaticResource HeadingLabelStyle}" />
                 <Entry Text="{Binding Movie.Title}" d:Text="Name des Films" FontSize="Small" />
                 <Label Text="Beschreibung" Style="{StaticResource HeadingLabelStyle}" />
-                <Editor Text="{Binding Movie.Description}" d:Text="Beschreibung des Films" HeightRequest="250" FontSize="Small" AutoSize="TextChanges" />
+                <Editor Text="{Binding Movie.Description}" d:Text="Beschreibung des Films" HeightRequest="250" FontSize="Medium" AutoSize="TextChanges" />
 
                 <Label Text="Veröffentlichungsdatum" Style="{StaticResource HeadingLabelStyle}" />
                 <customcontrol:NullableDatePicker DateFrom="{Binding Movie.ReleaseDate}" ShowRange="False"/>
@@ -70,7 +70,7 @@
                     SelectedItem="{Binding SelectedSource, Mode=TwoWay}"/>
 
                 <Label Text="Bemerkungen" Style="{StaticResource HeadingLabelStyle}" />
-                <Editor Text="{Binding Movie.Remarks}" d:Text="Eigene Kommentare zu diesem Film" HeightRequest="120" FontSize="Small" AutoSize="TextChanges" />
+                <Editor Text="{Binding Movie.Remarks}" d:Text="Eigene Kommentare zu diesem Film" HeightRequest="120" FontSize="Medium" AutoSize="TextChanges" />
                 
                 <Label Text="Homepage" Style="{StaticResource HeadingLabelStyle}" />
                 <Entry Text="{Binding Movie.Homepage}" d:Text="Adresse der Webseite zum Film" FontSize="Small" />

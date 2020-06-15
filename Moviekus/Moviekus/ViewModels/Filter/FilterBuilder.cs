@@ -71,10 +71,10 @@ namespace Moviekus.ViewModels.Filter
 
             foreach(var filterEntry in filterEntries)
             {
-                string temp = filterEntry.ValueFrom;
+                string temp = filterEntry.ValueFrom.ToUpper();
                 switch (filterEntry.Operator)
                 {
-                    case FilterEntryOperator.Contains: predicate = predicate.Or(p => p.Movie.Title.Contains(temp)); break;
+                    case FilterEntryOperator.Contains: predicate = predicate.Or(p => p.Movie.Title.ToUpper().Contains(temp)); break;
                     case FilterEntryOperator.Equal: predicate = predicate.Or(p => p.Movie.Title.Equals(temp)); break;
                     case FilterEntryOperator.NotEqual: predicate = predicate.Or(p => !p.Movie.Title.Equals(temp)); break;
                     default: throw new InvalidFilterException($"Der Operator '{filterEntry.Operator}' ist für Titel nicht zulässig!");

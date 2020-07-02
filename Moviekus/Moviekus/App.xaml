@@ -21,6 +21,13 @@
             <Style TargetType="StackLayout">
                 <Setter Property="BackgroundColor" Value="{StaticResource BackgroundPrimary}" />
             </Style>
+            <Style x:Key="ValidationLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="Red" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="FontSize" Value="Medium" />
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+            </Style>
             <Style x:Key="HeadingLabelStyle" TargetType="Label">
                 <Setter Property="TextColor" Value="#3d5f8a" />
                 <Setter Property="FontAttributes" Value="Bold" />

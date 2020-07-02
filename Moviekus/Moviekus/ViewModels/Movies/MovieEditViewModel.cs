@@ -5,6 +5,7 @@ using Moviekus.Services;
 using Moviekus.ViewModels.Genres;
 using Moviekus.Views.Genres;
 using Moviekus.Views.Movies;
+using Moviekus.Views.Validation;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -20,6 +21,9 @@ namespace Moviekus.ViewModels.Movies
         public delegate void MovieChanged(object sender, Movie movie);
         public event MovieChanged OnMovieChanged;
 
+        // Es werden nur Warnungen angezeigt, das Speichern wird nicht verhindert
+        private MovieValidator MovieValidator = new MovieValidator();
+
         private Movie _movie;
         public Movie Movie 
         {
@@ -32,6 +36,7 @@ namespace Moviekus.ViewModels.Movies
                     Source source = Sources.Where(s => s.Id == _movie.Source.Id).FirstOrDefault();
                     SelectedSource = source;
                 }
+                MovieValidator.Movie = _movie;
             }
         }
 
@@ -84,6 +89,18 @@ namespace Moviekus.ViewModels.Movies
             }
         });
 
+        public string ValidationError { get; set; }
+        public bool HasValidationError { get; set; }
+
+        public void Validate()
+        {
+            ValidationError = string.Empty;
+            MovieValidator.Validate();
+            HasValidationError = !MovieValidator.IsValid;
+            ValidationError = MovieValidator.ErrorMessage;
+            RaisePropertyChanged(nameof(HasValidationError));
+        }
+
         private async Task OpenSelectionPage(IMovieProvider movieProvider)
         {
             var selectionView = Resolver.Resolve<MovieSelectionPage>();
@@ -107,6 +124,8 @@ namespace Moviekus.ViewModels.Movies
             Movie.Homepage = movieDto.Homepage;
             Movie.Trailer = movieDto.TrailerUrl;
             Movie.MovieGenres = await MovieService.GetMovieGenres(Movie, movieDto.Genres);
+
+            Validate();
 
             OnMovieChanged?.Invoke(this, Movie);
             RaisePropertyChanged(nameof(Movie));

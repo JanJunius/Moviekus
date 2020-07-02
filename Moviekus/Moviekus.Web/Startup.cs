@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Moviekus.EntityFramework;
 
 namespace Moviekus.Web
 {
@@ -24,6 +25,8 @@ namespace Moviekus.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
+
+            services.AddDbContext<MoviekusDbContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

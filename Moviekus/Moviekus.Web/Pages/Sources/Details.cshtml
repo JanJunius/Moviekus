@@ -1,0 +1,25 @@
+﻿@page
+@model Moviekus.Web.Pages.Sources.DetailsModel
+
+@{
+    ViewData["Title"] = "Quelle";
+}
+
+<h1>Quelle</h1>
+
+<div>
+    <h4>Quelle</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Source.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Source.Name)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Source.Id">Bearbeiten</a> |
+    <a asp-page="./Index">Zurück zur Liste</a>
+</div>

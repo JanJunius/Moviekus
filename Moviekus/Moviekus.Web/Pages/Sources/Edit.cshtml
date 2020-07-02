@@ -1,0 +1,35 @@
+﻿@page
+@model Moviekus.Web.Pages.Sources.EditModel
+
+@{
+    ViewData["Title"] = "Quelle bearbeiten";
+}
+
+<h1>Quelle bearbeiten</h1>
+
+<h4>Quelle</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Source.Name" class="control-label"></label>
+                <input asp-for="Source.Name" class="form-control" />
+                <span asp-validation-for="Source.Name" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="Source.Id" />
+            <div class="form-group">
+                <input type="submit" value="Speichern" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Zurück zur Liste</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

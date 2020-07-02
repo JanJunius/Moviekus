@@ -1,0 +1,36 @@
+﻿@page
+@model Moviekus.Web.Pages.Sources.IndexModel
+
+@{
+    ViewData["Title"] = "Quellen";
+}
+
+<h1>Verfügbare Quellen</h1>
+
+<p>
+    <a asp-page="Create">Neue Quelle anlegen</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Source[0].Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Source) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Bearbeiten</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Löschen</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -4,6 +4,7 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:customcontrol="clr-namespace:Moviekus.Views.Controls"
+             xmlns:customValidation="clr-namespace:Moviekus.Views.Validation"
              xmlns:local="clr-namespace:Moviekus.ViewModels"
              mc:Ignorable="d"
              x:Class="Moviekus.Views.Movies.MovieEditPage"
@@ -22,8 +23,9 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout Spacing="20" Padding="15" BackgroundColor="#e0eeee">
+                <Label Text="{Binding ValidationError}" IsVisible="{Binding HasValidationError}" Style="{StaticResource ValidationLabelStyle}" />
                 <Label Text="Titel" Style="{StaticResource HeadingLabelStyle}" />
-                <Entry Text="{Binding Movie.Title}" d:Text="Name des Films" FontSize="Small" />
+                <Entry Text="{Binding Movie.Title}" d:Text="Name des Films" FontSize="Small" Unfocused="Control_Unfocused" />
                 <Label Text="Beschreibung" Style="{StaticResource HeadingLabelStyle}" />
                 <Editor Text="{Binding Movie.Description}" d:Text="Beschreibung des Films" HeightRequest="250" FontSize="Medium" AutoSize="TextChanges" />
 
@@ -31,17 +33,17 @@
                 <customcontrol:NullableDatePicker DateFrom="{Binding Movie.ReleaseDate}" ShowRange="False"/>
 
                 <Label Text="Zuletzt gesehen" Style="{StaticResource HeadingLabelStyle}" />
-                <customcontrol:NullableDatePicker DateFrom="{Binding Movie.LastSeen}" ShowRange="False"/>
+                <customcontrol:NullableDatePicker DateFrom="{Binding Movie.LastSeen}" ShowRange="False" Unfocused="Control_Unfocused"/>
 
                 <StackLayout Orientation="Horizontal">
                     <StackLayout Orientation="Vertical" Padding="0,0,15,0">
                         <Label Text="Laufzeit" Style="{StaticResource HeadingLabelStyle}" />
-                        <Entry Text="{Binding Movie.Runtime}" Keyboard="Numeric" MaxLength="3" FontSize="Small" />
+                        <Entry Text="{Binding Movie.Runtime}" Keyboard="Numeric" MaxLength="3" FontSize="Small" Unfocused="Control_Unfocused"/>
                         <Label Text="Minuten" FontSize="Small" />
                     </StackLayout>
                     <StackLayout Orientation="Vertical">
                         <Label Text="Disk Nr." Style="{StaticResource HeadingLabelStyle}" />
-                        <Entry Text="{Binding Movie.DiscNumber}" Keyboard="Numeric" MaxLength="15" FontSize="Small" />
+                        <Entry Text="{Binding Movie.DiscNumber}" Keyboard="Numeric" FontSize="Small" Unfocused="Control_Unfocused"/>
                     </StackLayout>
                     <StackLayout Orientation="Vertical" Padding="20,0,0,0">
                         <Label Text="Episode" Style="{StaticResource HeadingLabelStyle}" />
@@ -53,6 +55,7 @@
                 <customcontrol:RatingBar x:Name="ratingBarEdit" 
                     HorizontalOptions="Start"  
                     IsEnabled="True"
+                    Unfocused="Control_Unfocused"
                     Rating ="{Binding Movie.Rating}" />
 
                 <Label Text="Genres" Style="{StaticResource HeadingLabelStyle}"/>
@@ -67,6 +70,7 @@
                     TitleColor="Blue"                    
                     ItemsSource="{Binding Sources}"
                     ItemDisplayBinding="{Binding Name}"                     
+                    Unfocused="Control_Unfocused"
                     SelectedItem="{Binding SelectedSource, Mode=TwoWay}"/>
 
                 <Label Text="Bemerkungen" Style="{StaticResource HeadingLabelStyle}" />

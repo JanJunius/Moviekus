@@ -39,5 +39,10 @@ namespace Moviekus.Views.Movies
         {
             await Navigation.PopModalAsync();
         }
+
+        private void Control_Unfocused(object sender, FocusEventArgs e)
+        {
+            ViewModel.Validate();
+        }
     }
 }

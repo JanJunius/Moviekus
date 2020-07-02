@@ -15,9 +15,10 @@ namespace Moviekus.EntityFramework
             if (context.Sources.Count() == 0)
             {
                 var sources = new List<Source>();
-                sources.Add(new Source { Id = "4f72aa31-38b3-48b6-988e-3f96df94c44f", Name = "Lokal" });
-                sources.Add(new Source { Id = "79aab413-5c1b-4446-9288-72f0f476b219", Name = "Netflix" });
-                sources.Add(new Source { Id = "3fe0f150-c349-4462-99fd-0e61e6e513a7", Name = "Amazon Prime" });
+                sources.Add(new Source { Id = MoviekusDefines.SourceLokal, Name = "Lokal" });
+                sources.Add(new Source { Id = MoviekusDefines.SourceDisk, Name = "Disk" });
+                sources.Add(new Source { Id = MoviekusDefines.SourceNetflix, Name = "Netflix" });
+                sources.Add(new Source { Id = MoviekusDefines.SourcePrime, Name = "Amazon Prime" });
 
                 sources.ForEach(s => s.IsNew = true);
                 sources.ForEach(s => context.Add(s));

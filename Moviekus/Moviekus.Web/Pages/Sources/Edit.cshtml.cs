@@ -8,12 +8,15 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Moviekus.EntityFramework;
 using Moviekus.Models;
+using Moviekus.Services;
 
 namespace Moviekus.Web.Pages.Sources
 {
     public class EditModel : PageModel
     {
         private readonly Moviekus.EntityFramework.MoviekusDbContext _context;
+
+        private SourceService SourceService = new SourceService();
 
         public EditModel(Moviekus.EntityFramework.MoviekusDbContext context)
         {
@@ -26,16 +29,13 @@ namespace Moviekus.Web.Pages.Sources
         public async Task<IActionResult> OnGetAsync(string id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            Source = await _context.Sources.FirstOrDefaultAsync(m => m.Id == id);
+            Source = await SourceService.GetAsync(id);
 
             if (Source == null)
-            {
                 return NotFound();
-            }
+
             return Page();
         }
 
@@ -44,34 +44,11 @@ namespace Moviekus.Web.Pages.Sources
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
-            {
                 return Page();
-            }
 
-            _context.Attach(Source).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!SourceExists(Source.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await SourceService.SaveChangesAsync(Source);
 
             return RedirectToPage("./Index");
-        }
-
-        private bool SourceExists(string id)
-        {
-            return _context.Sources.Any(e => e.Id == id);
         }
     }
 }

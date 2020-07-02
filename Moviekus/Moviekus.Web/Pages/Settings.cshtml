@@ -5,4 +5,30 @@
 }
 <h1>@ViewData["Title"]</h1>
 
-<p>Hier werden mal die Einstellungen gemacht.</p>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <h4>MovieDb</h4>
+            <div class="form-group">
+                <b>ApiKey</b>
+                <input asp-for="Settings.MovieDb_ApiKey" class="form-control" />
+            </div>
+            <div class="form-group">
+                <b>Language</b>
+                <input asp-for="Settings.MovieDb_Language" class="form-control" />
+            </div>
+            <h4>OneDrive</h4>
+            <div class="form-group">
+                <b>ApplicationId</b>
+                <input asp-for="Settings.OneDriveApplicationId" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Speichern" class="btn btn-primary" />
+            </div>
+            <input type="hidden" asp-for="Settings.Id" />
+        </form>
+    </div>
+</div>
+

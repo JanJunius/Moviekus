@@ -16,5 +16,17 @@ namespace Moviekus.Services
             }
             return settings.First();
         }
+
+        public async Task<Settings> GetSettingsAsync()
+        {
+            var settings = await GetAsync();
+            
+            if (settings.Count() == 0)
+            {
+                Settings newSettings = Settings.CreateNew<Settings>();
+                return SaveChanges(newSettings);
+            }
+            return settings.First();
+        }
     }
 }

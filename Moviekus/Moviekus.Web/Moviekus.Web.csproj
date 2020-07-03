@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="wwwroot\images\delete.png" />
+    <EmbeddedResource Include="wwwroot\images\edit.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Pages\Filter\" />
     <Folder Include="Pages\Movies\" />
   </ItemGroup>
@@ -20,6 +25,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Moviekus\Moviekus.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\images\addnew.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

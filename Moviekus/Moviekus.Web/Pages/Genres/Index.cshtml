@@ -5,11 +5,22 @@
     ViewData["Title"] = "Genres";
 }
 
-<h1>Genres</h1>
+<table>
+    <tr>
+        <td style="padding-right:15px;"><img src="~/images/genres.png" style="width:48px;height:48px;"></td>
+        <td><h1>Genres</h1></td>
+    </tr>
+</table>
 
 <p>
-    <a asp-page="Create">Neues Genre anlegen</a>
+    <table>
+        <tr>
+            <td style="padding-right:10px;"><img src="~/images/addnew.png" style="width:24px;height:24px;" title="Neues Genre anlegen"></td>
+            <td><a asp-page="Create">Neues Genre</a></td>
+        </tr>
+    </table>
 </p>
+
 <table class="table">
     <thead>
         <tr>
@@ -20,17 +31,18 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Genres) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Bearbeiten</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Löschen</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Genres)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.Id"><img src="~/images/edit.png" style="width:24px;height:24px;" title="Bearbeiten"></a> |
+                    <a asp-page="./Details" asp-route-id="@item.Id"><img src="~/images/genres.png" style="width:24px;height:24px;" title="Details"></a> |
+                    <a asp-page="./Delete" asp-route-id="@item.Id"><img src="~/images/delete.png" style="width:24px;height:24px;" title="Löschen"></a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

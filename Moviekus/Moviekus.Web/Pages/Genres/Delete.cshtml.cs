@@ -5,17 +5,18 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Graph;
 using Moviekus.EntityFramework;
 using Moviekus.Models;
 using Moviekus.Services;
 
-namespace Moviekus.Web.Pages.Sources
+namespace Moviekus.Web.Pages.Genres
 {
     public class DeleteModel : PageModel
     {
         private readonly Moviekus.EntityFramework.MoviekusDbContext _context;
 
-        private SourceService SourceService = new SourceService();
+        private GenreService GenreService = new GenreService();
 
         public DeleteModel(Moviekus.EntityFramework.MoviekusDbContext context)
         {
@@ -23,16 +24,16 @@ namespace Moviekus.Web.Pages.Sources
         }
 
         [BindProperty]
-        public Source Source { get; set; }
+        public Genre Genre { get; set; }
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
             if (id == null)
                 return NotFound();
 
-            Source = await SourceService.GetAsync(id);
+            Genre = await GenreService.GetAsync(id);
 
-            if (Source == null)
+            if (Genre == null)
                 return NotFound();
 
             return Page();
@@ -43,10 +44,9 @@ namespace Moviekus.Web.Pages.Sources
             if (id == null)
                 return NotFound();
 
-            Source = await SourceService.GetAsync(id);
-
-            if (Source != null)
-                await SourceService.DeleteAsync(Source);
+            Genre = await GenreService.GetAsync(id);
+            if (Genre != null)
+                await GenreService.DeleteAsync(Genre);
 
             return RedirectToPage("./Index");
         }

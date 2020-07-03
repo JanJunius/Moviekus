@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <Folder Include="Pages\Filter\" />
-    <Folder Include="Pages\Genres\" />
     <Folder Include="Pages\Movies\" />
   </ItemGroup>
 

@@ -1,37 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using Moviekus.EntityFramework;
 using Moviekus.Models;
 using Moviekus.Services;
 
-namespace Moviekus.Web.Pages.Sources
+namespace Moviekus.Web.Pages.Genres
 {
     public class DetailsModel : PageModel
     {
         private readonly Moviekus.EntityFramework.MoviekusDbContext _context;
 
-        private SourceService SourceService = new SourceService();
+        private GenreService GenreService = new GenreService();
 
         public DetailsModel(Moviekus.EntityFramework.MoviekusDbContext context)
         {
             _context = context;
         }
 
-        public Source Source { get; set; }
+        public Genre Genre { get; set; }
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
             if (id == null)
                 return NotFound();
 
-            Source = await SourceService.GetAsync(id);
+            Genre = await GenreService.GetAsync(id);
 
-            if (Source == null)
+            if (Genre == null)
                 return NotFound();
 
             return Page();

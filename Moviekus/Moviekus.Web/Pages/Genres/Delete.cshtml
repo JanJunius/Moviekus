@@ -1,0 +1,28 @@
+﻿@page
+@model Moviekus.Web.Pages.Genres.DeleteModel
+
+@{
+    ViewData["Title"] = "Genre löschen";
+}
+
+<h1>Genre löschen</h1>
+
+<h3>Möchten Sie dieses Genre wirklich löschen?</h3>
+<div>
+    <h4>Genre</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Genre.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Genre.Name)
+        </dd>
+    </dl>
+    
+    <form method="post">
+        <input type="hidden" asp-for="Genre.Id" />
+        <input type="submit" value="Löschen" class="btn btn-danger" /> |
+        <a asp-page="./Index">Zurück zur Liste</a>
+    </form>
+</div>

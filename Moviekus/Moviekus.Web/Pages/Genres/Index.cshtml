@@ -1,26 +1,26 @@
 ﻿@page
-@model Moviekus.Web.Pages.Sources.IndexModel
+@model Moviekus.Web.Pages.Genres.IndexModel
 
 @{
-    ViewData["Title"] = "Quellen";
+    ViewData["Title"] = "Genres";
 }
 
-<h1>Quellen</h1>
+<h1>Genres</h1>
 
 <p>
-    <a asp-page="Create">Neue Quelle anlegen</a>
+    <a asp-page="Create">Neues Genre anlegen</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Source[0].Name)
+                @Html.DisplayNameFor(model => model.Genres[0].Name)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Source) {
+@foreach (var item in Model.Genres) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)

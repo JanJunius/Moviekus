@@ -21,7 +21,7 @@ namespace Moviekus.ViewModels.Filter
         public EventHandler<Models.Filter> FilterChanged;
         public EventHandler<Models.Filter> FilterDeleted;
 
-        private IService<Models.Filter> FilterService;
+        private BaseService<Models.Filter> FilterService;
 
         private Models.Filter _Filter;
         public Models.Filter Filter 

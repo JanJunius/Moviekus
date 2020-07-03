@@ -8,7 +8,7 @@ namespace Moviekus.ViewModels.Genres
 {
     public class GenreDetailViewModel : BaseViewModel
     {
-        private IService<Genre> GenreService;
+        private BaseService<Genre> GenreService;
 
         public Genre Genre { get; set; }
 

@@ -12,7 +12,7 @@ namespace Moviekus.Services
 {
     public class FilterService : BaseService<Filter>
     {
-        public override async Task<IEnumerable<Filter>> GetAsync()
+        public override async Task<IList<Filter>> GetAsync()
         {
             using (var context = new MoviekusDbContext())
             {

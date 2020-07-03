@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Moviekus.Services
 {
-    public class BaseService<T> : IService<T> where T : BaseModel, new()
+    public class BaseService<T> where T : BaseModel, new()
     {
         public event EventHandler<T> OnModelInserted;
         public event EventHandler<T> OnModelUpdated;
@@ -31,7 +31,7 @@ namespace Moviekus.Services
             }
         }
 
-        public virtual async Task<IEnumerable<T>> GetAsync()
+        public virtual async Task<IList<T>> GetAsync()
         {
             using (var context = new MoviekusDbContext())
             {
@@ -53,6 +53,12 @@ namespace Moviekus.Services
             {
                 return await context.Set<T>().FindAsync(id);
             }             
+        }
+
+        public virtual async Task<T> AddNewAsync(T model)
+        {
+            model.IsNew = true;
+            return await SaveChangesAsync(model);
         }
 
         public virtual async Task<T> SaveChangesAsync(T model)

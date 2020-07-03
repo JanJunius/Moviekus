@@ -1,21 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Moviekus.EntityFramework;
 using Moviekus.Models;
 using Moviekus.Services;
 
-namespace Moviekus.Web.Pages.Sources
+namespace Moviekus.Web.Pages.Genres
 {
     public class CreateModel : PageModel
     {
         private readonly Moviekus.EntityFramework.MoviekusDbContext _context;
 
-        private SourceService SourceService = new SourceService();
+        private GenreService GenreService = new GenreService();
 
         public CreateModel(Moviekus.EntityFramework.MoviekusDbContext context)
         {
@@ -28,7 +23,7 @@ namespace Moviekus.Web.Pages.Sources
         }
 
         [BindProperty]
-        public Source Source { get; set; }
+        public Genre Genre { get; set; }
 
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://aka.ms/RazorPagesCRUD.
@@ -37,7 +32,7 @@ namespace Moviekus.Web.Pages.Sources
             if (!ModelState.IsValid)
                 return Page();
 
-            await SourceService.AddNewAsync(Source);
+            await GenreService.AddNewAsync(Genre);
 
             return RedirectToPage("./Index");
         }

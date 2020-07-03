@@ -17,7 +17,7 @@ namespace Moviekus.ViewModels.Filter
     {
         public ObservableCollection<FilterItemViewModel> Filter { get; set; }
 
-        private IService<Models.Filter> FilterService;
+        private BaseService<Models.Filter> FilterService;
 
         public FilterViewModel(FilterService filterService)
         {

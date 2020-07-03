@@ -16,7 +16,7 @@ namespace Moviekus.ViewModels.Sources
 {
     public class SourceDetailViewModel : BaseViewModel
     {
-        private IService<Source> SourceService;
+        private BaseService<Source> SourceService;
 
         public Source Source { get; set; }
 

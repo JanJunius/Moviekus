@@ -18,7 +18,7 @@ namespace Moviekus.ViewModels.Genres
         public event GenreSelectionChanged OnGenreSelectionChanged;
 
         public ObservableCollection<GenreSelection> GenreSelection { get; set; }
-        private IService<Genre> GenreService;
+        private BaseService<Genre> GenreService;
 
         public Movie Movie { get; set; }
 

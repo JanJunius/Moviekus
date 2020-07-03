@@ -16,7 +16,7 @@ namespace Moviekus.ViewModels.Genres
 {
     public class GenresViewModel : BaseViewModel
     {
-        private IService<Genre> GenreService;
+        private BaseService<Genre> GenreService;
 
         public ObservableCollection<GenresItemViewModel> Genres { get; set; }
 

@@ -16,7 +16,7 @@ namespace Moviekus.ViewModels.Sources
 {
     public class SourcesViewModel : BaseViewModel
     {
-        private IService<Source> SourceService;
+        private BaseService<Source> SourceService;
 
         public ObservableCollection<SourcesItemViewModel> Sources { get; set; }
         

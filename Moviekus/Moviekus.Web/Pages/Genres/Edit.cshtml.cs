@@ -1,34 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Moviekus.EntityFramework;
 using Moviekus.Models;
 using Moviekus.Services;
 
-namespace Moviekus.Web.Pages.Sources
+namespace Moviekus.Web.Pages.Genres
 {
-    public class CreateModel : PageModel
+    public class EditModel : PageModel
     {
         private readonly Moviekus.EntityFramework.MoviekusDbContext _context;
 
-        private SourceService SourceService = new SourceService();
+        private GenreService GenreService = new GenreService();
 
-        public CreateModel(Moviekus.EntityFramework.MoviekusDbContext context)
+        public EditModel(Moviekus.EntityFramework.MoviekusDbContext context)
         {
             _context = context;
         }
 
-        public IActionResult OnGet()
+        [BindProperty]
+        public Genre Genre { get; set; }
+
+        public async Task<IActionResult> OnGetAsync(string id)
         {
+            if (id == null)
+                return NotFound();
+
+            Genre = await GenreService.GetAsync(id);
+
+            if (Genre == null)
+                return NotFound();
+
             return Page();
         }
-
-        [BindProperty]
-        public Source Source { get; set; }
 
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://aka.ms/RazorPagesCRUD.
@@ -37,7 +40,7 @@ namespace Moviekus.Web.Pages.Sources
             if (!ModelState.IsValid)
                 return Page();
 
-            await SourceService.AddNewAsync(Source);
+            await GenreService.SaveChangesAsync(Genre);
 
             return RedirectToPage("./Index");
         }

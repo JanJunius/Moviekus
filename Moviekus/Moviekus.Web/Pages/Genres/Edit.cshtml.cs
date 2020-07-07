@@ -8,14 +8,7 @@ namespace Moviekus.Web.Pages.Genres
 {
     public class EditModel : PageModel
     {
-        private readonly Moviekus.EntityFramework.MoviekusDbContext _context;
-
         private GenreService GenreService = new GenreService();
-
-        public EditModel(Moviekus.EntityFramework.MoviekusDbContext context)
-        {
-            _context = context;
-        }
 
         [BindProperty]
         public Genre Genre { get; set; }

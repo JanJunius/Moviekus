@@ -13,14 +13,7 @@ namespace Moviekus.Web.Pages.Sources
 {
     public class DetailsModel : PageModel
     {
-        private readonly Moviekus.EntityFramework.MoviekusDbContext _context;
-
         private SourceService SourceService = new SourceService();
-
-        public DetailsModel(Moviekus.EntityFramework.MoviekusDbContext context)
-        {
-            _context = context;
-        }
 
         public Source Source { get; set; }
 

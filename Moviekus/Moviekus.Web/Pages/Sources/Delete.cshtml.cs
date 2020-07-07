@@ -13,14 +13,7 @@ namespace Moviekus.Web.Pages.Sources
 {
     public class DeleteModel : PageModel
     {
-        private readonly Moviekus.EntityFramework.MoviekusDbContext _context;
-
         private SourceService SourceService = new SourceService();
-
-        public DeleteModel(Moviekus.EntityFramework.MoviekusDbContext context)
-        {
-            _context = context;
-        }
 
         [BindProperty]
         public Source Source { get; set; }

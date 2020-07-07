@@ -7,23 +7,19 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Moviekus.EntityFramework;
 using Moviekus.Models;
+using Moviekus.Services;
 
 namespace Moviekus.Web.Pages.Sources
 {
     public class IndexModel : PageModel
     {
-        private readonly Moviekus.EntityFramework.MoviekusDbContext _context;
-
-        public IndexModel(Moviekus.EntityFramework.MoviekusDbContext context)
-        {
-            _context = context;
-        }
+        private SourceService SourceService = new SourceService();
 
         public IList<Source> Sources { get;set; }
 
         public async Task OnGetAsync()
         {
-            Sources = await _context.Sources.ToListAsync();
+            Sources = await SourceService.GetAsync();
         }
     }
 }

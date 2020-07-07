@@ -14,14 +14,7 @@ namespace Moviekus.Web.Pages.Sources
 {
     public class EditModel : PageModel
     {
-        private readonly Moviekus.EntityFramework.MoviekusDbContext _context;
-
         private SourceService SourceService = new SourceService();
-
-        public EditModel(Moviekus.EntityFramework.MoviekusDbContext context)
-        {
-            _context = context;
-        }
 
         [BindProperty]
         public Source Source { get; set; }

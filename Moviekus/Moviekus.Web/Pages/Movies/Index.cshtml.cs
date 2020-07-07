@@ -13,14 +13,14 @@ namespace Moviekus.Web.Pages.Movies
 {
     public class IndexModel : PageModel
     {
-        private readonly Moviekus.EntityFramework.MoviekusDbContext _context;
+        //private readonly Moviekus.EntityFramework.MoviekusDbContext _context;
 
         private MovieService MovieService = new MovieService();
 
-        public IndexModel(Moviekus.EntityFramework.MoviekusDbContext context)
-        {
-            _context = context;
-        }
+        //public IndexModel(Moviekus.EntityFramework.MoviekusDbContext context)
+        //{
+        //    _context = context;
+        //}
 
         public IList<MoviesItemViewModel> Movies { get; set; }
 

@@ -8,14 +8,7 @@ namespace Moviekus.Web.Pages.Genres
 {
     public class IndexModel : PageModel
     {
-        private readonly Moviekus.EntityFramework.MoviekusDbContext _context;
-
         private GenreService GenreService = new GenreService();
-
-        public IndexModel(Moviekus.EntityFramework.MoviekusDbContext context)
-        {
-            _context = context;
-        }
 
         public IList<Genre> Genres { get;set; }
 

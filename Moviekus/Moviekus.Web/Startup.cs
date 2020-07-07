@@ -24,7 +24,11 @@ namespace Moviekus.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRazorPages();
+            // Die Options sind nur notwendig, um die Startseite auf den Movies-Ordner umzubiegen
+            services.AddRazorPages().AddRazorPagesOptions(options => 
+            {
+                options.Conventions.AddPageRoute("/Movies/Index", "");
+            });
 
             services.AddDbContext<MoviekusDbContext>();
         }

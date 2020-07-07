@@ -27,7 +27,7 @@ namespace Moviekus.Services
             }
         }
 
-        public async Task<IEnumerable<Movie>> GetWithGenresAndSourcesAsync(MovieSortOrder sortOrder)
+        public async Task<IList<Movie>> GetWithGenresAndSourcesAsync(MovieSortOrder sortOrder)
         {
             using (var context = new MoviekusDbContext())
             {
@@ -43,17 +43,17 @@ namespace Moviekus.Services
                 switch (sortOrder)
                 {
                     case MovieSortOrder.Title:
-                        return movies.OrderBy(m => m.Title);
+                        return movies.OrderBy(m => m.Title).ToList();
                     case MovieSortOrder.LastSeen:
-                        return movies.OrderBy(m => m.LastSeen);
+                        return movies.OrderBy(m => m.LastSeen).ToList();
                     case MovieSortOrder.Rating:
-                        return movies.OrderByDescending(m => m.Rating);
+                        return movies.OrderByDescending(m => m.Rating).ToList();
                     case MovieSortOrder.ReleaseDate:
-                        return movies.OrderByDescending(m => m.ReleaseDate);
+                        return movies.OrderByDescending(m => m.ReleaseDate).ToList();
                     case MovieSortOrder.Runtime:
-                        return movies.OrderBy(m => m.Runtime);
+                        return movies.OrderBy(m => m.Runtime).ToList();
                     case MovieSortOrder.EpisodeNumber:
-                        return movies.OrderBy(m => m.EpisodeNumber);
+                        return movies.OrderBy(m => m.EpisodeNumber).ToList();
                     default: return movies;
                 }
             }

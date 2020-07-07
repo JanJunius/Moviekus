@@ -10,21 +10,29 @@ namespace Moviekus.Models
     public class Movie : BaseModel
     {
         [Required]
+        [Display(Name = "Titel")] 
         public string Title { get; set; }
 
         [ForeignKey("SourceId")]
+        [Display(Name = "Quelle")] 
         public virtual Source Source { get; set; }
 
+        [Display(Name = "Beschreibung")] 
         public string Description { get; set; }
 
+        [Display(Name = "Veröffentlicht")] 
         public DateTime ReleaseDate { get; set; }
 
+        [Display(Name = "Laufzeit")]
         public int Runtime { get; set; }
 
+        [Display(Name = "Bewertung")]
         public int Rating { get; set; }
 
+        [Display(Name = "Zuletzt gesehen")]
         public DateTime LastSeen { get; set; }
 
+        [Display(Name = "Bemerkungen")]
         public string Remarks { get; set; }
 
         public byte[] Cover { get; set; }
@@ -33,8 +41,10 @@ namespace Moviekus.Models
 
         public string Trailer { get; set; }
 
+        [Display(Name = "Disk-Nr.")]
         public string DiscNumber { get; set; }
 
+        [Display(Name = "Episode")]
         public string EpisodeNumber { get; set; }
 
         public virtual ICollection<MovieGenre> MovieGenres { get; set; }

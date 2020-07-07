@@ -1,10 +1,8 @@
 ﻿using Moviekus.Dto;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Moviekus.Services
+namespace Moviekus.ServiceContracts
 {
     public interface IMovieProvider
     {

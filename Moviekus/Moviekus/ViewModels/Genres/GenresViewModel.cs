@@ -1,13 +1,10 @@
 ﻿using Moviekus.Models;
-using Moviekus.Services;
+using Moviekus.ServiceContracts;
 using Moviekus.Views.Genres;
 using NLog;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -16,7 +13,7 @@ namespace Moviekus.ViewModels.Genres
 {
     public class GenresViewModel : BaseViewModel
     {
-        private BaseService<Genre> GenreService;
+        private IGenreService GenreService;
 
         public ObservableCollection<GenresItemViewModel> Genres { get; set; }
 
@@ -35,7 +32,7 @@ namespace Moviekus.ViewModels.Genres
             await Navigation.PushAsync(genreDetailView);
         });
 
-        public GenresViewModel(GenreService genreService)
+        public GenresViewModel(IGenreService genreService)
         {
             Title = "Genres";
             Genres = new ObservableCollection<GenresItemViewModel>();

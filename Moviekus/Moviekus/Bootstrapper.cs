@@ -10,6 +10,7 @@ using Moviekus.ViewModels;
 using Moviekus.Views.Genres;
 using Moviekus.Views.Sources;
 using Moviekus.Views;
+using Moviekus.ServiceContracts;
 
 namespace Moviekus
 {
@@ -52,11 +53,19 @@ namespace Moviekus
             {
                 ContainerBuilder.RegisterType(type.AsType());
             }
-            ContainerBuilder.RegisterType<SourceService>().SingleInstance();
-            ContainerBuilder.RegisterType<GenreService>().SingleInstance();
-            ContainerBuilder.RegisterType<MovieService>().SingleInstance();
-            ContainerBuilder.RegisterType<SettingsService>().SingleInstance();
-            ContainerBuilder.RegisterType<FilterService>().SingleInstance();
+
+            // Inversion of Control
+            // Die Services werden nie direkt angesprochen, sondern immer über die zugehörigen Interfaces.
+            // Die Zuordnung wer was implementiert erfolgt hier.
+            // Eine Komponente wie z.B. ein ViewModel definiert einen Konstruktor mit dem Interfacetyp, den sie benötigt
+            // und erhält diesen dann abhängig von dieser Konfiguration geliefert.
+            // Auf diese Weise kann man hier eine Konfiguration vollständig ersetzen, indem man z.B. als implementierende
+            // Klasse eine MOC-Version zum Testen angibt.
+            ContainerBuilder.RegisterType<SourceService>().As<ISourceService>();
+            ContainerBuilder.RegisterType<GenreService>().As<IGenreService>();
+            ContainerBuilder.RegisterType<MovieService>().As<IMovieService>();
+            ContainerBuilder.RegisterType<SettingsService>().As<ISettingsService>();
+            ContainerBuilder.RegisterType<FilterService>().As<IFilterService>();
         }
 
         private void FinishInitialization()

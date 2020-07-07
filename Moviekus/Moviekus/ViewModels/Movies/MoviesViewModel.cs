@@ -17,12 +17,13 @@ using System.Collections.Generic;
 using NLog;
 using Acr.UserDialogs;
 using Moviekus.OneDrive;
+using Moviekus.ServiceContracts;
 
 namespace Moviekus.ViewModels.Movies
 {
     public class MoviesViewModel : BaseViewModel
     {
-        private MovieService MoviesService;
+        private IMovieService MoviesService;
 
         private MovieSortOrder MovieSortOrder = MovieSortOrder.Title;
         private Models.Filter MovieFilter = null;
@@ -55,8 +56,8 @@ namespace Moviekus.ViewModels.Movies
             {
                 MovieFilter = null;
                 if (filter != null)
-                    MovieFilter = await new FilterService().SetDefault(filter);
-                else await new FilterService().ResetDefault();
+                    MovieFilter = await Resolver.Resolve<IFilterService>().SetDefault(filter);
+                else await Resolver.Resolve<IFilterService>().ResetDefault();
                 await LoadMovies();
             };
 
@@ -141,7 +142,7 @@ namespace Moviekus.ViewModels.Movies
             return movie;
         }
 
-        public MoviesViewModel(MovieService moviesService)
+        public MoviesViewModel(IMovieService moviesService)
         {
             Title = "Filme";
             Movies = new ObservableCollection<MoviesItemViewModel>();
@@ -187,7 +188,7 @@ namespace Moviekus.ViewModels.Movies
                 if (MovieFilter == null)
                 {
                     Title = "Filme";
-                    MovieFilter = new FilterService().GetDefault();
+                    MovieFilter = Resolver.Resolve<IFilterService>().GetDefault();
                 }
 
                 if (MovieFilter != null)

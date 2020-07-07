@@ -9,6 +9,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Moviekus.EntityFramework;
+using Moviekus.ServiceContracts;
+using Moviekus.Services;
 
 namespace Moviekus.Web
 {
@@ -31,6 +33,19 @@ namespace Moviekus.Web
             });
 
             services.AddDbContext<MoviekusDbContext>();
+
+            // Inversion of Control
+            // Die Services werden nie direkt angesprochen, sondern immer über die zugehörigen Interfaces.
+            // Die Zuordnung wer was implementiert erfolgt hier.
+            // Eine Komponente wie z.B. ein PageModel definiert einen Konstruktor mit dem Interfacetyp, den sie benötigt
+            // und erhält diesen dann abhängig von dieser Konfiguration geliefert.
+            // Auf diese Weise kann man hier eine Konfiguration vollständig ersetzen, indem man z.B. als implementierende
+            // Klasse eine MOC-Version zum Testen angibt.
+            services.AddSingleton(typeof(IGenreService), typeof(GenreService));
+            services.AddSingleton(typeof(IFilterService), typeof(FilterService));
+            services.AddSingleton(typeof(IMovieService), typeof(MovieService));
+            services.AddSingleton(typeof(ISettingsService), typeof(SettingsService));
+            services.AddSingleton(typeof(ISourceService), typeof(SourceService));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

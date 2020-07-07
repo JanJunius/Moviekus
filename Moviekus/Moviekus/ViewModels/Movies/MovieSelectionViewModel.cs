@@ -1,7 +1,7 @@
 ﻿using Acr.UserDialogs;
 using Moviekus.Dto;
 using Moviekus.Models;
-using Moviekus.Services;
+using Moviekus.ServiceContracts;
 using NLog;
 using System;
 using System.Collections.ObjectModel;

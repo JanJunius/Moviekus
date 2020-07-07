@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Moviekus.EntityFramework;
 using Moviekus.Models;
+using Moviekus.ServiceContracts;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Moviekus.Services
 {
-    public class MovieService : BaseService<Movie>
+    public class MovieService : BaseService<Movie>, IMovieService
     {
         public async Task<IEnumerable<Movie>> GetWithSourceAsync()
         {
@@ -95,7 +96,7 @@ namespace Moviekus.Services
         public async Task<ICollection<MovieGenre>> GetMovieGenres(Movie movie, IList<string> genres)
         {
             List<MovieGenre> movieGenres = new List<MovieGenre>();
-            GenreService genreService = new GenreService();
+            IGenreService genreService = Resolver.Resolve<IGenreService>();
 
             // Bestimmen der Genres, die dem Film neu zugeordnet werden müssen
             var existingGenres = movie.MovieGenres.Where(x => x.Movie == movie).Select(mg => mg.Genre);

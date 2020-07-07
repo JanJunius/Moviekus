@@ -1,10 +1,11 @@
 ﻿using Moviekus.Models;
+using Moviekus.ServiceContracts;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Moviekus.Services
 {
-    public class SettingsService : BaseService<Settings>
+    public class SettingsService : BaseService<Settings>, ISettingsService
     {
         public Settings GetSettings()
         {

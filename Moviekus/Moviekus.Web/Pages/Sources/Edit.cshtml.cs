@@ -1,20 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Moviekus.EntityFramework;
 using Moviekus.Models;
-using Moviekus.Services;
+using Moviekus.ServiceContracts;
 
 namespace Moviekus.Web.Pages.Sources
 {
     public class EditModel : PageModel
     {
-        private SourceService SourceService = new SourceService();
+        private ISourceService SourceService;
+        
+        public EditModel(ISourceService sourceService)
+        {
+            SourceService = sourceService;
+        }
 
         [BindProperty]
         public Source Source { get; set; }

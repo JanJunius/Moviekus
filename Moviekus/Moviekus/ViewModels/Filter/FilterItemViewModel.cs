@@ -1,4 +1,5 @@
 ﻿using Moviekus.Models;
+using Moviekus.ServiceContracts;
 using Moviekus.Services;
 using System;
 using System.Collections.Generic;
@@ -140,7 +141,7 @@ namespace Moviekus.ViewModels.Filter
 
         private string GetGenreText(FilterEntry filterEntry)
         {
-            GenreService genreService = new GenreService();
+            IGenreService genreService = Resolver.Resolve<IGenreService>();
 
             var genre = genreService.Get(filterEntry.ValueFrom);
             string genreName = genre != null ? genre.Name : "unbekanntes Genre";
@@ -155,7 +156,7 @@ namespace Moviekus.ViewModels.Filter
 
         private string GetSourceText(FilterEntry filterEntry)
         {
-            SourceService sourceService = new SourceService();
+            ISourceService sourceService = Resolver.Resolve<ISourceService>();
 
             var source = sourceService.Get(filterEntry.ValueFrom);
             string sourceName = source != null ? source.Name : "unbekannte Quelle";

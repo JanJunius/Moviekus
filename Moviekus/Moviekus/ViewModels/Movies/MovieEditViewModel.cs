@@ -1,6 +1,7 @@
 ﻿using Acr.UserDialogs;
 using Moviekus.Dto;
 using Moviekus.Models;
+using Moviekus.ServiceContracts;
 using Moviekus.Services;
 using Moviekus.ViewModels.Genres;
 using Moviekus.Views.Genres;
@@ -148,7 +149,7 @@ namespace Moviekus.ViewModels.Movies
         }
 
         private List<Source> _sources;
-        private MovieService MovieService;
+        private IMovieService MovieService;
 
         public IList<Source> Sources
         {
@@ -170,9 +171,9 @@ namespace Moviekus.ViewModels.Movies
             }
         }
 
-        public MovieEditViewModel(MovieService movieService)
+        public MovieEditViewModel(IMovieService movieService)
         {
-            _sources = new List<Source>(new SourceService().Get());
+            _sources = new List<Source>(Resolver.Resolve<ISourceService>().Get());
 
             MovieService = movieService;
             Movie = Movie.CreateNew<Movie>();

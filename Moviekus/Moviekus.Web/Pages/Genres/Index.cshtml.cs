@@ -2,13 +2,19 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Moviekus.Models;
+using Moviekus.ServiceContracts;
 using Moviekus.Services;
 
 namespace Moviekus.Web.Pages.Genres
 {
     public class IndexModel : PageModel
     {
-        private GenreService GenreService = new GenreService();
+        private IGenreService GenreService;
+
+        public IndexModel(IGenreService genreService)
+        {
+            GenreService = genreService;
+        }
 
         public IList<Genre> Genres { get;set; }
 

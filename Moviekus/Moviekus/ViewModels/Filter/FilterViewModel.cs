@@ -1,11 +1,9 @@
-﻿using Moviekus.Services;
+﻿using Moviekus.ServiceContracts;
 using Moviekus.Views.Filter;
 using NLog;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -17,9 +15,9 @@ namespace Moviekus.ViewModels.Filter
     {
         public ObservableCollection<FilterItemViewModel> Filter { get; set; }
 
-        private BaseService<Models.Filter> FilterService;
+        private IFilterService FilterService;
 
-        public FilterViewModel(FilterService filterService)
+        public FilterViewModel(IFilterService filterService)
         {
             FilterService = filterService;
             Filter = new ObservableCollection<FilterItemViewModel>();

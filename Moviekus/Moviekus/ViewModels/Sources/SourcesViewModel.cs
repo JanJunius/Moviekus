@@ -1,4 +1,5 @@
 ﻿using Moviekus.Models;
+using Moviekus.ServiceContracts;
 using Moviekus.Services;
 using Moviekus.Views.Sources;
 using NLog;
@@ -16,7 +17,7 @@ namespace Moviekus.ViewModels.Sources
 {
     public class SourcesViewModel : BaseViewModel
     {
-        private BaseService<Source> SourceService;
+        private ISourceService SourceService;
 
         public ObservableCollection<SourcesItemViewModel> Sources { get; set; }
         
@@ -35,7 +36,7 @@ namespace Moviekus.ViewModels.Sources
             await Navigation.PushAsync(sourceDetailView);
         });
 
-        public SourcesViewModel(SourceService sourceService)
+        public SourcesViewModel(ISourceService sourceService)
         {
             Title = "Quellen";
             Sources = new ObservableCollection<SourcesItemViewModel>();

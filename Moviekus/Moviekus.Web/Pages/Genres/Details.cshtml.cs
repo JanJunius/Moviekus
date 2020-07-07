@@ -2,13 +2,18 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Moviekus.Models;
-using Moviekus.Services;
+using Moviekus.ServiceContracts;
 
 namespace Moviekus.Web.Pages.Genres
 {
     public class DetailsModel : PageModel
     {
-        private GenreService GenreService = new GenreService();
+        private IGenreService GenreService;
+
+        public DetailsModel(IGenreService genreService)
+        {
+            GenreService = genreService;
+        }
 
         public Genre Genre { get; set; }
 

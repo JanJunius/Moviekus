@@ -1,4 +1,5 @@
 ﻿using Moviekus.Models;
+using Moviekus.ServiceContracts;
 using Moviekus.Services;
 using System;
 using System.Collections.Generic;
@@ -18,11 +19,11 @@ namespace Moviekus.ViewModels.Genres
         public event GenreSelectionChanged OnGenreSelectionChanged;
 
         public ObservableCollection<GenreSelection> GenreSelection { get; set; }
-        private BaseService<Genre> GenreService;
+        private IGenreService GenreService;
 
         public Movie Movie { get; set; }
 
-        public GenreSelectionViewModel(GenreService genreService)
+        public GenreSelectionViewModel(IGenreService genreService)
         {
             GenreService = genreService;
         }

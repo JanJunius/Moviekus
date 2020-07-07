@@ -1,12 +1,10 @@
 ﻿using Acr.UserDialogs;
 using Moviekus.Models;
-using Moviekus.Services;
+using Moviekus.ServiceContracts;
 using Moviekus.Views.Movies;
 using NLog;
 using System;
-using System.Globalization;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -16,7 +14,7 @@ namespace Moviekus.ViewModels.Movies
 {
     public class MovieDetailViewModel : BaseViewModel
     {
-        MovieService MovieService;
+        IMovieService MovieService;
 
         public string Genres
         {
@@ -107,7 +105,7 @@ namespace Moviekus.ViewModels.Movies
             }
         });
 
-        public MovieDetailViewModel(MovieService movieService)
+        public MovieDetailViewModel(IMovieService movieService)
         {
             MovieService = movieService;
         }

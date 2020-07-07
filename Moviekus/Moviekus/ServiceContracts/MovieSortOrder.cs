@@ -1,4 +1,4 @@
-﻿namespace Moviekus.Services
+﻿namespace Moviekus.ServiceContracts
 {
     public enum MovieSortOrder
     {

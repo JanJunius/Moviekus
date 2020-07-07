@@ -1,5 +1,6 @@
 ﻿using Moviekus.Dto;
 using Moviekus.Models;
+using Moviekus.ServiceContracts;
 using NLog;
 using RestSharp;
 using System;
@@ -25,7 +26,7 @@ namespace Moviekus.Services
                 if (TheInstance == null)
                 {
                     TheInstance = new MovieDbService();
-                    Settings = new SettingsService().GetSettings();
+                    Settings = Resolver.Resolve<ISettingsService>().GetSettings();
                 }
                 return TheInstance;
             }

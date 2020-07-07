@@ -1,19 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using Moviekus.EntityFramework;
 using Moviekus.Models;
-using Moviekus.Services;
+using Moviekus.ServiceContracts;
 
 namespace Moviekus.Web.Pages.Sources
 {
     public class IndexModel : PageModel
     {
-        private SourceService SourceService = new SourceService();
+        private ISourceService SourceService;
+
+        public IndexModel(ISourceService sourceService)
+        {
+            SourceService = sourceService;
+        }
 
         public IList<Source> Sources { get;set; }
 

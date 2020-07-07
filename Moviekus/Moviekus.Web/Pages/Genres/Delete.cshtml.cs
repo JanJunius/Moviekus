@@ -8,13 +8,19 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Graph;
 using Moviekus.EntityFramework;
 using Moviekus.Models;
+using Moviekus.ServiceContracts;
 using Moviekus.Services;
 
 namespace Moviekus.Web.Pages.Genres
 {
     public class DeleteModel : PageModel
     {
-        private GenreService GenreService = new GenreService();
+        private IGenreService GenreService;
+
+        public DeleteModel(IGenreService genreService)
+        {
+            GenreService = genreService;
+        }
 
         [BindProperty]
         public Genre Genre { get; set; }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Moviekus.EntityFramework;
 using Moviekus.Models;
+using Moviekus.ServiceContracts;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Moviekus.Services
 {
-    public class BaseService<T> where T : BaseModel, new()
+    public class BaseService<T> : IBaseService<T> where T : BaseModel, new()
     {
         public event EventHandler<T> OnModelInserted;
         public event EventHandler<T> OnModelUpdated;

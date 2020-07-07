@@ -1,6 +1,6 @@
 ﻿using Acr.UserDialogs;
 using Moviekus.Models;
-using Moviekus.Services;
+using Moviekus.ServiceContracts;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -8,11 +8,11 @@ namespace Moviekus.ViewModels.Genres
 {
     public class GenreDetailViewModel : BaseViewModel
     {
-        private BaseService<Genre> GenreService;
+        private IGenreService GenreService;
 
         public Genre Genre { get; set; }
 
-        public GenreDetailViewModel(GenreService genreService)
+        public GenreDetailViewModel(IGenreService genreService)
         {
             GenreService = genreService;
         }

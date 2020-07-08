@@ -87,6 +87,20 @@ namespace Moviekus.Services
             */
         }
 
+        public async Task<Movie> GetWithGenresAndSourcesAsync(string id)
+        {
+            using (var context = new MoviekusDbContext())
+            {
+                Movie movie = await context.Movies.Include(s => s.Source).Where(m => m.Id == id).FirstOrDefaultAsync();
+
+                // Dieser Aufruf führt dazu, dass Movie mit den MovieGenres angereichert wird
+                // Ein manuelles Add ist nicht erforderlich!
+                var movieGenres = context.MovieGenres.Where(mg => mg.Movie == movie).Include(g => g.Genre).ToList();
+
+                return movie;
+            }
+        }
+
         public async Task<Movie> SaveMovieAsync(Movie movie)
         {
             await SaveChangesAsync(movie);

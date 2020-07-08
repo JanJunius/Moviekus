@@ -1,0 +1,85 @@
+﻿@page
+@model Moviekus.Web.Pages.Movies.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<table>
+    <tr>
+        <td style="padding-right:10px;"><img src="~/images/movie.png" style="width:48px;height:48px;"></td>
+        <td><h1>Film-Details</h1></td>
+    </tr>
+</table>
+
+<h4>@Html.DisplayFor(model => model.MovieDetails.Movie.Title)</h4>
+<hr />
+
+<table>
+    <tr>
+        <td style="padding-right:15px;">
+            @{
+                String img64Url = "";
+                if (@Model.MovieDetails.Movie.Cover != null)
+                {
+                    String img64 = Convert.ToBase64String(@Model.MovieDetails.Movie.Cover);
+                    img64Url = string.Format("data:image/png;base64,{0}", img64);
+                }
+            }
+            <img src="@img64Url" style="width: 180px;height: 240px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);" />
+        </td>
+        <td>
+            <b>@Html.DisplayNameFor(model => model.MovieDetails.Movie.ReleaseDate)</b>
+            <br />
+            @Html.DisplayFor(model => model.MovieDetails.ReleaseDateText)
+            <br />
+            <b>@Html.DisplayNameFor(model => model.MovieDetails.Movie.LastSeen)</b>
+            <br />
+            @Html.DisplayFor(model => model.MovieDetails.LastSeenText)
+            <table>
+                <tr>
+                    <td style="padding-right:10px;"><b>@Html.DisplayNameFor(model => model.MovieDetails.Movie.Runtime)</b></td>
+                    <td style="padding-right:10px;"><b>@Html.DisplayNameFor(model => model.MovieDetails.Movie.DiscNumber)</b></td>
+                    <td style="padding-right:10px;"><b>@Html.DisplayNameFor(model => model.MovieDetails.Movie.EpisodeNumber)</b></td>
+                </tr>
+                <tr>
+                    <td><b>@Html.DisplayFor(model => model.MovieDetails.Movie.Runtime)</b></td>
+                    <td><b>@Html.DisplayFor(model => model.MovieDetails.Movie.DiscNumber)</b></td>
+                    <td><b>@Html.DisplayFor(model => model.MovieDetails.Movie.EpisodeNumber)</b></td>
+                </tr>
+            </table>
+            <br />
+            <b>@Html.DisplayNameFor(model => model.MovieDetails.Movie.MovieGenres)</b>
+            <br />
+            @Html.DisplayFor(model => model.MovieDetails.Genres)
+
+            <br />
+            <b>@Html.DisplayNameFor(model => model.MovieDetails.Movie.Source)</b>
+            <br />
+            @Html.DisplayFor(model => model.MovieDetails.Movie.Source.Name)
+        </td>
+    </tr>
+</table>
+
+<div>
+    <b>@Html.DisplayNameFor(model => model.MovieDetails.Movie.Description)</b>
+    <br />
+    @Html.DisplayFor(model => model.MovieDetails.Movie.Description)
+    <br />
+</div>
+
+<div>
+    <br />
+    <b>@Html.DisplayNameFor(model => model.MovieDetails.Movie.Remarks)</b>
+    <br />
+    @Html.DisplayFor(model => model.MovieDetails.Movie.Remarks)
+    <br />
+</div>
+
+<hr />
+
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.MovieDetails.Movie.Id">Bearbeiten</a> |
+    <a asp-page="./Index">Zurück zur Liste</a>
+</div>
+

@@ -14,13 +14,14 @@ namespace Moviekus.Models
         public string Title { get; set; }
 
         [ForeignKey("SourceId")]
-        [Display(Name = "Quelle")] 
+        [Display(Name = "Verfügbar bei")] 
         public virtual Source Source { get; set; }
 
         [Display(Name = "Beschreibung")] 
         public string Description { get; set; }
 
-        [Display(Name = "Veröffentlicht")] 
+        [Display(Name = "Veröffentlicht")]
+        [DataType(DataType.Date)] 
         public DateTime ReleaseDate { get; set; }
 
         [Display(Name = "Laufzeit")]
@@ -30,6 +31,7 @@ namespace Moviekus.Models
         public int Rating { get; set; }
 
         [Display(Name = "Zuletzt gesehen")]
+        [DataType(DataType.Date)] 
         public DateTime LastSeen { get; set; }
 
         [Display(Name = "Bemerkungen")]
@@ -47,6 +49,7 @@ namespace Moviekus.Models
         [Display(Name = "Episode")]
         public string EpisodeNumber { get; set; }
 
+        [Display(Name = "Genres")]
         public virtual ICollection<MovieGenre> MovieGenres { get; set; }
 
         public Movie()

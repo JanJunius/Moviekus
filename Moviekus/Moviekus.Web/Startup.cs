@@ -32,6 +32,9 @@ namespace Moviekus.Web
                 options.Conventions.AddPageRoute("/Movies/Index", "");
             });
 
+            // Blazor wird in der RatingComponent verwendet
+            services.AddServerSideBlazor();
+
             services.AddDbContext<MoviekusDbContext>();
 
             // Inversion of Control

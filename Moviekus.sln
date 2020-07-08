@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moviekus.Android", "Movieku
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moviekus", "Moviekus\Moviekus\Moviekus.csproj", "{2B699C6B-2741-4C2E-A463-EBDDD38DAC53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moviekus.Web", "Moviekus\Moviekus.Web\Moviekus.Web.csproj", "{5670A579-DC2F-4D7D-8728-A62074CAACAA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moviekus.Web", "Moviekus\Moviekus.Web\Moviekus.Web.csproj", "{5670A579-DC2F-4D7D-8728-A62074CAACAA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

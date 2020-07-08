@@ -17,7 +17,7 @@
 
 <table>
     <tr>
-        <td style="padding-right:15px;">
+        <td style="padding-right:20px;">
             @{
                 String img64Url = "";
                 if (@Model.MovieDetails.Movie.Cover != null)
@@ -26,37 +26,57 @@
                     img64Url = string.Format("data:image/png;base64,{0}", img64);
                 }
             }
-            <img src="@img64Url" style="width: 180px;height: 240px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);" />
+            <img src="@img64Url" style="width: 240px;height: 300px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);" />
         </td>
         <td>
-            <b>@Html.DisplayNameFor(model => model.MovieDetails.Movie.ReleaseDate)</b>
-            <br />
-            @Html.DisplayFor(model => model.MovieDetails.ReleaseDateText)
-            <br />
-            <b>@Html.DisplayNameFor(model => model.MovieDetails.Movie.LastSeen)</b>
-            <br />
-            @Html.DisplayFor(model => model.MovieDetails.LastSeenText)
-            <table>
-                <tr>
-                    <td style="padding-right:10px;"><b>@Html.DisplayNameFor(model => model.MovieDetails.Movie.Runtime)</b></td>
-                    <td style="padding-right:10px;"><b>@Html.DisplayNameFor(model => model.MovieDetails.Movie.DiscNumber)</b></td>
-                    <td style="padding-right:10px;"><b>@Html.DisplayNameFor(model => model.MovieDetails.Movie.EpisodeNumber)</b></td>
-                </tr>
-                <tr>
-                    <td><b>@Html.DisplayFor(model => model.MovieDetails.Movie.Runtime)</b></td>
-                    <td><b>@Html.DisplayFor(model => model.MovieDetails.Movie.DiscNumber)</b></td>
-                    <td><b>@Html.DisplayFor(model => model.MovieDetails.Movie.EpisodeNumber)</b></td>
-                </tr>
-            </table>
-            <br />
-            <b>@Html.DisplayNameFor(model => model.MovieDetails.Movie.MovieGenres)</b>
-            <br />
-            @Html.DisplayFor(model => model.MovieDetails.Genres)
+            <div style="padding-bottom:5px;">
+                <b>@Html.DisplayNameFor(model => model.MovieDetails.Movie.ReleaseDate)</b>
+                <br />
+                @Html.DisplayFor(model => model.MovieDetails.ReleaseDateText)
+            </div>
+            
+            <div style="padding-bottom:5px;">
+                <b>@Html.DisplayNameFor(model => model.MovieDetails.Movie.LastSeen)</b>
+                <br />
+                @Html.DisplayFor(model => model.MovieDetails.LastSeenText)
+            </div>
 
-            <br />
-            <b>@Html.DisplayNameFor(model => model.MovieDetails.Movie.Source)</b>
-            <br />
-            @Html.DisplayFor(model => model.MovieDetails.Movie.Source.Name)
+            <div style="padding-bottom:5px;">
+                <table>
+                    <tr>
+                        <td style="padding-right:10px;"><b>@Html.DisplayNameFor(model => model.MovieDetails.Movie.Runtime)</b></td>
+                        <td style="padding-right:10px;"><b>@Html.DisplayNameFor(model => model.MovieDetails.Movie.DiscNumber)</b></td>
+                        <td style="padding-right:10px;"><b>@Html.DisplayNameFor(model => model.MovieDetails.Movie.EpisodeNumber)</b></td>
+                    </tr>
+                    <tr>
+                        <td><b>@Html.DisplayFor(model => model.MovieDetails.Movie.Runtime)</b></td>
+                        <td><b>@Html.DisplayFor(model => model.MovieDetails.Movie.DiscNumber)</b></td>
+                        <td><b>@Html.DisplayFor(model => model.MovieDetails.Movie.EpisodeNumber)</b></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div style="padding-bottom:5px;">
+                <b>@Html.DisplayNameFor(model => model.MovieDetails.Movie.Rating)</b>
+                <br />
+                @(await Html.RenderComponentAsync<Moviekus.Web.Components.RatingBar>(RenderMode.ServerPrerendered,
+                new { Rating = Model.MovieDetails.Movie.Rating}))
+
+            </div>
+
+            <div style="padding-bottom:5px;">
+                <b>@Html.DisplayNameFor(model => model.MovieDetails.Movie.MovieGenres)</b>
+                <br />
+                @Html.DisplayFor(model => model.MovieDetails.Genres)
+
+            </div>
+
+            <div style="padding-bottom:5px;">
+                <b>@Html.DisplayNameFor(model => model.MovieDetails.Movie.Source)</b>
+                <br />
+                @Html.DisplayFor(model => model.MovieDetails.Movie.Source.Name)
+
+            </div>
         </td>
     </tr>
 </table>
@@ -82,4 +102,5 @@
     <a asp-page="./Edit" asp-route-id="@Model.MovieDetails.Movie.Id">Bearbeiten</a> |
     <a asp-page="./Index">Zurück zur Liste</a>
 </div>
+
 

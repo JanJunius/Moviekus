@@ -26,5 +26,6 @@ namespace Moviekus.ServiceContracts
         T SaveChanges(T model);
 
         Task DeleteAsync(T model);
+        Task DeleteAsync(string id);
     }
 }

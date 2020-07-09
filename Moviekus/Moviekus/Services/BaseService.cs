@@ -144,6 +144,13 @@ namespace Moviekus.Services
             OnModelDeleted?.Invoke(this, model);
         }
 
+        public virtual async Task DeleteAsync(string id)
+        {
+            var model = await GetAsync(id);
+            if (model != null)
+                await DeleteAsync(model);
+        }
+
         protected virtual async Task InsertAsync(MoviekusDbContext context, T model)
         {
             try

@@ -6,41 +6,40 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Moviekus.Models;
 using Moviekus.ServiceContracts;
-using Moviekus.ViewModels.Movies;
 
 namespace Moviekus.Web.Pages.Movies
 {
-    public class DetailsModel : PageModel
+    public class DeleteModel : PageModel
     {
         private IMovieService MovieService;
 
-        public MovieDetails MovieDetails { get; set; }
-
-        public DetailsModel(IMovieService movieService)
+        public DeleteModel(IMovieService movieService)
         {
             MovieService = movieService;
-            MovieDetails = new MovieDetails();
         }
+
+        [BindProperty]
+        public Movie Movie { get; set; }
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
             if (id == null)
                 return NotFound();
 
-            var movie = await MovieService.GetWithGenresAndSourcesAsync(id);
-            if (movie == null)
-                return NotFound();
+            Movie = await MovieService.GetAsync(id);
 
-            MovieDetails.Movie = movie;
+            if (Movie == null)
+                return NotFound();
 
             return Page();
         }
 
-        public async Task<IActionResult> DeleteMovieAsync(string id)
+        public async Task<IActionResult> OnPostAsync(string id)
         {
             if (id == null)
                 return NotFound();
-            //MovieService.DeleteAsync()
+
+            await MovieService.DeleteAsync(id);
 
             return RedirectToPage("./Index");
         }

@@ -1,6 +1,6 @@
 ﻿@page
 @model Moviekus.Web.Pages.Movies.EditModel
-
+@using Moviekus.Web.Pages.Components
 @{
     ViewData["Title"] = "Film bearbeiten";
 }
@@ -12,27 +12,70 @@
     </tr>
 </table>
 
-<hr />
+<div>
+    <form method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Movie.Title" class="control-label"></label>
+            <input asp-for="Movie.Title" class="form-control" />
+            <span asp-validation-for="Movie.Title" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Movie.Description" class="control-label"></label>
+            <textarea asp-for="Movie.Description" rows="5" class="form-control"></textarea>
+            <span asp-validation-for="Movie.Description" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Movie.ReleaseDate" class="control-label"></label>
+            <input asp-for="Movie.ReleaseDate" class="form-control" />
+            <span asp-validation-for="Movie.ReleaseDate" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Movie.LastSeen" class="control-label"></label>
+            <input asp-for="LastSeen" class="form-control" />
+            <span asp-validation-for="Movie.LastSeen" class="text-danger"></span>
+        </div>
+        <table>
+            <tr>
+                <td>
+                    <div class="form-group">
+                        <label asp-for="Movie.Runtime" class="control-label"></label>
+                        <input asp-for="Movie.Runtime" class="form-control" />
+                        <span asp-validation-for="Movie.Runtime" class="text-danger"></span>
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <label asp-for="Movie.DiscNumber" class="control-label"></label>
+                        <input asp-for="Movie.DiscNumber" class="form-control" />
+                        <span asp-validation-for="Movie.DiscNumber" class="text-danger"></span>
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <label asp-for="Movie.EpisodeNumber" class="control-label"></label>
+                        <input asp-for="Movie.EpisodeNumber" class="form-control" />
+                        <span asp-validation-for="Movie.EpisodeNumber" class="text-danger"></span>
+                    </div>
+                </td>
 
-    <div>
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Movie.Title" class="control-label"></label>
-                <input asp-for="Movie.Title" class="form-control" />
-                <span asp-validation-for="Movie.Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Movie.Description" class="control-label"></label>
-                <textarea asp-for="Movie.Description" rows="5" class="form-control"></textarea>
-                <span asp-validation-for="Movie.Description" class="text-danger"></span>
-            </div>
-            <input type="hidden" asp-for="Movie.Id" />
-            <div class="form-group">
-                <input type="submit" value="Speichern" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+            </tr>
+        </table>
+        <div style="padding-bottom:5px;">
+            <b>@Html.DisplayNameFor(model => model.Movie.Rating)</b>
+            <br />
+            <component type="typeof(Moviekus.Web.Pages.Components.RatingBar)" render-mode="ServerPrerendered" param-Rating="@(Model.Movie.Rating)" param-Enabled="true" />
+            <br />
+            <br />
+
+        </div>
+
+        <input type="hidden" asp-for="Movie.Id" />
+        <div class="form-group">
+            <input type="submit" value="Speichern" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
 
 <div>
     <a asp-page="./Index">Zurück zur Liste</a>

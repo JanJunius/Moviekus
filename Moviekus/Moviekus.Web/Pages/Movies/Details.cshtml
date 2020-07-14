@@ -59,7 +59,7 @@
             <div style="padding-bottom:5px;">
                 <b>@Html.DisplayNameFor(model => model.MovieDetails.Movie.Rating)</b>
                 <br />
-                @(await Html.RenderComponentAsync<Moviekus.Web.Components.RatingBar>(RenderMode.ServerPrerendered,
+                @(await Html.RenderComponentAsync<Moviekus.Web.Pages.Components.RatingBar>(RenderMode.ServerPrerendered,
     new { Rating = Model.MovieDetails.Movie.Rating }))
 
             </div>

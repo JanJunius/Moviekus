@@ -27,7 +27,7 @@ namespace Moviekus.Web
         public void ConfigureServices(IServiceCollection services)
         {
             // Die Options sind nur notwendig, um die Startseite auf den Movies-Ordner umzubiegen
-            services.AddRazorPages().AddRazorPagesOptions(options => 
+            services.AddRazorPages().AddRazorPagesOptions(options =>
             {
                 options.Conventions.AddPageRoute("/Movies/Index", "");
             });
@@ -75,6 +75,7 @@ namespace Moviekus.Web
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
+                endpoints.MapBlazorHub();
             });
         }
     }

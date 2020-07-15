@@ -24,7 +24,7 @@ namespace Moviekus.Services
         {
         }
 
-        public virtual IEnumerable<T> Get()
+        public virtual IList<T> Get()
         {
             using (var context = new MoviekusDbContext())
             {

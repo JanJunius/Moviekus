@@ -11,7 +11,7 @@ namespace Moviekus.ServiceContracts
         event EventHandler<T> OnModelUpdated;
         event EventHandler<T> OnModelDeleted;
 
-        IEnumerable<T> Get();
+        IList<T> Get();
 
         Task<IList<T>> GetAsync();
 

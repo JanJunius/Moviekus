@@ -34,6 +34,5 @@ namespace Moviekus.Services
             }
             return genre;
         }
-
     }
 }

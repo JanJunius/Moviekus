@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Moviekus.ViewModels.Movies
+namespace Moviekus.Dto
 {
-    public class MovieDetails
+    public class MovieDetailDto
     {
         public Movie Movie { get; set; }
 

@@ -1,4 +1,5 @@
 ﻿using Moviekus.Dto;
+using Moviekus.Dto.MovieDb;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -8,9 +9,9 @@ namespace Moviekus.ServiceContracts
     {
         string Name { get; }
 
-        Task<IEnumerable<MovieDto>> SearchMovieAsync(string title);
-        Task FillMovieDetails(MovieDto movieDto);
-        Task FillMovieTrailer(MovieDto movieDto);
-        byte[] GetMovieCover(MovieDto movieDto);
+        Task<IEnumerable<MovieDbMovie>> SearchMovieAsync(string title);
+        Task FillMovieDetails(MovieDbMovie movieDto);
+        Task FillMovieTrailer(MovieDbMovie movieDto);
+        byte[] GetMovieCover(MovieDbMovie movieDto);
     }
 }

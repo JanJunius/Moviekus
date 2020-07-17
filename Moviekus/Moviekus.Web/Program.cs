@@ -13,6 +13,7 @@ namespace Moviekus.Web
     {
         public static void Main(string[] args)
         {
+            Bootstrapper.Init();
             CreateHostBuilder(args).Build().Run();
         }
 

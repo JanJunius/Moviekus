@@ -1,4 +1,5 @@
 ﻿using Moviekus.Dto;
+using Moviekus.Dto.MovieDb;
 using Moviekus.Models;
 using Moviekus.ServiceContracts;
 using NLog;
@@ -38,10 +39,10 @@ namespace Moviekus.Services
         {
         }
 
-        public async Task<IEnumerable<MovieDto>> SearchMovieAsync(string title)
+        public async Task<IEnumerable<MovieDbMovie>> SearchMovieAsync(string title)
         {
             MovieDbGenres genres = await GetGenres();
-            List<MovieDto> movies = new List<MovieDto>();
+            List<MovieDbMovie> movies = new List<MovieDbMovie>();
 
             LogManager.GetCurrentClassLogger().Info($"Searching MovieDb for '{title}'...");
 
@@ -75,7 +76,7 @@ namespace Moviekus.Services
             return movies.OrderByDescending(m => m.ReleaseDate);
         }
 
-        public async Task FillMovieDetails(MovieDto movieDto)
+        public async Task FillMovieDetails(MovieDbMovie movieDto)
         {
             string url = $"https://api.themoviedb.org/3/movie/{movieDto.ProviderMovieId}";
             var client = new RestClient(url);
@@ -104,7 +105,7 @@ namespace Moviekus.Services
             }
         }
 
-        public async Task FillMovieTrailer(MovieDto movieDto)
+        public async Task FillMovieTrailer(MovieDbMovie movieDto)
         {
             string url = $"https://api.themoviedb.org/3/movie/{movieDto.ProviderMovieId}/videos";
             var client = new RestClient(url);
@@ -140,7 +141,7 @@ namespace Moviekus.Services
             }
         }
 
-        public byte[] GetMovieCover(MovieDto movieDto)
+        public byte[] GetMovieCover(MovieDbMovie movieDto)
         {
             if (string.IsNullOrEmpty(movieDto.CoverUri))
                 return null;
@@ -173,9 +174,9 @@ namespace Moviekus.Services
             return null;
         }
 
-        private MovieDto BuildMovieDto(MovieDbResult movieDbResult, MovieDbGenres movieDbGenres)
+        private MovieDbMovie BuildMovieDto(MovieDbResult movieDbResult, MovieDbGenres movieDbGenres)
         {
-            MovieDto movieDto = new MovieDto()
+            MovieDbMovie movieDto = new MovieDbMovie()
             {
                 ProviderMovieId = movieDbResult.id,
                 Overview = movieDbResult.overview,

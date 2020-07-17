@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Moviekus.Dto
+namespace Moviekus.Dto.MovieDb
 {
     public class MovieDbGenres
     {

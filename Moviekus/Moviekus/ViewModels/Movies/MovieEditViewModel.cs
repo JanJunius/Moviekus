@@ -1,5 +1,6 @@
 ﻿using Acr.UserDialogs;
 using Moviekus.Dto;
+using Moviekus.Dto.MovieDb;
 using Moviekus.Models;
 using Moviekus.ServiceContracts;
 using Moviekus.Services;
@@ -113,7 +114,7 @@ namespace Moviekus.ViewModels.Movies
             await Navigation.PushAsync(selectionView);
         }
 
-        private async Task ApplyMovieSelection(MovieDto movieDto)
+        private async Task ApplyMovieSelection(MovieDbMovie movieDto)
         {
             Movie.Title = movieDto.Title;
             Movie.Description = movieDto.Overview;
@@ -124,7 +125,7 @@ namespace Moviekus.ViewModels.Movies
             Movie.Cover = movieDto.Cover;
             Movie.Homepage = movieDto.Homepage;
             Movie.Trailer = movieDto.TrailerUrl;
-            Movie.MovieGenres = await MovieService.GetMovieGenres(Movie, movieDto.Genres);
+            Movie.MovieGenres = await MovieService.AddMovieGenres(Movie, movieDto.Genres);
 
             Validate();
 

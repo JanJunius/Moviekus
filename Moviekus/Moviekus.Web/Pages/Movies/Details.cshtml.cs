@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Moviekus.Dto;
 using Moviekus.Models;
 using Moviekus.ServiceContracts;
 using Moviekus.ViewModels.Movies;
@@ -14,12 +15,12 @@ namespace Moviekus.Web.Pages.Movies
     {
         private IMovieService MovieService;
 
-        public MovieDetails MovieDetails { get; set; }
+        public MovieDetailDto MovieDetails { get; set; }
 
         public DetailsModel(IMovieService movieService)
         {
             MovieService = movieService;
-            MovieDetails = new MovieDetails();
+            MovieDetails = new MovieDetailDto();
         }
 
         public async Task<IActionResult> OnGetAsync(string id)
@@ -36,13 +37,5 @@ namespace Moviekus.Web.Pages.Movies
             return Page();
         }
 
-        public async Task<IActionResult> DeleteMovieAsync(string id)
-        {
-            if (id == null)
-                return NotFound();
-            //MovieService.DeleteAsync()
-
-            return RedirectToPage("./Index");
-        }
     }
 }

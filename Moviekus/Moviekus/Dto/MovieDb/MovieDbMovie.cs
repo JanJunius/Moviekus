@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Moviekus.Dto
+namespace Moviekus.Dto.MovieDb
 {
     [DebuggerDisplay("Title = {Title}")]
-    public class MovieDto
+    public class MovieDbMovie
     {
-        public MovieDto()
+        public MovieDbMovie()
         {
             Genres = new List<string>();
         }
@@ -58,7 +58,7 @@ namespace Moviekus.Dto
 
         public override bool Equals(object obj)
         {
-            return obj is MovieDto dto &&
+            return obj is MovieDbMovie dto &&
                    ProviderMovieId == dto.ProviderMovieId &&
                    ImDbId == dto.ImDbId &&
                    Title == dto.Title &&

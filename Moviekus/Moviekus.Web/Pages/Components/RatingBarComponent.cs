@@ -18,8 +18,10 @@ namespace Moviekus.Web.Pages.Components
      * */
     public class RatingBarComponent : ComponentBase
     {
+        //TODO: Das Binding funktioniert nicht!
+        //Man kann zwar das Rating setzen, im Post kommt es aber nicht an
         [Parameter] public int Rating { get; set; }
-        
+
         [Parameter] public bool Enabled { get; set; }
 
         public void OnStarClick(int starId)
@@ -31,5 +33,6 @@ namespace Moviekus.Web.Pages.Components
                 Rating = 0;
             else Rating = starId;
         }
+
     }
 }

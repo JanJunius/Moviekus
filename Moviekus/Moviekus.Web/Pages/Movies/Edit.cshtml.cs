@@ -31,11 +31,11 @@ namespace Moviekus.Web.Pages.Movies
 
         [BindProperty]
         public string[] SelectedGenreIds { get; set; }
-
         
         [BindProperty]
         public IFormFile Cover { get; set; }
 
+        [BindProperty]
         public string SelectedSourceId { get; set; }
 
         public SelectList Genres { get; set; }
@@ -43,38 +43,12 @@ namespace Moviekus.Web.Pages.Movies
         public SelectList Sources { get; set; }
 
         [DataType(DataType.Date)]
-        public DateTime? LastSeen 
-        { 
-            get
-            {
-                if (Movie.LastSeen != MoviekusDefines.MinDate)
-                    return Movie.LastSeen;
-                else return null;
-            }
-            set
-            {
-                if (value != null && value.HasValue)
-                    Movie.LastSeen = value.Value;
-                else Movie.LastSeen = MoviekusDefines.MinDate;
-            }
-        }
+        [BindProperty]
+        public DateTime? LastSeen { get; set; }
 
         [DataType(DataType.Date)]
-        public DateTime? ReleaseDate
-        {
-            get
-            {
-                if (Movie.ReleaseDate != MoviekusDefines.MinDate)
-                    return Movie.ReleaseDate;
-                else return null;
-            }
-            set
-            {
-                if (value != null && value.HasValue)
-                    Movie.ReleaseDate = value.Value;
-                else Movie.ReleaseDate = MoviekusDefines.MinDate;
-            }
-        }
+        [BindProperty]
+        public DateTime? ReleaseDate { get; set; }
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
@@ -85,6 +59,14 @@ namespace Moviekus.Web.Pages.Movies
 
             if (Movie == null)
                 return NotFound();
+
+            if (Movie.ReleaseDate != MoviekusDefines.MinDate)
+                ReleaseDate = Movie.ReleaseDate;
+            else ReleaseDate = null;
+
+            if (Movie.LastSeen != MoviekusDefines.MinDate)
+                LastSeen = Movie.LastSeen;
+            else LastSeen = null;
 
             IList<Genre> genres = await GenreService.GetAsync();
             Genres = new SelectList(genres, nameof(Genre.Id), nameof(Genre.Name));
@@ -100,13 +82,42 @@ namespace Moviekus.Web.Pages.Movies
 
         public async Task<IActionResult> OnPostAsync(string id)
         {
-            using (var stream = new MemoryStream())
+            // Cover wird nur dann gesetzt, wenn ein Cover explizit ausgewählt wurde, d.h. es ist null,
+            // wenn ein vorhandenes Cover unverändert bleibt
+            if (Cover != null)
             {
-                await Cover.CopyToAsync(stream);
-                Movie.Cover = stream.ToArray();
+                // Neu ausgewähltes Cover übernehmen
+                using (var stream = new MemoryStream())
+                {
+                    await Cover.CopyToAsync(stream);
+                    Movie.Cover = stream.ToArray();
+                }
+            }
+            else
+            {
+                // Unverändertes Cover: Damit es beim Speichern nicht zurückgesetzt wird, muss es
+                // neu geladen werden
+                var savedMovie = await MovieService.GetAsync(id);
+                Movie.Cover = savedMovie?.Cover;
             }
 
-            return Page();
+            // Umsetzen der Nullable-DateTimes auf unseren blöden MinValue
+            if (ReleaseDate.HasValue)
+                Movie.ReleaseDate = ReleaseDate.Value;
+            else Movie.ReleaseDate = MoviekusDefines.MinDate;
+            if (LastSeen.HasValue)
+                Movie.LastSeen = LastSeen.Value;
+            else Movie.LastSeen = MoviekusDefines.MinDate;
+
+            if (!string.IsNullOrEmpty(SelectedSourceId))
+                Movie.Source = await SourceService.GetAsync(SelectedSourceId);
+
+            // Abgleich der neuen Genre-Selektion mit der bereits gespeicherten
+            Movie.MovieGenres = await MovieService.SyncMovieGenres(Movie.Id, SelectedGenreIds);
+
+            await MovieService.SaveChangesAsync(Movie);
+
+            return RedirectToPage("./Index");
         }
     }
 }

@@ -171,10 +171,7 @@ namespace Moviekus.ViewModels.Movies
         {
             var detailView = Resolver.Resolve<MovieDetailPage>();
             var viewModel = detailView.BindingContext as MovieDetailViewModel;
-            viewModel.MovieDetails = new MovieDetails()
-            {
-                Movie = miViewModel.Movie
-            };
+            viewModel.MovieDetails = Resolver.Resolve<IMovieService>().GetMovieDetails(miViewModel.Movie);
             viewModel.Title = "Filmdetails";
 
             await Navigation.PushAsync(detailView);

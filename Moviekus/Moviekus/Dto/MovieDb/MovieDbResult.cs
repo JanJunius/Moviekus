@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
-namespace Moviekus.Dto
+namespace Moviekus.Dto.MovieDb
 {
     [DebuggerDisplay("Title = {title}")]
     public class MovieDbResult

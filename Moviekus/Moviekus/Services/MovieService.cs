@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Moviekus.Dto;
 using Moviekus.EntityFramework;
 using Moviekus.Models;
 using Moviekus.ServiceContracts;
@@ -6,6 +7,7 @@ using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace Moviekus.Services
@@ -101,13 +103,103 @@ namespace Moviekus.Services
             }
         }
 
+        public MovieDetailDto GetMovieDetails(Movie movie)
+        {
+            return new MovieDetailDto() { Movie = movie };
+        }
+
+        /*
+        public async Task<MovieEditDto> GetMovieDtoAsync(Movie movie)
+        {
+            MovieEditDto dto = new MovieEditDto()
+            {
+                Id = movie.Id,
+                Cover = movie.Cover,
+                Description = movie.Description,
+                DiscNumber = movie.DiscNumber,
+                EpisodeNumber = movie.EpisodeNumber,
+                Homepage = movie.Homepage,
+                Rating = movie.Rating,
+                Remarks = movie.Remarks,
+                Runtime = movie.Runtime,
+                Source = movie.Source,
+                Title = movie.Title,
+                Trailer = movie.Trailer
+            };
+
+            if (movie.LastSeen != MoviekusDefines.MinDate)
+                dto.LastSeen = movie.LastSeen;
+            else dto.LastSeen = null;
+
+            if (movie.ReleaseDate != MoviekusDefines.MinDate)
+                dto.ReleaseDate = movie.ReleaseDate;
+            else dto.ReleaseDate = null;
+
+            var genreService = Resolver.Resolve<IGenreService>();
+            dto.Genres = await genreService.GetAsync();
+
+            return dto;
+        }
+        */
+
         public async Task<Movie> SaveMovieAsync(Movie movie)
         {
             await SaveChangesAsync(movie);
             return movie;
         }
 
-        public async Task<ICollection<MovieGenre>> GetMovieGenres(Movie movie, IList<string> genres)
+        /// <summary>
+        /// Gleicht die Liste der Genres für den Film miot der übergebenen Id mit den Genres ab, deren
+        /// Ids mitgeliefert werden. Neue Genres werden hinzugefügt, entfernte werden auf Deleted gesetzt.
+        /// </summary>
+        /// <param name="movieId">Id des Films, dessen Genres abgeglichen werdem sollem</param>
+        /// <param name="genreIds">Liste der Ids aller Genres, die dem Film zugeordnet werden sollen</param>
+        /// <returns>Alle MovieGenres für den Film (die gelöschten auch mit IsDeleted==true)</returns>
+        public async Task<ICollection<MovieGenre>> SyncMovieGenres(string movieId, IList<string> genreIds)
+        {
+            List<MovieGenre> movieGenres = new List<MovieGenre>();
+
+            var movie = await GetWithGenresAndSourcesAsync(movieId);
+
+            if (movie == null)
+                return movieGenres;
+
+            movieGenres = movie.MovieGenres.ToList();
+
+            var existingMovieGenreIds = movieGenres.Select(m => m.Genre.Id);
+
+            // Alle zu entfernenden Genres
+            var idsToRemove = (from c1 in existingMovieGenreIds select c1).Except(from c2 in genreIds select c2);
+            foreach (string idToRemove in idsToRemove)
+            {
+                var movieGenreToRemove = movieGenres.Where(g => g.Genre.Id == idToRemove).FirstOrDefault();
+                movieGenreToRemove.IsDeleted = true;
+            }
+
+            // Alle neuen Genres
+            var idsToAdd = (from c1 in genreIds select c1).Except(from c2 in existingMovieGenreIds select c2);
+            foreach (string idToAdd in idsToAdd)
+            {
+                var newMovieGenre = MovieGenre.CreateNew<MovieGenre>();
+                newMovieGenre.Movie = movie;
+                newMovieGenre.Genre = await Resolver.Resolve<IGenreService>().GetAsync(idToAdd);
+                movieGenres.Add(newMovieGenre);
+            }
+
+            return movieGenres;
+        }
+
+        /// <summary>
+        /// Ermittelt die Liste der Genres für den Movie und fügt diejenigen hinzu, deren Name noch nicht in der
+        /// übergebenen Liste enthalten ist
+        /// Es werden keine Genres entfernt
+        /// Typische Anwednung: Bei Selektion eines Movie von einem Provider werden Genrenamen mitgeliefert, die
+        /// dann dem Film hinzugefügt werden sollen
+        /// </summary>
+        /// <param name="movie">Film, dessen Genres erweitert werden sollem</param>
+        /// <param name="genreNames">Namen der hinzuzufügenden Genres</param>
+        /// <returns>Alle MovieGenres für den Film, also alte sowie neu hinzugefügte</returns>
+        public async Task<ICollection<MovieGenre>> AddMovieGenres(Movie movie, IList<string> genreNames)
         {
             List<MovieGenre> movieGenres = new List<MovieGenre>();
             IGenreService genreService = Resolver.Resolve<IGenreService>();
@@ -115,7 +207,7 @@ namespace Moviekus.Services
             // Bestimmen der Genres, die dem Film neu zugeordnet werden müssen
             var existingGenres = movie.MovieGenres.Where(x => x.Movie == movie).Select(mg => mg.Genre);
             var existingGenreNames = existingGenres.Select(s => s.Name);
-            var newGenreNames = (from genre in genres select genre).Except(from existingGenre in existingGenreNames select existingGenre);
+            var newGenreNames = (from genre in genreNames select genre).Except(from existingGenre in existingGenreNames select existingGenre);
 
             foreach (string genreName in newGenreNames)
             {

@@ -1,4 +1,5 @@
 ﻿using Acr.UserDialogs;
+using Moviekus.Dto;
 using Moviekus.Models;
 using Moviekus.ServiceContracts;
 using Moviekus.Views.Movies;
@@ -17,10 +18,10 @@ namespace Moviekus.ViewModels.Movies
         public MovieDetailViewModel(IMovieService movieService)
         {
             MovieService = movieService;
-            MovieDetails = new MovieDetails();
+            MovieDetails = new MovieDetailDto();
         }
 
-        public MovieDetails MovieDetails { get; set; }
+        public MovieDetailDto MovieDetails { get; set; }
 
         public ICommand EditCommand => new Command(async () =>
         {

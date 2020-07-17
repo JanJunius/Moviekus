@@ -11,7 +11,12 @@ namespace Moviekus.Web.Pages.Movies
 {
     public class IndexModel : PageModel
     {
-        private MovieService MovieService = new MovieService();
+        private IMovieService MovieService;
+
+        public IndexModel(IMovieService movieService)
+        {
+            MovieService = movieService;
+        }
 
         public IList<MoviesItemViewModel> Movies { get; set; }
 

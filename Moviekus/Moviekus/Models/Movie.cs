@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Moviekus.Models.Validation;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,10 +10,11 @@ namespace Moviekus.Models
     [DebuggerDisplay("Title = {Title}")]
     public class Movie : BaseModel
     {
-        [Required]
+        [Required(ErrorMessage ="Der Titel darf nicht leer sein.")]
         [Display(Name = "Titel")] 
         public string Title { get; set; }
 
+        [SourceValidation]
         [ForeignKey("SourceId")]
         [Display(Name = "Verfügbar bei")] 
         public virtual Source Source { get; set; }
@@ -24,9 +26,11 @@ namespace Moviekus.Models
         [DataType(DataType.Date)] 
         public DateTime ReleaseDate { get; set; }
 
+        [Range(1,999, ErrorMessage ="Die Laufzeit muss zwischen 1 und 999 Minuten liegen.")]
         [Display(Name = "Laufzeit")]
         public int Runtime { get; set; }
 
+        [RatingValidation]
         [Display(Name = "Bewertung")]
         public int Rating { get; set; }
 
@@ -43,6 +47,7 @@ namespace Moviekus.Models
 
         public string Trailer { get; set; }
 
+        [DiscNrValidation]
         [Display(Name = "Disk-Nr.")]
         public string DiscNumber { get; set; }
 

@@ -2,12 +2,13 @@
 using Moviekus.ServiceContracts;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
 namespace Moviekus.Dto
 {
-    public class MovieDetailDto
+    public class MovieDetailDto : INotifyPropertyChanged
     {
         public Movie Movie { get; set; }
 
@@ -33,5 +34,8 @@ namespace Moviekus.Dto
 
         public bool HasHomepage => Movie != null ? !string.IsNullOrEmpty(Movie.Homepage) : false;
         public bool HasTrailer => Movie != null ? !string.IsNullOrEmpty(Movie.Trailer) : false;
+
+        // Es genügt hier, das Event zu definieren, es muss nicht explizit gefeuert werden, denn das macht FodyWeavers
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

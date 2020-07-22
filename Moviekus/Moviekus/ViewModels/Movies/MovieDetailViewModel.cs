@@ -33,7 +33,7 @@ namespace Moviekus.ViewModels.Movies
             viewModel.OnMovieChanged += (object sender, Movie movie) =>
             {
                 MovieDetails.Movie = movie;
-                RaisePropertyChanged(nameof(Movie));
+                RaisePropertyChanged(nameof(MovieDetailDto));
                 // Die folgenden Properties stammen nicht aus Movie, sondern dem ViewModel selbst und benötigen daher ein eigenes Event
                 RaisePropertyChanged(nameof(MovieDetails.ReleaseDateText));
                 RaisePropertyChanged(nameof(MovieDetails.LastSeenText));

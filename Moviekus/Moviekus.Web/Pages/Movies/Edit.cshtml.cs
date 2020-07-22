@@ -82,6 +82,9 @@ namespace Moviekus.Web.Pages.Movies
 
         public async Task<IActionResult> OnPostAsync(string id)
         {
+            if (!ModelState.IsValid)
+                return Page();
+
             // Cover wird nur dann gesetzt, wenn ein Cover explizit ausgewählt wurde, d.h. es ist null,
             // wenn ein vorhandenes Cover unverändert bleibt
             if (Cover != null)

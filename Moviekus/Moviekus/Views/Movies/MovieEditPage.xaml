@@ -12,6 +12,7 @@
     
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="MovieDb" IconImageSource="moviedb.png" Command="{Binding MovieDbCommand}" />
+        <ToolbarItem Text="Speichern" IconImageSource="save.png" Command="{Binding SaveCommand}" />
     </ContentPage.ToolbarItems>
 
     <ContentPage.Resources>
@@ -26,6 +27,8 @@
                 <Label Text="{Binding ValidationError}" IsVisible="{Binding HasValidationError}" Style="{StaticResource ValidationLabelStyle}" />
                 <Label Text="Titel" Style="{StaticResource HeadingLabelStyle}" />
                 <Entry Text="{Binding Movie.Title}" d:Text="Name des Films" FontSize="Small" Unfocused="Control_Unfocused" />
+                <Label x:Name="Movie_TitleError" IsVisible="False" TextColor="Red" />
+                
                 <Label Text="Beschreibung" Style="{StaticResource HeadingLabelStyle}" />
                 <Editor Text="{Binding Movie.Description}" d:Text="Beschreibung des Films" HeightRequest="250" FontSize="Medium" AutoSize="TextChanges" />
 
@@ -40,10 +43,12 @@
                         <Label Text="Laufzeit" Style="{StaticResource HeadingLabelStyle}" />
                         <Entry Text="{Binding Movie.Runtime}" Keyboard="Numeric" MaxLength="3" FontSize="Small" Unfocused="Control_Unfocused"/>
                         <Label Text="Minuten" FontSize="Small" />
+                        <Label x:Name="Movie_RuntimeError" IsVisible="False" TextColor="Red" />
                     </StackLayout>
                     <StackLayout Orientation="Vertical">
                         <Label Text="Disk Nr." Style="{StaticResource HeadingLabelStyle}" />
                         <Entry Text="{Binding Movie.DiscNumber}" Keyboard="Numeric" FontSize="Small" Unfocused="Control_Unfocused"/>
+                        <Label x:Name="Movie_DiscNumberError" IsVisible="False" TextColor="Red" />
                     </StackLayout>
                     <StackLayout Orientation="Vertical" Padding="20,0,0,0">
                         <Label Text="Episode" Style="{StaticResource HeadingLabelStyle}" />
@@ -57,6 +62,7 @@
                     IsEnabled="True"
                     Unfocused="Control_Unfocused"
                     Rating ="{Binding Movie.Rating}" />
+                <Label x:Name="Movie_RatingError" IsVisible="False" TextColor="Red" />
 
                 <Label Text="Genres" Style="{StaticResource HeadingLabelStyle}"/>
                 <StackLayout Orientation="Horizontal" Padding="5">
@@ -72,6 +78,7 @@
                     ItemDisplayBinding="{Binding Name}"                     
                     Unfocused="Control_Unfocused"
                     SelectedItem="{Binding SelectedSource, Mode=TwoWay}"/>
+                <Label x:Name="Movie_SourceError" IsVisible="False" TextColor="Red" />
 
                 <Label Text="Bemerkungen" Style="{StaticResource HeadingLabelStyle}" />
                 <Editor Text="{Binding Movie.Remarks}" d:Text="Eigene Kommentare zu diesem Film" HeightRequest="120" FontSize="Medium" AutoSize="TextChanges" />

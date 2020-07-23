@@ -24,7 +24,6 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout Spacing="20" Padding="15" BackgroundColor="#e0eeee">
-                <Label Text="{Binding ValidationError}" IsVisible="{Binding HasValidationError}" Style="{StaticResource ValidationLabelStyle}" />
                 <Label Text="Titel" Style="{StaticResource HeadingLabelStyle}" />
                 <Entry Text="{Binding Movie.Title}" d:Text="Name des Films" FontSize="Small" Unfocused="Control_Unfocused" />
                 <Label x:Name="Movie_TitleError" IsVisible="False" TextColor="Red" />

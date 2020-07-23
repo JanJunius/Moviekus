@@ -74,8 +74,13 @@ namespace Moviekus.ViewModels.Movies
             if (!Validate())
             {
                 // Zurücksetzen aller Änderungen wenn Eingaben ungültig und Page verlassen wird
-                Movie = await Resolver.Resolve<IMovieService>().GetWithGenresAndSourcesAsync(Movie.Id);
-                OnMovieChanged?.Invoke(this, Movie);
+                Movie origionalMovie = await Resolver.Resolve<IMovieService>().GetWithGenresAndSourcesAsync(Movie.Id);
+                if (origionalMovie != null)
+                {
+                    Movie = origionalMovie;
+                    OnMovieChanged?.Invoke(this, Movie);
+                }
+                
             }
             base.OnViewDisappearing();
         }
@@ -105,9 +110,6 @@ namespace Moviekus.ViewModels.Movies
                 RaisePropertyChanged(nameof(Movie));
             }
         });
-
-        public string ValidationError { get; set; }
-        public bool HasValidationError { get; set; }
 
         public bool Validate()
         {

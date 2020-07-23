@@ -68,14 +68,8 @@ namespace Moviekus.Web.Pages.Movies
                 LastSeen = Movie.LastSeen;
             else LastSeen = null;
 
-            IList<Genre> genres = await GenreService.GetAsync();
-            Genres = new SelectList(genres, nameof(Genre.Id), nameof(Genre.Name));
-            SelectedGenreIds = Movie.MovieGenres.Select(m => m.Genre).Select(g => g.Id).ToArray();
-
-            IList<Source> sources = await SourceService.GetAsync();
-            Sources = new SelectList(sources, nameof(Source.Id), nameof(Source.Name));           
-            if (Movie.Source != null)
-                SelectedSourceId = Movie.Source.Id;
+            await InitGenres();
+            await InitSources();
 
             return Page();
         }
@@ -83,8 +77,13 @@ namespace Moviekus.Web.Pages.Movies
         public async Task<IActionResult> OnPostAsync(string id)
         {
             if (!ModelState.IsValid)
-                return Page();
+            {
+                await InitSources();
+                await InitGenres();
 
+                return Page();
+            }
+                
             // Cover wird nur dann gesetzt, wenn ein Cover explizit ausgewählt wurde, d.h. es ist null,
             // wenn ein vorhandenes Cover unverändert bleibt
             if (Cover != null)
@@ -100,8 +99,8 @@ namespace Moviekus.Web.Pages.Movies
             {
                 // Unverändertes Cover: Damit es beim Speichern nicht zurückgesetzt wird, muss es
                 // neu geladen werden
-                var savedMovie = await MovieService.GetAsync(id);
-                Movie.Cover = savedMovie?.Cover;
+                //var savedMovie = await MovieService.GetAsync(id);
+                //Movie.Cover = savedMovie?.Cover;
             }
 
             // Umsetzen der Nullable-DateTimes auf unseren blöden MinValue
@@ -114,6 +113,7 @@ namespace Moviekus.Web.Pages.Movies
 
             if (!string.IsNullOrEmpty(SelectedSourceId))
                 Movie.Source = await SourceService.GetAsync(SelectedSourceId);
+            //ModelState["Movie.Source"].RawValue = Movie.Source;
 
             // Abgleich der neuen Genre-Selektion mit der bereits gespeicherten
             Movie.MovieGenres = await MovieService.SyncMovieGenres(Movie.Id, SelectedGenreIds);
@@ -121,6 +121,21 @@ namespace Moviekus.Web.Pages.Movies
             await MovieService.SaveChangesAsync(Movie);
 
             return RedirectToPage("./Index");
+        }
+
+        private async Task InitSources()
+        {
+            IList<Source> sources = await SourceService.GetAsync();
+            Sources = new SelectList(sources, nameof(Source.Id), nameof(Source.Name));
+            if (Movie.Source != null)
+                SelectedSourceId = Movie.Source.Id;
+        }
+
+        private async Task InitGenres()
+        {
+            IList<Genre> genres = await GenreService.GetAsync();
+            Genres = new SelectList(genres, nameof(Genre.Id), nameof(Genre.Name));
+            SelectedGenreIds = Movie.MovieGenres.Select(m => m.Genre).Select(g => g.Id).ToArray();
         }
     }
 }

@@ -101,9 +101,10 @@
                                 img64Url = string.Format("data:image/png;base64,{0}", img64);
                             }
                         }
-                        <img src="@img64Url" style="width: 160px;height: 220px; padding:5px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);" />                        
+                        <img src="@img64Url" style="width: 160px;height: 220px; padding:5px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);" />
                         <br />
                         <input type="file" asp-for="Cover" style="padding-top:20px" />
+                        <input type="hidden" asp-for="Movie.Cover" />
                     </p>
                     <div>
                         <b><label asp-for="Movie.MovieGenres" class="control-label"></label></b>

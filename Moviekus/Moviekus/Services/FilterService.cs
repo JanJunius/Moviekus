@@ -1,18 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Moviekus.EntityFramework;
 using Moviekus.Models;
+using Moviekus.ServiceContracts;
 using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Moviekus.Services
 {
-    public class FilterService : BaseService<Filter>
+    public class FilterService : BaseService<Filter>, IFilterService
     {
-        public override async Task<IEnumerable<Filter>> GetAsync()
+        public override async Task<IList<Filter>> GetAsync()
         {
             using (var context = new MoviekusDbContext())
             {

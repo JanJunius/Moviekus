@@ -1,0 +1,142 @@
+﻿@page
+@model Moviekus.Web.Pages.Movies.EditModel
+@using Moviekus.Web.Pages.Components
+@{
+    ViewData["Title"] = "Film bearbeiten";
+}
+
+<table>
+    <tr>
+        <td style="padding-right:10px;"><img src="~/images/movie.png" style="width:48px;height:48px;"></td>
+        <td><h1>@ViewData["Title"]</h1></td>
+    </tr>
+</table>
+
+<hr />
+
+<div>
+    <form method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <table style="width:100%">
+            <tr>
+                <td style="padding-right:20px">
+                    <div class="form-group">
+                        <b><label asp-for="Movie.Title" class="control-label"></label></b>
+                        <input asp-for="Movie.Title" class="form-control" />
+                        <span asp-validation-for="Movie.Title" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <b><label asp-for="Movie.Description" class="control-label"></label></b>
+                        <textarea asp-for="Movie.Description" rows="5" class="form-control"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <b><label asp-for="Movie.ReleaseDate" class="control-label"></label></b>
+                        <input asp-for="ReleaseDate" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <b><label asp-for="Movie.LastSeen" class="control-label"></label></b>
+                        <input asp-for="LastSeen" class="form-control" />
+                    </div>
+                    <table>
+                        <tr>
+                            <td>
+                                <div class="form-group">
+                                    <b><label asp-for="Movie.Runtime" class="control-label"></label></b>
+                                    <input asp-for="Movie.Runtime" class="form-control" />
+                                    <span asp-validation-for="Movie.Runtime" class="text-danger"></span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <b><label asp-for="Movie.DiscNumber" class="control-label"></label></b>
+                                    <input asp-for="Movie.DiscNumber" class="form-control" />
+                                    <span asp-validation-for="Movie.DiscNumber" class="text-danger"></span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <b><label asp-for="Movie.EpisodeNumber" class="control-label"></label></b>
+                                    <input asp-for="Movie.EpisodeNumber" class="form-control" />
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="form-group" style="padding-bottom:5px;">
+                        <b>@Html.DisplayNameFor(model => model.Movie.Rating)</b>
+                        <br />
+                        <component type="typeof(Moviekus.Web.Pages.Components.RatingBar)" render-mode="ServerPrerendered" param-Rating="@(Model.Movie.Rating)" param-Enabled="true" />
+                        <span asp-validation-for="Movie.Rating" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <b>@Html.DisplayNameFor(model => model.Movie.Source)</b>
+                        <br />
+                        <select asp-for="Movie.Source.Id" asp-items="Model.Sources" id="sourceSelect" onchange="javascript:onSourceChange();" class="form-control"></select>
+                        <span asp-validation-for="Movie.Source" class="text-danger"></span>
+                    </div>
+                    <table style="width:100%">
+                        <tr>
+                            <td>
+                                <div class="form-group">
+                                    <b><label asp-for="Movie.Homepage" class="control-label"></label></b>
+                                    <input asp-for="Movie.Homepage" class="form-control" />
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <b><label asp-for="Movie.Trailer" class="control-label"></label></b>
+                                    <input asp-for="Movie.Trailer" class="form-control" />
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td style="vertical-align:top">
+                    <p style="text-align:center">
+                        @{
+                            String img64Url = "";
+                            if (@Model.Movie.Cover != null)
+                            {
+                                String img64 = Convert.ToBase64String(@Model.Movie.Cover);
+                                img64Url = string.Format("data:image/png;base64,{0}", img64);
+                            }
+                        }
+                        <img src="@img64Url" style="width: 160px;height: 220px; padding:5px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);" />
+                        <br />
+                        <input type="file" asp-for="Cover" style="padding-top:20px" />
+                    </p>
+                    <div>
+                        <b><label asp-for="Movie.MovieGenres" class="control-label"></label></b>
+                        <br />
+                        <select asp-for="SelectedGenreIds" asp-items="Model.Genres" size="18" class="form-control"></select>
+                    </div>
+
+                </td>
+
+
+            </tr>
+        </table>
+
+        <div class="form-group">
+            <b><label asp-for="Movie.Remarks" class="control-label"></label></b>
+            <textarea asp-for="Movie.Remarks" rows="3" class="form-control"></textarea>
+            <span asp-validation-for="Movie.Remarks" class="text-danger"></span>
+        </div>
+
+        <input type="hidden" asp-for="Movie.Id" />
+        <input type="hidden" asp-for="Movie.IsNew" />
+        <div class="form-group">
+            <input type="submit" value="Speichern" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
+
+<hr />
+
+<div>
+    <a asp-page="./Index">Zurück zur Liste</a>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

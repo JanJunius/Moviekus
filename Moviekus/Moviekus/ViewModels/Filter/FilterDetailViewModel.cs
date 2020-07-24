@@ -1,7 +1,6 @@
 ﻿using Acr.UserDialogs;
-using Moviekus.Dto;
 using Moviekus.Models;
-using Moviekus.Services;
+using Moviekus.ServiceContracts;
 using Moviekus.Views.Filter;
 using MvvmHelpers;
 using NLog;
@@ -9,8 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -21,7 +18,7 @@ namespace Moviekus.ViewModels.Filter
         public EventHandler<Models.Filter> FilterChanged;
         public EventHandler<Models.Filter> FilterDeleted;
 
-        private IService<Models.Filter> FilterService;
+        private IFilterService FilterService;
 
         private Models.Filter _Filter;
         public Models.Filter Filter 
@@ -34,7 +31,7 @@ namespace Moviekus.ViewModels.Filter
             }
         }
 
-        public FilterDetailViewModel(FilterService filterService)
+        public FilterDetailViewModel(IFilterService filterService)
         {
             FilterService = filterService;
         }

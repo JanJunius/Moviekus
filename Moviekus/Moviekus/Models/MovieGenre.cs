@@ -24,8 +24,8 @@ namespace Moviekus.Models
         [Required]
         public Genre Genre { get; set; }
 
-        [NotMapped]
-        public bool IsDeleted { get; set; }
+        //[NotMapped]
+        //public bool IsDeleted { get; set; }
 
         public override bool Equals(object obj)
         {

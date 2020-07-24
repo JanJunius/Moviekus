@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Moviekus.EntityFramework;
 using Moviekus.Models;
+using Moviekus.ServiceContracts;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Moviekus.Services
 {
-    public class BaseService<T> : IService<T> where T : BaseModel, new()
+    public class BaseService<T> : IBaseService<T> where T : BaseModel, new()
     {
         public event EventHandler<T> OnModelInserted;
         public event EventHandler<T> OnModelUpdated;
@@ -23,7 +24,7 @@ namespace Moviekus.Services
         {
         }
 
-        public virtual IEnumerable<T> Get()
+        public virtual IList<T> Get()
         {
             using (var context = new MoviekusDbContext())
             {
@@ -31,7 +32,7 @@ namespace Moviekus.Services
             }
         }
 
-        public virtual async Task<IEnumerable<T>> GetAsync()
+        public virtual async Task<IList<T>> GetAsync()
         {
             using (var context = new MoviekusDbContext())
             {
@@ -53,6 +54,12 @@ namespace Moviekus.Services
             {
                 return await context.Set<T>().FindAsync(id);
             }             
+        }
+
+        public virtual async Task<T> AddNewAsync(T model)
+        {
+            model.IsNew = true;
+            return await SaveChangesAsync(model);
         }
 
         public virtual async Task<T> SaveChangesAsync(T model)
@@ -135,6 +142,13 @@ namespace Moviekus.Services
             model.IsNew = model.IsModified = false;
             // Event auch feuern, wenn keine DB-Aktion erforderlich ist, damit sich das ViewModel dennoch aktualisieren kann
             OnModelDeleted?.Invoke(this, model);
+        }
+
+        public virtual async Task DeleteAsync(string id)
+        {
+            var model = await GetAsync(id);
+            if (model != null)
+                await DeleteAsync(model);
         }
 
         protected virtual async Task InsertAsync(MoviekusDbContext context, T model)

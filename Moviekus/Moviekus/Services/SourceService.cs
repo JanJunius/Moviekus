@@ -1,14 +1,13 @@
-﻿using Moviekus.EntityFramework;
-using Moviekus.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Moviekus.Models;
+using Moviekus.ServiceContracts;
 
 namespace Moviekus.Services
 {
-    public class SourceService : BaseService<Source>
+    public class SourceService : BaseService<Source>, ISourceService
     {
+        public Source CreateSource()
+        {
+            return Source.CreateNew<Source>();
+        }
     }
 }

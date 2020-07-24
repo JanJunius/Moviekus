@@ -1,0 +1,30 @@
+﻿@page
+@model Moviekus.Web.Pages.Genres.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<table>
+    <tr>
+        <td style="padding-right:10px;"><img src="~/images/genres.png" style="width:48px;height:48px;"></td>
+        <td><h1>Genre-Details</h1></td>
+    </tr>
+</table>
+
+<div>
+    <h4>Genre</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Genre.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Genre.Name)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Genre.Id">Bearbeiten</a> |
+    <a asp-page="./Index">Zurück zur Liste</a>
+</div>

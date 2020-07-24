@@ -1,0 +1,11 @@
+﻿@inherits RatingBarComponent
+
+    <div class="pagination">
+        @for (int i = 1; i <= 5; i++)
+        {
+            string source = i <= Rating ? "/images/star.png" : "/images/star_empty.png";
+            int starId = i;
+            <img src="@source" @onclick="@(s => OnStarClick(starId))" style="width:24px;height:24px;" alt="Star" class="image-display">
+        }
+    </div>
+

@@ -1,5 +1,6 @@
 ﻿using Moviekus.Dto;
 using Moviekus.Models;
+using Moviekus.ServiceContracts;
 using Moviekus.Services;
 using System;
 using System.Collections.Generic;
@@ -106,14 +107,14 @@ namespace Moviekus.ViewModels.Filter
             }
         }
 
-        public IList<Source> Sources => new List<Source>(new SourceService().Get().OrderBy(s => s.Name));
+        public IList<Source> Sources => new List<Source>(Resolver.Resolve<ISourceService>().Get().OrderBy(s => s.Name));
 
         public Source Source
         {
             get 
             { 
                 if (!string.IsNullOrEmpty(FilterEntry.ValueFrom))
-                    return new SourceService().Get(FilterEntry.ValueFrom);
+                    return Resolver.Resolve<ISourceService>().Get(FilterEntry.ValueFrom);
                 return null;
             }
             set
@@ -123,7 +124,7 @@ namespace Moviekus.ViewModels.Filter
             }
         }
 
-        public IList<Genre> Genres => new List<Genre>(new GenreService().Get().OrderBy(n => n.Name));
+        public IList<Genre> Genres => new List<Genre>(Resolver.Resolve<IGenreService>().Get().OrderBy(n => n.Name));
 
         public Genre Genre
         {

@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Moviekus.Web</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <base href="~/" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <table>
+                    <tr>
+                        <td style="padding-right:10px;"><img src="~/images/moviekus.png" style="width:32px;height:32px;" title="Movikus"></td>
+                        <td style="padding-right:15px"><a class="navbar-brand" asp-area="" asp-page="/Movies/Index">Moviekus.Web</a></td>
+                    </tr>
+                </table>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <table>
+                                <tr>
+                                    <td style="padding-right:1px;"><img src="~/images/movie.png" style="width:24px;height:24px;" title="Filme"></td>
+                                    <td style="padding-right:15px"><a class="nav-link text-dark" asp-area="" asp-page="/Movies/Index">Filme</a></td>
+                                </tr>
+                            </table>
+                        </li>
+                        <li class="nav-item">
+                            <table>
+                                <tr>
+                                    <td style="padding-right:1px;"><img src="~/images/genres.png" style="width:24px;height:24px;" title="Genres"></td>
+                                    <td style="padding-right:15px"><a class="nav-link text-dark" asp-area="" asp-page="/Genres/Index">Genres</a></td>
+                                </tr>
+                            </table>
+                        </li>
+                        <li class="nav-item">
+                            <table>
+                                <tr>
+                                    <td style="padding-right:1px;"><img src="~/images/sources.png" style="width:24px;height:24px;" title="Quellen"></td>
+                                    <td style="padding-right:15px"><a class="nav-link text-dark" asp-area="" asp-page="/Sources/Index">Quellen</a></td>
+                                </tr>
+                            </table>
+                        </li>
+                        <li class="nav-item">
+                            <table>
+                                <tr>
+                                    <td style="padding-right:1px;"><img src="~/images/filter.png" style="width:24px;height:24px;" title="Filter"></td>
+                                    <td style="padding-right:15px"><a class="nav-link text-dark" asp-area="" asp-page="/Filter/Index">Filter</a></td>
+                                </tr>
+                            </table>
+                        </li>
+                        <li class="nav-item">
+                            <table>
+                                <tr>
+                                    <td style="padding-right:1px;"><img src="~/images/settings.png" style="width:24px;height:24px;" title="Einstellungen"></td>
+                                    <td style="padding-right:15px"><a class="nav-link text-dark" asp-area="" asp-page="/Settings">Einstellungen</a></td>
+                                </tr>
+                            </table>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2020 - Moviekus.Web - <a asp-area="" asp-page="/Privacy">Privacy</a>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="_framework/blazor.server.js"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

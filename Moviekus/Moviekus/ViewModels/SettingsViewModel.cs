@@ -1,7 +1,7 @@
 ﻿using Acr.UserDialogs;
 using Moviekus.Models;
 using Moviekus.OneDrive;
-using Moviekus.Services;
+using Moviekus.ServiceContracts;
 using Moviekus.Views;
 using System.Linq;
 using System.Windows.Input;
@@ -13,7 +13,7 @@ namespace Moviekus.ViewModels
     {
         public Settings Settings { get; set; }
 
-        private SettingsService SettingsService;
+        private ISettingsService SettingsService;
 
         public ICommand LoadSettingsCommand => new Command(async () =>
         {
@@ -52,7 +52,7 @@ namespace Moviekus.ViewModels
             });
         });
 
-        public SettingsViewModel(SettingsService settingsService)
+        public SettingsViewModel(ISettingsService settingsService)
         {
             SettingsService = settingsService;
         }

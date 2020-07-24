@@ -1,4 +1,5 @@
 ﻿using Moviekus.Models;
+using Moviekus.ServiceContracts;
 using Moviekus.Services;
 using System;
 using System.Collections.Generic;
@@ -30,12 +31,12 @@ namespace Moviekus.ViewModels.Filter
 
         public ICommand LoadFilterEntryTypesCommand => new Command(async () =>
         {
-            var filterEntryTypes = await new FilterService().GetFilterEntryTypesAsync();
+            var filterEntryTypes = await Resolver.Resolve<IFilterService>().GetFilterEntryTypesAsync();
             FilterEntryTypes = new ObservableCollection<FilterEntryType>(filterEntryTypes);
 
             /*
             // NUr die FilterEntryTypes anbieten, die noch nicht verwendet werden
-            var availableFilterTypes = await new FilterService().GetFilterEntryTypesAsync();
+            var availableFilterTypes = await Resolver.Resolve<IFilterService>().GetFilterEntryTypesAsync();
             var usedFilterTypes = Filter.FilterEntries.Select(f => f.FilterEntryType);
             var unUsedFilterTypes = (from c1 in availableFilterTypes select c1).Except(from c2 in usedFilterTypes select c2);
             FilterEntryTypes = new ObservableCollection<FilterEntryType>(unUsedFilterTypes);

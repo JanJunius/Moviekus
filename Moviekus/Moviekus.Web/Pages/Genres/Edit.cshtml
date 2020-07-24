@@ -1,0 +1,43 @@
+﻿@page
+@model Moviekus.Web.Pages.Genres.EditModel
+
+@{
+    if (Model.Genre.IsNew)
+        ViewData["Title"] = "Neues Genre";
+    else ViewData["Title"] = "Genre bearbeiten";
+}
+
+<table>
+    <tr>
+        <td style="padding-right:10px;"><img src="~/images/genres.png" style="width:48px;height:48px;"></td>
+        <td><h1>@ViewData["Title"]</h1></td>
+    </tr>
+</table>
+
+<h4>Genre</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Genre.Name" class="control-label"></label>
+                <input asp-for="Genre.Name" class="form-control" />
+                <span asp-validation-for="Genre.Name" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="Genre.Id" />
+            <input type="hidden" asp-for="Genre.IsNew" />
+            <div class="form-group">
+                <input type="submit" value="Speichern" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Zurück zur Liste</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

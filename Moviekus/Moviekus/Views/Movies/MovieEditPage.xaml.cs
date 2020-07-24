@@ -29,17 +29,6 @@ namespace Moviekus.Views.Movies
             ViewModel.OnViewDisappearing();
         }
 
-        async void Save_Clicked(object sender, EventArgs e)
-        {
-            MessagingCenter.Send(this, "AddItem", ViewModel.Movie);
-            await Navigation.PopModalAsync();
-        }
-
-        async void Cancel_Clicked(object sender, EventArgs e)
-        {
-            await Navigation.PopModalAsync();
-        }
-
         private void Control_Unfocused(object sender, FocusEventArgs e)
         {
             ViewModel.Validate();

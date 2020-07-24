@@ -1,0 +1,48 @@
+﻿@page
+@model Moviekus.Web.Pages.Sources.IndexModel
+
+@{
+    ViewData["Title"] = "Quellen";
+}
+
+<table>
+    <tr>
+        <td style="padding-right:15px;"><img src="~/images/sources.png" style="width:48px;height:48px;"></td>
+        <td><h1>Quellen</h1></td>
+    </tr>
+</table>
+
+<p>
+    <table>
+        <tr>
+            <td style="padding-right:10px;"><img src="~/images/addnew.png" style="width:24px;height:24px;" title="Neue Quelle anlegen"></td>
+            <td><a asp-page="Edit">Neue Quelle</a></td>
+        </tr>
+    </table>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Sources[0].Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Sources)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.Id"><img src="~/images/edit.png" style="width:24px;height:24px;" title="Bearbeiten"></a> |
+                    <a asp-page="./Details" asp-route-id="@item.Id"><img src="~/images/sources.png" style="width:24px;height:24px;" title="Details"></a> |
+                    <a asp-page="./Delete" asp-route-id="@item.Id"><img src="~/images/delete.png" style="width:24px;height:24px;" title="Löschen"></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

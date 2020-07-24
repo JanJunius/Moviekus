@@ -1,4 +1,5 @@
 ﻿using Moviekus.Models;
+using Moviekus.ServiceContracts;
 using NLog;
 using RestSharp.Extensions;
 using System;
@@ -9,8 +10,13 @@ using System.Threading.Tasks;
 
 namespace Moviekus.Services
 {
-    public class GenreService : BaseService<Genre>
+    public class GenreService : BaseService<Genre>, IGenreService
     {
+        public Genre CreateGenre()
+        {
+            return Genre.CreateNew<Genre>();
+        }
+
         public async Task<Genre> GetOrCreateGenre(string genreName)
         {
             IEnumerable<Genre> genres = await GetAsync();
@@ -33,6 +39,5 @@ namespace Moviekus.Services
             }
             return genre;
         }
-
     }
 }

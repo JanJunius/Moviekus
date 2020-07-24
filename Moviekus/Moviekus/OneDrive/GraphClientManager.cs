@@ -8,6 +8,7 @@ using System.Diagnostics;
 using NLog;
 using Moviekus.Models;
 using Moviekus.Services;
+using Moviekus.ServiceContracts;
 
 namespace Moviekus.OneDrive
 {
@@ -149,7 +150,7 @@ namespace Moviekus.OneDrive
         {
             try
             {
-                Settings = new SettingsService().GetSettings();
+                Settings = Resolver.Resolve<ISettingsService>().GetSettings();
 
                 var builder = PublicClientApplicationBuilder
                     .Create(Settings.OneDriveApplicationId)

@@ -1,7 +1,8 @@
 ﻿using Acr.UserDialogs;
 using Moviekus.Dto;
+using Moviekus.Dto.MovieDb;
 using Moviekus.Models;
-using Moviekus.Services;
+using Moviekus.ServiceContracts;
 using NLog;
 using System;
 using System.Collections.ObjectModel;
@@ -13,7 +14,7 @@ namespace Moviekus.ViewModels.Movies
 {
     public class MovieSelectionViewModel : BaseViewModel
     {
-        public delegate void MovieSelectionChanged(MovieDto selectedMovie);
+        public delegate void MovieSelectionChanged(MovieDbMovie selectedMovie);
         public event MovieSelectionChanged OnMovieSelectionChanged;
 
         // Enthält die Suchkriterien
@@ -34,11 +35,11 @@ namespace Moviekus.ViewModels.Movies
             try
             {
                 var movies = await MovieProvider.SearchMovieAsync(Movie.Title);
-                Movies = new ObservableCollection<MovieDto>();
+                Movies = new ObservableCollection<MovieDbMovie>();
 
                 await Task.Run(() =>
                 {
-                    foreach (MovieDto movieDto in movies)
+                    foreach (MovieDbMovie movieDto in movies)
                     {
                         movieDto.Cover = MovieProvider.GetMovieCover(movieDto);
                         Device.BeginInvokeOnMainThread(() => Movies.Add(movieDto));
@@ -55,9 +56,9 @@ namespace Moviekus.ViewModels.Movies
             }
         });
 
-        public ObservableCollection<MovieDto> Movies { get; set; }
+        public ObservableCollection<MovieDbMovie> Movies { get; set; }
 
-        public MovieDto SelectedItem
+        public MovieDbMovie SelectedItem
         {
             get { return null; }
             set
@@ -65,7 +66,7 @@ namespace Moviekus.ViewModels.Movies
                 if (value == null)
                     return;
 
-                MovieDto dto = value;
+                MovieDbMovie dto = value;
 
                 // Details zum Film nachladen bei Auswahl
                 if (!string.IsNullOrEmpty(value.ProviderMovieId))

@@ -1,14 +1,9 @@
 ﻿using Acr.UserDialogs;
 using Microsoft.Data.Sqlite;
 using Moviekus.Models;
-using Moviekus.Services;
-using Moviekus.ViewModels;
+using Moviekus.ServiceContracts;
 using NLog;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -16,11 +11,11 @@ namespace Moviekus.ViewModels.Sources
 {
     public class SourceDetailViewModel : BaseViewModel
     {
-        private IService<Source> SourceService;
+        private ISourceService SourceService;
 
         public Source Source { get; set; }
 
-        public SourceDetailViewModel(SourceService sourceService)
+        public SourceDetailViewModel(ISourceService sourceService)
         {
             SourceService = sourceService;
         }

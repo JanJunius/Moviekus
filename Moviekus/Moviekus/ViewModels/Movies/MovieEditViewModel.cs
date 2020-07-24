@@ -1,6 +1,8 @@
 ﻿using Acr.UserDialogs;
 using Moviekus.Dto;
+using Moviekus.Dto.MovieDb;
 using Moviekus.Models;
+using Moviekus.ServiceContracts;
 using Moviekus.Services;
 using Moviekus.ViewModels.Genres;
 using Moviekus.Views.Genres;
@@ -21,9 +23,6 @@ namespace Moviekus.ViewModels.Movies
         public delegate void MovieChanged(object sender, Movie movie);
         public event MovieChanged OnMovieChanged;
 
-        // Es werden nur Warnungen angezeigt, das Speichern wird nicht verhindert
-        private MovieValidator MovieValidator = new MovieValidator();
-
         private Movie _movie;
         public Movie Movie 
         {
@@ -36,7 +35,6 @@ namespace Moviekus.ViewModels.Movies
                     Source source = Sources.Where(s => s.Id == _movie.Source.Id).FirstOrDefault();
                     SelectedSource = source;
                 }
-                MovieValidator.Movie = _movie;
             }
         }
 
@@ -55,12 +53,36 @@ namespace Moviekus.ViewModels.Movies
             set { }
         }
 
-        public override async void OnViewDisappearing()
+        public ICommand SaveCommand => new Command(async () =>
         {
-            base.OnViewDisappearing();
-
+            if (!Validate())
+            {
+                await UserDialogs.Instance.AlertAsync(new AlertConfig
+                {
+                    Title = "Eingaben unvollständig",
+                    Message = "Die Eingaben sind nicht korrekt. Bitte die markierten Stellen korrigieren."
+                });
+                return;
+            }
             Movie = await MovieService.SaveMovieAsync(Movie);
             OnMovieChanged?.Invoke(this, Movie);
+            await Navigation.PopAsync();
+        });
+
+        public override async void OnViewDisappearing()
+        {
+            if (!Validate())
+            {
+                // Zurücksetzen aller Änderungen wenn Eingaben ungültig und Page verlassen wird
+                Movie origionalMovie = await Resolver.Resolve<IMovieService>().GetWithGenresAndSourcesAsync(Movie.Id);
+                if (origionalMovie != null)
+                {
+                    Movie = origionalMovie;
+                    OnMovieChanged?.Invoke(this, Movie);
+                }
+                
+            }
+            base.OnViewDisappearing();
         }
 
         public ICommand MovieDbCommand => new Command(async () =>
@@ -89,16 +111,9 @@ namespace Moviekus.ViewModels.Movies
             }
         });
 
-        public string ValidationError { get; set; }
-        public bool HasValidationError { get; set; }
-
-        public void Validate()
+        public bool Validate()
         {
-            ValidationError = string.Empty;
-            MovieValidator.Validate();
-            HasValidationError = !MovieValidator.IsValid;
-            ValidationError = MovieValidator.ErrorMessage;
-            RaisePropertyChanged(nameof(HasValidationError));
+            return FormValidator.IsFormValid(Movie, Navigation.NavigationStack.Last());
         }
 
         private async Task OpenSelectionPage(IMovieProvider movieProvider)
@@ -112,7 +127,7 @@ namespace Moviekus.ViewModels.Movies
             await Navigation.PushAsync(selectionView);
         }
 
-        private async Task ApplyMovieSelection(MovieDto movieDto)
+        private async Task ApplyMovieSelection(MovieDbMovie movieDto)
         {
             Movie.Title = movieDto.Title;
             Movie.Description = movieDto.Overview;
@@ -123,9 +138,9 @@ namespace Moviekus.ViewModels.Movies
             Movie.Cover = movieDto.Cover;
             Movie.Homepage = movieDto.Homepage;
             Movie.Trailer = movieDto.TrailerUrl;
-            Movie.MovieGenres = await MovieService.GetMovieGenres(Movie, movieDto.Genres);
+            Movie.MovieGenres = await MovieService.AddMovieGenres(Movie, movieDto.Genres);
 
-            Validate();
+//            Validate();
 
             OnMovieChanged?.Invoke(this, Movie);
             RaisePropertyChanged(nameof(Movie));
@@ -148,7 +163,7 @@ namespace Moviekus.ViewModels.Movies
         }
 
         private List<Source> _sources;
-        private MovieService MovieService;
+        private IMovieService MovieService;
 
         public IList<Source> Sources
         {
@@ -170,12 +185,12 @@ namespace Moviekus.ViewModels.Movies
             }
         }
 
-        public MovieEditViewModel(MovieService movieService)
+        public MovieEditViewModel(IMovieService movieService)
         {
-            _sources = new List<Source>(new SourceService().Get());
+            _sources = new List<Source>(Resolver.Resolve<ISourceService>().Get());
 
             MovieService = movieService;
-            Movie = Movie.CreateNew<Movie>();
+            Movie = MovieService.CreateMovie();
             Movie.Title = "Neuer Film";
         }
 

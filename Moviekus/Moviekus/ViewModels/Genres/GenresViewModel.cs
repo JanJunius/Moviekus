@@ -1,13 +1,11 @@
 ﻿using Moviekus.Models;
+using Moviekus.ServiceContracts;
 using Moviekus.Services;
 using Moviekus.Views.Genres;
 using NLog;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -16,7 +14,7 @@ namespace Moviekus.ViewModels.Genres
 {
     public class GenresViewModel : BaseViewModel
     {
-        private IService<Genre> GenreService;
+        private IGenreService GenreService;
 
         public ObservableCollection<GenresItemViewModel> Genres { get; set; }
 
@@ -29,22 +27,22 @@ namespace Moviekus.ViewModels.Genres
         {
             var genreDetailView = Resolver.Resolve<GenreDetailPage>();
             var viewModel = genreDetailView.BindingContext as GenreDetailViewModel;
-            viewModel.Genre = Genre.CreateNew<Genre>();
+            viewModel.Genre = GenreService.CreateGenre();
             viewModel.Title = "Neues Genre";
 
             await Navigation.PushAsync(genreDetailView);
         });
 
-        public GenresViewModel(GenreService genreService)
+        public GenresViewModel(IGenreService genreService)
         {
             Title = "Genres";
             Genres = new ObservableCollection<GenresItemViewModel>();
             GenreService = genreService;
 
             // Wiederspiegeln der Datenbankänderungen in der Liste
-            genreService.OnModelInserted += (sender, genre) => Genres.Add(CreateGenresItemViewModel(genre));
-            genreService.OnModelUpdated += async (sender, genre) => await LoadGenres();
-            genreService.OnModelDeleted += (sender, genre) => Genres.Remove(CreateGenresItemViewModel(genre));
+            GenreService.OnModelInserted += (sender, genre) => Genres.Add(CreateGenresItemViewModel(genre));
+            GenreService.OnModelUpdated += async (sender, genre) => await LoadGenres();
+            GenreService.OnModelDeleted += (sender, genre) => Genres.Remove(CreateGenresItemViewModel(genre));
         }
 
         // Dient lediglich dazu, auf die Auswahl eines Genre zu reagieren

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Moviekus.Models;
+using Moviekus.Models.Validation;
 using Moviekus.ServiceContracts;
 
 namespace Moviekus.Web.Pages.Movies
@@ -35,11 +36,13 @@ namespace Moviekus.Web.Pages.Movies
         [BindProperty]
         public IFormFile Cover { get; set; }
 
-        [BindProperty]
-        public string SelectedSourceId { get; set; }
-
         public SelectList Genres { get; set; }
 
+        // Die Auswahl wird übernommen in Movie.Source.Id: Dadurch wird sichergestellt, dass Movie.Source überhaupt angelegt wird. d.h.
+        // in der Validierung und im onPost hat man ein Objekt Movie.Source, welches bis auf die Id nicht initialisiert ist
+        // Um weitere Properties zu füllen, müssten hidden Fields aufgenommen werden
+        // Würde man stattdessen an eine Property des PageModel binden, wäre Movie.Source im onPost und in der Validierung null, 
+        // da es in keinem Binding verwendet wird
         public SelectList Sources { get; set; }
 
         [DataType(DataType.Date)]
@@ -75,15 +78,7 @@ namespace Moviekus.Web.Pages.Movies
         }
 
         public async Task<IActionResult> OnPostAsync(string id)
-        {
-            if (!ModelState.IsValid)
-            {
-                await InitSources();
-                await InitGenres();
-
-                return Page();
-            }
-                
+        {             
             // Cover wird nur dann gesetzt, wenn ein Cover explizit ausgewählt wurde, d.h. es ist null,
             // wenn ein vorhandenes Cover unverändert bleibt
             if (Cover != null)
@@ -97,10 +92,19 @@ namespace Moviekus.Web.Pages.Movies
             }
             else
             {
-                // Unverändertes Cover: Damit es beim Speichern nicht zurückgesetzt wird, muss es
-                // neu geladen werden
-                //var savedMovie = await MovieService.GetAsync(id);
-                //Movie.Cover = savedMovie?.Cover;
+                // Unverändertes Cover: Damit es beim Speichern nicht zurückgesetzt wird, muss es neu geladen werden
+                // Ursache: Cover ist nicht gebunden und damit im onPost null
+                // Alternative: Cover als hidden Field binden
+                var savedMovie = await MovieService.GetAsync(id);
+                Movie.Cover = savedMovie?.Cover;
+            }
+
+            if (!ModelState.IsValid)
+            {
+                await InitSources();
+                await InitGenres();
+
+                return Page();
             }
 
             // Umsetzen der Nullable-DateTimes auf unseren blöden MinValue
@@ -111,9 +115,8 @@ namespace Moviekus.Web.Pages.Movies
                 Movie.LastSeen = LastSeen.Value;
             else Movie.LastSeen = MoviekusDefines.MinDate;
 
-            if (!string.IsNullOrEmpty(SelectedSourceId))
-                Movie.Source = await SourceService.GetAsync(SelectedSourceId);
-            //ModelState["Movie.Source"].RawValue = Movie.Source;
+            if (!string.IsNullOrEmpty(Movie.Source.Id))
+                Movie.Source = await SourceService.GetAsync(Movie.Source.Id);
 
             // Abgleich der neuen Genre-Selektion mit der bereits gespeicherten
             Movie.MovieGenres = await MovieService.SyncMovieGenres(Movie.Id, SelectedGenreIds);
@@ -128,7 +131,7 @@ namespace Moviekus.Web.Pages.Movies
             IList<Source> sources = await SourceService.GetAsync();
             Sources = new SelectList(sources, nameof(Source.Id), nameof(Source.Name));
             if (Movie.Source != null)
-                SelectedSourceId = Movie.Source.Id;
+                Movie.Source.Id = Movie.Source.Id;
         }
 
         private async Task InitGenres()

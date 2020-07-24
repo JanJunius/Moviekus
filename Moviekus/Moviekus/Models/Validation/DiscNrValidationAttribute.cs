@@ -16,7 +16,7 @@ namespace Moviekus.Models.Validation
                 return new ValidationResult("Die Disk-Nr. muss mindestens 3 Zeichen lang sein.", new string[] { nameof(Movie.DiscNumber) });
 
             if (movie.Source?.Id != MoviekusDefines.SourceDisk && !string.IsNullOrEmpty(movie.DiscNumber))
-                return new ValidationResult("Wenn eine Disk-Nr. angegeben ist, muss die Verfügbarkeit auch Disk sein.", new string[] { nameof(Movie.Source) });
+                return new ValidationResult("Wenn eine Disk-Nr. angegeben ist, muss die Verfügbarkeit auch Disk sein.", new string[] { nameof(Movie.DiscNumber) });
 
             return ValidationResult.Success;
         }

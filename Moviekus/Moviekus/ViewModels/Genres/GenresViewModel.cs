@@ -1,5 +1,6 @@
 ﻿using Moviekus.Models;
 using Moviekus.ServiceContracts;
+using Moviekus.Services;
 using Moviekus.Views.Genres;
 using NLog;
 using System;
@@ -26,7 +27,7 @@ namespace Moviekus.ViewModels.Genres
         {
             var genreDetailView = Resolver.Resolve<GenreDetailPage>();
             var viewModel = genreDetailView.BindingContext as GenreDetailViewModel;
-            viewModel.Genre = Genre.CreateNew<Genre>();
+            viewModel.Genre = GenreService.CreateGenre();
             viewModel.Title = "Neues Genre";
 
             await Navigation.PushAsync(genreDetailView);
@@ -39,11 +40,15 @@ namespace Moviekus.ViewModels.Genres
             GenreService = genreService;
 
             // Wiederspiegeln der Datenbankänderungen in der Liste
-            genreService.OnModelInserted += (sender, genre) => Genres.Add(CreateGenresItemViewModel(genre));
-            genreService.OnModelUpdated += async (sender, genre) => await LoadGenres();
-            genreService.OnModelDeleted += (sender, genre) => Genres.Remove(CreateGenresItemViewModel(genre));
+            GenreService.OnModelInserted += (sender, genre) => Test(genre);
+            GenreService.OnModelUpdated += async (sender, genre) => await LoadGenres();
+            GenreService.OnModelDeleted += (sender, genre) => Genres.Remove(CreateGenresItemViewModel(genre));
         }
 
+        public void Test(Genre genre)
+        {
+            Genres.Add(CreateGenresItemViewModel(genre));
+        }
         // Dient lediglich dazu, auf die Auswahl eines Genre zu reagieren
         // Angesteuert über Binding in der Page
         public GenresItemViewModel SelectedItem

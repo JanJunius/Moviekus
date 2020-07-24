@@ -30,7 +30,7 @@ namespace Moviekus.ViewModels.Sources
         {
             var sourceDetailView = Resolver.Resolve<SourceDetailPage>();
             var viewModel = sourceDetailView.BindingContext as SourceDetailViewModel;
-            viewModel.Source = Source.CreateNew<Source>();
+            viewModel.Source = SourceService.CreateSource();
             viewModel.Title = "Neue Quelle";           
             
             await Navigation.PushAsync(sourceDetailView);

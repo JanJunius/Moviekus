@@ -7,6 +7,8 @@ namespace Moviekus.ServiceContracts
 {
     public interface IMovieService : IBaseService<Movie>
     {
+        Movie CreateMovie();
+
         Task<IList<Movie>> GetWithGenresAndSourcesAsync(MovieSortOrder sortOrder);
         Task<Movie> GetWithGenresAndSourcesAsync(string id);
 

@@ -20,10 +20,9 @@ namespace Moviekus.Web.Pages.Genres
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
-            if (id == null)
-                return NotFound();
-
-            Genre = await GenreService.GetAsync(id);
+            if (id != null)
+                Genre = await GenreService.GetAsync(id);
+            else Genre = GenreService.CreateGenre();
 
             if (Genre == null)
                 return NotFound();

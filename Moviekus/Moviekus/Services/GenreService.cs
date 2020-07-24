@@ -12,6 +12,11 @@ namespace Moviekus.Services
 {
     public class GenreService : BaseService<Genre>, IGenreService
     {
+        public Genre CreateGenre()
+        {
+            return Genre.CreateNew<Genre>();
+        }
+
         public async Task<Genre> GetOrCreateGenre(string genreName)
         {
             IEnumerable<Genre> genres = await GetAsync();

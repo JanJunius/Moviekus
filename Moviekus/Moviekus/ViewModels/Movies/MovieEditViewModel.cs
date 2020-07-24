@@ -190,7 +190,7 @@ namespace Moviekus.ViewModels.Movies
             _sources = new List<Source>(Resolver.Resolve<ISourceService>().Get());
 
             MovieService = movieService;
-            Movie = Movie.CreateNew<Movie>();
+            Movie = MovieService.CreateMovie();
             Movie.Title = "Neuer Film";
         }
 

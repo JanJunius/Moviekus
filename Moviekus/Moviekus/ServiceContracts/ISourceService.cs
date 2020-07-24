@@ -7,5 +7,6 @@ namespace Moviekus.ServiceContracts
 {
     public interface ISourceService : IBaseService<Source>
     {
+        Source CreateSource();
     }
 }

@@ -55,10 +55,9 @@ namespace Moviekus.Web.Pages.Movies
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
-            if (id == null)
-                return NotFound();
-
-            Movie = await MovieService.GetWithGenresAndSourcesAsync(id);
+            if (id != null)
+                Movie = await MovieService.GetWithGenresAndSourcesAsync(id);
+            else Movie = MovieService.CreateMovie();
 
             if (Movie == null)
                 return NotFound();

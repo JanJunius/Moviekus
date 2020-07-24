@@ -2,13 +2,15 @@
 @model Moviekus.Web.Pages.Genres.EditModel
 
 @{
-    ViewData["Title"] = "Genre bearbeiten";
+    if (Model.Genre.IsNew)
+        ViewData["Title"] = "Neues Genre";
+    else ViewData["Title"] = "Genre bearbeiten";
 }
 
 <table>
     <tr>
         <td style="padding-right:10px;"><img src="~/images/genres.png" style="width:48px;height:48px;"></td>
-        <td><h1>Genre bearbeiten</h1></td>
+        <td><h1>@ViewData["Title"]</h1></td>
     </tr>
 </table>
 
@@ -24,6 +26,7 @@
                 <span asp-validation-for="Genre.Name" class="text-danger"></span>
             </div>
             <input type="hidden" asp-for="Genre.Id" />
+            <input type="hidden" asp-for="Genre.IsNew" />
             <div class="form-group">
                 <input type="submit" value="Speichern" class="btn btn-primary" />
             </div>

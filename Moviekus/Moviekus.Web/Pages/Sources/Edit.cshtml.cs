@@ -20,10 +20,9 @@ namespace Moviekus.Web.Pages.Sources
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
-            if (id == null)
-                return NotFound();
-
-            Source = await SourceService.GetAsync(id);
+            if (id != null)
+                Source = await SourceService.GetAsync(id);
+            else Source = SourceService.CreateSource();
 
             if (Source == null)
                 return NotFound();

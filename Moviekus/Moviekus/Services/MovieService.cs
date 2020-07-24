@@ -14,6 +14,15 @@ namespace Moviekus.Services
 {
     public class MovieService : BaseService<Movie>, IMovieService
     {
+        public Movie CreateMovie()
+        {
+            Movie movie = Movie.CreateNew<Movie>();
+
+            movie.ReleaseDate = movie.LastSeen = MoviekusDefines.MinDate;
+
+            return movie;
+        }
+
         public async Task<IEnumerable<Movie>> GetWithSourceAsync()
         {
             using (var context = new MoviekusDbContext())

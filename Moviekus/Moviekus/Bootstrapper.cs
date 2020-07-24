@@ -61,11 +61,13 @@ namespace Moviekus
             // und erhält diesen dann abhängig von dieser Konfiguration geliefert.
             // Auf diese Weise kann man hier eine Konfiguration vollständig ersetzen, indem man z.B. als implementierende
             // Klasse eine MOC-Version zum Testen angibt.
-            ContainerBuilder.RegisterType<SourceService>().As<ISourceService>();
-            ContainerBuilder.RegisterType<GenreService>().As<IGenreService>();
-            ContainerBuilder.RegisterType<MovieService>().As<IMovieService>();
-            ContainerBuilder.RegisterType<SettingsService>().As<ISettingsService>();
-            ContainerBuilder.RegisterType<FilterService>().As<IFilterService>();
+            // Von den Services wird jeweils nur eine Instanz angelegt. Dies ermöglicht, dass ein Eventhandling z.B. über
+            // mehrere Views hinweg möglich ist (z.B. Hinzufügen in Detailview und automatische Aufnahme in Liste der Übersicht)
+            ContainerBuilder.RegisterType<SourceService>().As<ISourceService>().SingleInstance();
+            ContainerBuilder.RegisterType<GenreService>().As<IGenreService>().SingleInstance();
+            ContainerBuilder.RegisterType<MovieService>().As<IMovieService>().SingleInstance();
+            ContainerBuilder.RegisterType<SettingsService>().As<ISettingsService>().SingleInstance();
+            ContainerBuilder.RegisterType<FilterService>().As<IFilterService>().SingleInstance();
         }
 
         private void FinishInitialization()

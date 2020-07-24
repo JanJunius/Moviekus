@@ -40,15 +40,11 @@ namespace Moviekus.ViewModels.Genres
             GenreService = genreService;
 
             // Wiederspiegeln der Datenbankänderungen in der Liste
-            GenreService.OnModelInserted += (sender, genre) => Test(genre);
+            GenreService.OnModelInserted += (sender, genre) => Genres.Add(CreateGenresItemViewModel(genre));
             GenreService.OnModelUpdated += async (sender, genre) => await LoadGenres();
             GenreService.OnModelDeleted += (sender, genre) => Genres.Remove(CreateGenresItemViewModel(genre));
         }
 
-        public void Test(Genre genre)
-        {
-            Genres.Add(CreateGenresItemViewModel(genre));
-        }
         // Dient lediglich dazu, auf die Auswahl eines Genre zu reagieren
         // Angesteuert über Binding in der Page
         public GenresItemViewModel SelectedItem

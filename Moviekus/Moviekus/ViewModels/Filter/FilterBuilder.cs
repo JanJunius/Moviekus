@@ -180,8 +180,8 @@ namespace Moviekus.ViewModels.Filter
             foreach (var filterEntry in filterEntries)
             {
                 FilterEntry temp = filterEntry;
-                int ratingFrom = int.Parse(temp.ValueFrom);
-                int ratingTo = int.Parse(temp.ValueTo);
+                int ratingFrom = temp.ValueFrom != null ? int.Parse(temp.ValueFrom) : 0;
+                int ratingTo = temp.ValueTo != null ? int.Parse(temp.ValueTo) : 0;
 
                 switch (filterEntry.Operator)
                 {

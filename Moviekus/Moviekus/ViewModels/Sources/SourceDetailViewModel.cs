@@ -2,8 +2,11 @@
 using Microsoft.Data.Sqlite;
 using Moviekus.Models;
 using Moviekus.ServiceContracts;
+using Moviekus.Views.Validation;
 using NLog;
 using System;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -11,6 +14,8 @@ namespace Moviekus.ViewModels.Sources
 {
     public class SourceDetailViewModel : BaseViewModel
     {
+        public event EventHandler<Source> OnSourceChanged;
+
         private ISourceService SourceService;
 
         public Source Source { get; set; }
@@ -57,12 +62,26 @@ namespace Moviekus.ViewModels.Sources
             }
         });
 
-        public override async void OnViewDisappearing()
+        public bool Validate()
         {
-            base.OnViewDisappearing();
-
-            await SourceService.SaveChangesAsync(Source);
-            await Navigation.PopAsync();
+            return FormValidator.IsFormValid(Source, Navigation.NavigationStack.Last());
         }
+
+        public async Task SaveChanges()
+        {
+            Source = await SourceService.SaveChangesAsync(Source);
+        }
+
+        public async Task UndoChanges()
+        {
+            // Zurücksetzen aller Änderungen wenn Eingaben ungültig und Page verlassen wird
+            Source origionalSource = await Resolver.Resolve<ISourceService>().GetAsync(Source.Id);
+            if (origionalSource != null)
+            {
+                Source = origionalSource;
+                OnSourceChanged?.Invoke(this, Source);
+            }
+        }
+
     }
 }

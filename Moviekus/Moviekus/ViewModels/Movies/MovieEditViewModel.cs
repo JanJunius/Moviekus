@@ -53,38 +53,6 @@ namespace Moviekus.ViewModels.Movies
             set { }
         }
 
-        public ICommand SaveCommand => new Command(async () =>
-        {
-            if (!Validate())
-            {
-                await UserDialogs.Instance.AlertAsync(new AlertConfig
-                {
-                    Title = "Eingaben unvollständig",
-                    Message = "Die Eingaben sind nicht korrekt. Bitte die markierten Stellen korrigieren."
-                });
-                return;
-            }
-            Movie = await MovieService.SaveMovieAsync(Movie);
-            OnMovieChanged?.Invoke(this, Movie);
-            await Navigation.PopAsync();
-        });
-
-        public override async void OnViewDisappearing()
-        {
-            if (!Validate())
-            {
-                // Zurücksetzen aller Änderungen wenn Eingaben ungültig und Page verlassen wird
-                Movie origionalMovie = await Resolver.Resolve<IMovieService>().GetWithGenresAndSourcesAsync(Movie.Id);
-                if (origionalMovie != null)
-                {
-                    Movie = origionalMovie;
-                    OnMovieChanged?.Invoke(this, Movie);
-                }
-                
-            }
-            base.OnViewDisappearing();
-        }
-
         public ICommand MovieDbCommand => new Command(async () =>
         {
             if (string.IsNullOrEmpty(Movie.Title) || Movie.Title.Length < 2)
@@ -114,6 +82,23 @@ namespace Moviekus.ViewModels.Movies
         public bool Validate()
         {
             return FormValidator.IsFormValid(Movie, Navigation.NavigationStack.Last());
+        }
+
+        public async Task SaveChanges()
+        {
+            Movie = await MovieService.SaveMovieAsync(Movie);
+            OnMovieChanged?.Invoke(this, Movie);
+        }
+
+        public async Task UndoChanges()
+        {
+            // Zurücksetzen aller Änderungen wenn Eingaben ungültig und Page verlassen wird
+            Movie origionalMovie = await Resolver.Resolve<IMovieService>().GetWithGenresAndSourcesAsync(Movie.Id);
+            if (origionalMovie != null)
+            {
+                Movie = origionalMovie;
+                OnMovieChanged?.Invoke(this, Movie);
+            }
         }
 
         private async Task OpenSelectionPage(IMovieProvider movieProvider)

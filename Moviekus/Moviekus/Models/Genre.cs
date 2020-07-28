@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Text;
 
@@ -8,6 +9,8 @@ namespace Moviekus.Models
     [DebuggerDisplay("Name = {Name}")]
     public class Genre : BaseModel
     {
+        [MinLength(1, ErrorMessage ="Der Name darf nicht leer sein.")]
+        [Required(ErrorMessage = "Bitte einen Namen angeben.")]
         public string Name { get; set; }
 
         //public virtual ICollection<MovieGenre> MovieGenres { get; set; }

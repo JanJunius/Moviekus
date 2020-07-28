@@ -18,6 +18,7 @@ namespace Moviekus.ViewModels.Sources
     public class SourcesViewModel : BaseViewModel
     {
         private ISourceService SourceService;
+        
 
         public ObservableCollection<SourcesItemViewModel> Sources { get; set; }
         
@@ -28,12 +29,7 @@ namespace Moviekus.ViewModels.Sources
 
         public ICommand AddSourceCommand => new Command(async () =>
         {
-            var sourceDetailView = Resolver.Resolve<SourceDetailPage>();
-            var viewModel = sourceDetailView.BindingContext as SourceDetailViewModel;
-            viewModel.Source = SourceService.CreateSource();
-            viewModel.Title = "Neue Quelle";           
-            
-            await Navigation.PushAsync(sourceDetailView);
+            await EditSource(SourceService.CreateSource(), "Neue Quelle");
         });
 
         public SourcesViewModel(ISourceService sourceService)
@@ -65,10 +61,17 @@ namespace Moviekus.ViewModels.Sources
 
         private async Task OpenDetailPage(SourcesItemViewModel siViewModel)
         {
+            await EditSource(siViewModel.Source, "Quelle bearbeiten");
+        }
+
+        private async Task EditSource(Source source, string title)
+        {
             var detailView = Resolver.Resolve<SourceDetailPage>();
             var viewModel = detailView.BindingContext as SourceDetailViewModel;
-            viewModel.Source = siViewModel.Source;
-            viewModel.Title = "Quelle bearbeiten";
+            viewModel.Source = source;
+            viewModel.Title = title;
+
+            viewModel.OnSourceChanged += async (sender, s) => await LoadSources();
 
             await Navigation.PushAsync(detailView);
         }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Moviekus.ViewModels.Filter
+namespace Moviekus.FilterBuilder
 {
     public class InvalidFilterException : ApplicationException
     {

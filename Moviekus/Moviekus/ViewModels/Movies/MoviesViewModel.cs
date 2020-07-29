@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
 
 using Moviekus.Models;
 using Moviekus.Views.Movies;
-using Moviekus.Services;
+using Moviekus.FilterBuilder;
 using System.Linq;
 using System.Windows.Input;
 using Moviekus.Views.Filter;
@@ -196,7 +195,7 @@ namespace Moviekus.ViewModels.Movies
                     Title = MovieFilter.Name;
                     try
                     {
-                        Movies = new ObservableCollection<MoviesItemViewModel>(Movies.AsQueryable().Where(FilterBuilder.Ref.BuildFilter(MovieFilter)));
+                        Movies = new ObservableCollection<MoviesItemViewModel>(Movies.AsQueryable().Where(FilterBuilder<MoviesItemViewModel>.Ref.BuildFilter(MovieFilter)));
                     }
                     catch (Exception ex)
                     {

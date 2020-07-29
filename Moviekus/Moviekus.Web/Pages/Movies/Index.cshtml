@@ -21,6 +21,17 @@
     </table>
 </p>
 
+<form>
+    <p>
+        Schnellsuche: <input type="text" asp-for="QuickSearch" />
+        &nbsp;Filter
+        <select asp-for="SelectedFilterId" asp-items="Model.FilterList">
+            <option value="">Kein Filter</option>
+        </select>
+        <input type="submit" value="Ausführen" />
+    </p>
+</form>
+
 <table class="table">
     <thead>
         <tr>

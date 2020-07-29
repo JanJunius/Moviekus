@@ -16,6 +16,7 @@
         <StackLayout Padding="14">
             <Label Text="Name" Style="{StaticResource HeadingLabelStyle}"/>
             <Entry Text="{Binding Genre.Name}"/>
+            <Label x:Name="Genre_NameError" IsVisible="False" TextColor="Red" />
         </StackLayout>
 
     </ContentPage.Content>

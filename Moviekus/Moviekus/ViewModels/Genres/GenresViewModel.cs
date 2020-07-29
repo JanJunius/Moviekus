@@ -25,12 +25,7 @@ namespace Moviekus.ViewModels.Genres
 
         public ICommand AddGenreCommand => new Command(async () =>
         {
-            var genreDetailView = Resolver.Resolve<GenreDetailPage>();
-            var viewModel = genreDetailView.BindingContext as GenreDetailViewModel;
-            viewModel.Genre = GenreService.CreateGenre();
-            viewModel.Title = "Neues Genre";
-
-            await Navigation.PushAsync(genreDetailView);
+            await EditGenre(GenreService.CreateGenre(), "Neues Genre");
         });
 
         public GenresViewModel(IGenreService genreService)
@@ -62,10 +57,17 @@ namespace Moviekus.ViewModels.Genres
 
         private async Task OpenDetailPage(GenresItemViewModel giViewModel)
         {
+            await EditGenre(giViewModel.Genre, "Genre bearbeiten");
+        }
+
+        private async Task EditGenre(Genre genre, string title)
+        {
             var detailView = Resolver.Resolve<GenreDetailPage>();
             var viewModel = detailView.BindingContext as GenreDetailViewModel;
-            viewModel.Genre = giViewModel.Genre;
-            viewModel.Title = "Genre bearbeiten";
+            viewModel.Genre = genre;
+            viewModel.Title = title;
+
+            viewModel.OnGenreChanged += async (sender, g) => await LoadGenres();
 
             await Navigation.PushAsync(detailView);
         }

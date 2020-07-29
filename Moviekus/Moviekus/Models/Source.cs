@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 
 namespace Moviekus.Models
@@ -6,6 +7,8 @@ namespace Moviekus.Models
     [DebuggerDisplay("Name = {Name}, SourceType = {SourceTypeName}")]
     public class Source : BaseModel
     {
+        [MinLength(1, ErrorMessage = "Der Name darf nicht leer sein.")]
+        [Required(ErrorMessage = "Bitte einen Namen angeben.")]
         public string Name { get; set; }
 
         public override bool Equals(object obj)

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Moviekus.Models.Validation
 {
@@ -17,6 +14,9 @@ namespace Moviekus.Models.Validation
 
             if (movie.Source?.Id != MoviekusDefines.SourceDisk && !string.IsNullOrEmpty(movie.DiscNumber))
                 return new ValidationResult("Wenn eine Disk-Nr. angegeben ist, muss die Verfügbarkeit auch Disk sein.", new string[] { nameof(Movie.DiscNumber) });
+
+            if (movie.Source?.Id == MoviekusDefines.SourceDisk && string.IsNullOrEmpty(movie.DiscNumber))
+                return new ValidationResult("Wenn der Film auf Disk verfügbar ist, muss auch eine Disk-Nummer angegeben werden.", new string[] { nameof(Movie.DiscNumber) });
 
             return ValidationResult.Success;
         }

@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Moviekus.Models;
-using Moviekus.Models.Validation;
 using Moviekus.ServiceContracts;
 
 namespace Moviekus.Web.Pages.Movies
@@ -77,34 +76,11 @@ namespace Moviekus.Web.Pages.Movies
         }
 
         public async Task<IActionResult> OnPostAsync(string id)
-        {             
-            // Cover wird nur dann gesetzt, wenn ein Cover explizit ausgewählt wurde, d.h. es ist null,
-            // wenn ein vorhandenes Cover unverändert bleibt
-            if (Cover != null)
-            {
-                // Neu ausgewähltes Cover übernehmen
-                using (var stream = new MemoryStream())
-                {
-                    await Cover.CopyToAsync(stream);
-                    Movie.Cover = stream.ToArray();
-                }
-            }
-            else
-            {
-                // Unverändertes Cover: Damit es beim Speichern nicht zurückgesetzt wird, muss es neu geladen werden
-                // Ursache: Cover ist nicht gebunden und damit im onPost null
-                // Alternative: Cover als hidden Field binden
-                var savedMovie = await MovieService.GetAsync(id);
-                Movie.Cover = savedMovie?.Cover;
-            }
-
-            if (!ModelState.IsValid)
-            {
-                await InitSources();
-                await InitGenres();
-
+        {
+            if (!await Validate())
                 return Page();
-            }
+
+            await SetCover(id);
 
             // Umsetzen der Nullable-DateTimes auf unseren blöden MinValue
             if (ReleaseDate.HasValue)
@@ -138,6 +114,46 @@ namespace Moviekus.Web.Pages.Movies
             IList<Genre> genres = await GenreService.GetAsync();
             Genres = new SelectList(genres, nameof(Genre.Id), nameof(Genre.Name));
             SelectedGenreIds = Movie.MovieGenres.Select(m => m.Genre).Select(g => g.Id).ToArray();
+        }
+
+        private async Task SetCover(string movieId)
+        {
+            // Cover wird nur dann gesetzt, wenn ein Cover explizit ausgewählt wurde, d.h. es ist null,
+            // wenn ein vorhandenes Cover unverändert bleibt
+            if (Cover != null)
+            {
+                // Neu ausgewähltes Cover übernehmen
+                using (var stream = new MemoryStream())
+                {
+                    await Cover.CopyToAsync(stream);
+                    Movie.Cover = stream.ToArray();
+                }
+            }
+            else
+            {
+                // Unverändertes Cover: Damit es beim Speichern nicht zurückgesetzt wird, muss es neu geladen werden
+                // Ursache: Cover ist nicht gebunden und damit im onPost null
+                // Alternative: Cover als hidden Field binden
+                var savedMovie = await MovieService.GetAsync(movieId);
+                Movie.Cover = savedMovie?.Cover;
+            }
+        }
+
+        private async Task<bool> Validate()
+        {
+            // Das Model der Source validiert auf Name
+            // Der Name der Source wird aber nicht an OnPost übermittelt, da nicht direkt gebunden
+            // Daher muss diese Validierung hier abgeschaltet werden
+            ModelState.Remove("Movie.Source.Name");
+
+            if (!ModelState.IsValid)
+            {
+                await InitSources();
+                await InitGenres();
+
+                return false;
+            }
+            return true;
         }
     }
 }

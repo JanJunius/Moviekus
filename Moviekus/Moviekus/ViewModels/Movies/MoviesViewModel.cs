@@ -101,21 +101,10 @@ namespace Moviekus.ViewModels.Movies
 
         public ICommand OrderCommand => new Command(async () =>
         {
-            var actionResult = await UserDialogs.Instance.ActionSheetAsync("Nach was soll sortiert werden?", "Abbrechen", null, null, "Nichts", "Titel", "Laufzeit", "Bewertung", "Zuletzt gesehen", "Veröffentlichungsdatum", "Episode");
-            if (actionResult == "Nichts")
-                MovieSortOrder = MovieSortOrder.None;
-            else if (actionResult == "Titel")
-                MovieSortOrder = MovieSortOrder.Title;
-            if (actionResult == "Laufzeit")
-                MovieSortOrder = MovieSortOrder.Runtime;
-            if (actionResult == "Bewertung")
-                MovieSortOrder = MovieSortOrder.Rating;
-            if (actionResult == "Zuletzt gesehen")
-                MovieSortOrder = MovieSortOrder.LastSeen;
-            if (actionResult == "Veröffentlichungsdatum")
-                MovieSortOrder = MovieSortOrder.ReleaseDate;
-            if (actionResult == "Episode")
-                MovieSortOrder = MovieSortOrder.EpisodeNumber;
+            var actionResult = await UserDialogs.Instance.ActionSheetAsync("Nach was soll sortiert werden?", "Abbrechen", null, null, MovieSortOrderHelper.GetDisplayNames());
+
+            MovieSortOrder = MovieSortOrderHelper.GetSortOrderFromDisplayName(actionResult);
+
             await LoadMovies();
         });
 

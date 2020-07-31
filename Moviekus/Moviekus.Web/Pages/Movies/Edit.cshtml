@@ -70,7 +70,7 @@
                     <div class="form-group">
                         <b>@Html.DisplayNameFor(model => model.Movie.Source)</b>
                         <br />
-                        <select asp-for="Movie.Source.Id" asp-items="Model.Sources" id="sourceSelect" onchange="javascript:onSourceChange();" class="form-control"></select>
+                        <select asp-for="Movie.Source.Id" asp-items="Model.Sources" id="sourceSelect" class="form-control"></select>
                         <span asp-validation-for="Movie.Source" class="text-danger"></span>
                     </div>
                     <table style="width:100%">

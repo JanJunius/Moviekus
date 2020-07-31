@@ -14,7 +14,6 @@ namespace Moviekus.Models
         [Display(Name = "Titel")] 
         public string Title { get; set; }
 
-        [SourceValidation]
         [ForeignKey("SourceId")]
         [Display(Name = "Verfügbar bei")] 
         public virtual Source Source { get; set; }

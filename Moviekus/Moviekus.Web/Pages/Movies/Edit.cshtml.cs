@@ -8,8 +8,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Moviekus.Dto.MovieDb;
 using Moviekus.Models;
 using Moviekus.ServiceContracts;
+using Moviekus.Services;
+using Newtonsoft.Json;
 
 namespace Moviekus.Web.Pages.Movies
 {
@@ -33,9 +36,9 @@ namespace Moviekus.Web.Pages.Movies
         public string[] SelectedGenreIds { get; set; }
         
         [BindProperty]
-        public IFormFile Cover { get; set; }
+        public IFormFile SelectedCover { get; set; }
 
-        public SelectList Genres { get; set; }
+         public SelectList Genres { get; set; }
 
         // Die Auswahl wird übernommen in Movie.Source.Id: Dadurch wird sichergestellt, dass Movie.Source überhaupt angelegt wird. d.h.
         // in der Validierung und im onPost hat man ein Objekt Movie.Source, welches bis auf die Id nicht initialisiert ist
@@ -61,6 +64,67 @@ namespace Moviekus.Web.Pages.Movies
             if (Movie == null)
                 return NotFound();
 
+            await Init();
+
+            return Page();
+        }
+
+        public async Task<IActionResult> OnGetMovieSelection(string id, string providerMovieId)
+        {
+            // Bereits bekannten Film laden
+            Movie = await MovieService.GetWithGenresAndSourcesAsync(id);
+            
+            // Falls nicht bekannt, neuen Film anlegen
+            if (Movie == null)
+                Movie = MovieService.CreateMovie();
+
+            // Übernahme der Daten aus MovieDb
+            IMovieProvider movieProvider = MovieProviderFactory.CreateMovieProvider(MovieProviders.MovieDb);
+            var movieDto = await movieProvider.GetMovieAsync(providerMovieId);
+            Movie = await MovieService.ApplyDtoData(Movie, movieDto);
+
+            await Init();
+
+            // Speichern des Films nach der Auswahl: Eigentlich nicht nötig, aber wegen des "falschen" Cover-Handlings notwendig,
+            // damit das ausgewählte Cover nicht verloren geht (es ist nicht gebunden, da byte-Array)
+            // Siehe auch Kommentar bei SetCover
+            await SaveChanesAsync();
+
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostSaveChangesAsync()
+        {
+            if (!await Validate())
+                return Page();
+
+            await SetCover(Movie.Id);
+            await SaveChanesAsync();
+
+            return RedirectToPage("./Index");
+        }
+
+        private async Task SaveChanesAsync()
+        {
+            // Umsetzen der Nullable-DateTimes auf unseren blöden MinValue
+            if (ReleaseDate.HasValue)
+                Movie.ReleaseDate = ReleaseDate.Value;
+            else Movie.ReleaseDate = MoviekusDefines.MinDate;
+            if (LastSeen.HasValue)
+                Movie.LastSeen = LastSeen.Value;
+            else Movie.LastSeen = MoviekusDefines.MinDate;
+
+            if (!string.IsNullOrEmpty(Movie.Source?.Id))
+                Movie.Source = await SourceService.GetAsync(Movie.Source.Id);
+
+            // Abgleich der neuen Genre-Selektion mit der bereits gespeicherten
+            Movie.MovieGenres = await MovieService.SyncMovieGenres(Movie.Id, SelectedGenreIds);
+
+            await MovieService.SaveChangesAsync(Movie);
+        }
+
+        private async Task Init()
+        {
             if (Movie.ReleaseDate != MoviekusDefines.MinDate)
                 ReleaseDate = Movie.ReleaseDate;
             else ReleaseDate = null;
@@ -71,34 +135,6 @@ namespace Moviekus.Web.Pages.Movies
 
             await InitGenres();
             await InitSources();
-
-            return Page();
-        }
-
-        public async Task<IActionResult> OnPostAsync(string id)
-        {
-            if (!await Validate())
-                return Page();
-
-            await SetCover(id);
-
-            // Umsetzen der Nullable-DateTimes auf unseren blöden MinValue
-            if (ReleaseDate.HasValue)
-                Movie.ReleaseDate = ReleaseDate.Value;
-            else Movie.ReleaseDate = MoviekusDefines.MinDate;
-            if (LastSeen.HasValue)
-                Movie.LastSeen = LastSeen.Value;
-            else Movie.LastSeen = MoviekusDefines.MinDate;
-
-            if (!string.IsNullOrEmpty(Movie.Source.Id))
-                Movie.Source = await SourceService.GetAsync(Movie.Source.Id);
-
-            // Abgleich der neuen Genre-Selektion mit der bereits gespeicherten
-            Movie.MovieGenres = await MovieService.SyncMovieGenres(Movie.Id, SelectedGenreIds);
-
-            await MovieService.SaveChangesAsync(Movie);
-
-            return RedirectToPage("./Index");
         }
 
         private async Task InitSources()
@@ -116,16 +152,19 @@ namespace Moviekus.Web.Pages.Movies
             SelectedGenreIds = Movie.MovieGenres.Select(m => m.Genre).Select(g => g.Id).ToArray();
         }
 
+        // Generell ist es in einer Web-Anwendung ungünstig, Covers in der Datenbank abzuspeichern, da diese nicht
+        // direkt gebunden werden können und die Seite auch unnötig aufblasen
+        // Besser ist es, die URL des Covers zu speichern und das eigentliche Bild dann nachladen zu lassen
         private async Task SetCover(string movieId)
         {
             // Cover wird nur dann gesetzt, wenn ein Cover explizit ausgewählt wurde, d.h. es ist null,
             // wenn ein vorhandenes Cover unverändert bleibt
-            if (Cover != null)
+            if (SelectedCover != null)
             {
                 // Neu ausgewähltes Cover übernehmen
                 using (var stream = new MemoryStream())
                 {
-                    await Cover.CopyToAsync(stream);
+                    await SelectedCover.CopyToAsync(stream);
                     Movie.Cover = stream.ToArray();
                 }
             }
@@ -154,6 +193,11 @@ namespace Moviekus.Web.Pages.Movies
                 return false;
             }
             return true;
+        }
+
+        public IActionResult OnPostMovieSelection()
+        {
+            return RedirectToPage("./MovieSelection", new { id = Movie.Id, title = Movie.Title, MovieProviders.MovieDb });
         }
     }
 }

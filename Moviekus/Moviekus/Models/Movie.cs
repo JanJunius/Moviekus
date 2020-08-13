@@ -25,7 +25,6 @@ namespace Moviekus.Models
         [DataType(DataType.Date)] 
         public DateTime ReleaseDate { get; set; }
 
-        [Range(1,999, ErrorMessage ="Die Laufzeit muss zwischen 1 und 999 Minuten liegen.")]
         [Display(Name = "Laufzeit")]
         public int Runtime { get; set; }
 

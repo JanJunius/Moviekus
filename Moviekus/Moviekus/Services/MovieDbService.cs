@@ -44,6 +44,9 @@ namespace Moviekus.Services
             MovieDbGenres genres = await GetGenres();
             List<MovieDbMovie> movies = new List<MovieDbMovie>();
 
+            if (string.IsNullOrEmpty(title))
+                return movies;
+
             LogManager.GetCurrentClassLogger().Info($"Searching MovieDb for '{title}'...");
 
             try
@@ -103,6 +106,39 @@ namespace Moviekus.Services
                 LogManager.GetCurrentClassLogger().Error(ex);
                 throw;
             }
+        }
+
+        public async Task<MovieDbMovie> GetMovieAsync(string providerMovieId)
+        {
+            string url = $"https://api.themoviedb.org/3/movie/{providerMovieId}";
+            var client = new RestClient(url);
+            var request = new RestRequest(Method.GET);
+
+            request.AddParameter("api_key", Settings.MovieDb_ApiKey);
+            request.AddParameter("language", Settings.MovieDb_Language);
+
+            LogManager.GetCurrentClassLogger().Info($"Searching MovieDb for details on movie with id: '{providerMovieId}'...");
+
+            try
+            {
+                IRestResponse<MovieDbDetails> details = await client.ExecuteAsync<MovieDbDetails>(request);
+                LogManager.GetCurrentClassLogger().Info($"Finished searching MovieDb for details on movie with id: '{providerMovieId}'...");
+
+                if (details.Data != null)
+                {
+                    MovieDbMovie movieDto;
+                    movieDto = BuildMovieDto(details.Data);
+                    movieDto.Cover = GetMovieCover(movieDto);
+                    await FillMovieTrailer(movieDto);
+                    return movieDto;
+                }                    
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().Error(ex);
+                throw;
+            }
+            return null;
         }
 
         public async Task FillMovieTrailer(MovieDbMovie movieDto)
@@ -190,6 +226,27 @@ namespace Moviekus.Services
                 var genre = movieDbGenres.genres.Where(g => g.id == genreId).FirstOrDefault();
                 if (genre != null)
                     movieDto.Genres.Add(genre.name);
+            }
+
+            return movieDto;
+        }
+
+        private MovieDbMovie BuildMovieDto(MovieDbDetails movieDbDetails)
+        {
+            MovieDbMovie movieDto = new MovieDbMovie()
+            {
+                ProviderMovieId = movieDbDetails.id,
+                Overview = movieDbDetails.overview,
+                Title = movieDbDetails.title,
+                ReleaseDate = movieDbDetails.release_date,
+                CoverUri = movieDbDetails.poster_path,
+                Runtime = movieDbDetails.runtime,
+                Homepage = movieDbDetails.homepage
+            };
+
+            foreach (var genre in movieDbDetails.Genres)
+            {
+                movieDto.Genres.Add(genre.name);
             }
 
             return movieDto;

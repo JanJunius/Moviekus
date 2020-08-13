@@ -40,12 +40,12 @@ namespace Moviekus.Web.Pages.Movies
             Filter movieFilter = null;
 
             // Ist gar kein Filter selektiert (erster Aufruf), prüfe auf Defaultfilter und nehme diesen ggf. als Vorauswahl
-            if (SelectedFilterId == null)
-            {
-                var defaultFilter = FilterService.GetDefault();
-                if (defaultFilter != null)
-                    SelectedFilterId = defaultFilter.Id;
-            }
+            //if (SelectedFilterId == null)
+            //{
+            //    var defaultFilter = FilterService.GetDefault();
+            //    if (defaultFilter != null)
+            //        SelectedFilterId = defaultFilter.Id;
+            //}
             // Gewählten Filter als Default speichern
             if (!string.IsNullOrEmpty(SelectedFilterId))
             {

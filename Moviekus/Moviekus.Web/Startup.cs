@@ -49,6 +49,11 @@ namespace Moviekus.Web
             services.AddSingleton(typeof(IMovieService), typeof(MovieService));
             services.AddSingleton(typeof(ISettingsService), typeof(SettingsService));
             services.AddSingleton(typeof(ISourceService), typeof(SourceService));
+
+            // Aktivieren von Session State
+            // Session-Variablen werden damit per Default InMemory gespeichert und nach 20 Minuten Inaktivität gelöscht
+            services.AddSession();
+            services.AddDistributedMemoryCache();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -71,6 +76,9 @@ namespace Moviekus.Web
             app.UseRouting();
 
             app.UseAuthorization();
+
+            // Session-State zulassen
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {

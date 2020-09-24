@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
 
 using Moviekus.Models;
 using Moviekus.Views.Movies;
-using Moviekus.Services;
+using Moviekus.FilterBuilder;
 using System.Linq;
 using System.Windows.Input;
 using Moviekus.Views.Filter;
@@ -102,21 +101,10 @@ namespace Moviekus.ViewModels.Movies
 
         public ICommand OrderCommand => new Command(async () =>
         {
-            var actionResult = await UserDialogs.Instance.ActionSheetAsync("Nach was soll sortiert werden?", "Abbrechen", null, null, "Nichts", "Titel", "Laufzeit", "Bewertung", "Zuletzt gesehen", "Veröffentlichungsdatum", "Episode");
-            if (actionResult == "Nichts")
-                MovieSortOrder = MovieSortOrder.None;
-            else if (actionResult == "Titel")
-                MovieSortOrder = MovieSortOrder.Title;
-            if (actionResult == "Laufzeit")
-                MovieSortOrder = MovieSortOrder.Runtime;
-            if (actionResult == "Bewertung")
-                MovieSortOrder = MovieSortOrder.Rating;
-            if (actionResult == "Zuletzt gesehen")
-                MovieSortOrder = MovieSortOrder.LastSeen;
-            if (actionResult == "Veröffentlichungsdatum")
-                MovieSortOrder = MovieSortOrder.ReleaseDate;
-            if (actionResult == "Episode")
-                MovieSortOrder = MovieSortOrder.EpisodeNumber;
+            var actionResult = await UserDialogs.Instance.ActionSheetAsync("Nach was soll sortiert werden?", "Abbrechen", null, null, MovieSortOrderHelper.GetDisplayNames());
+
+            MovieSortOrder = MovieSortOrderHelper.GetSortOrderFromDisplayName(actionResult);
+
             await LoadMovies();
         });
 
@@ -196,7 +184,7 @@ namespace Moviekus.ViewModels.Movies
                     Title = MovieFilter.Name;
                     try
                     {
-                        Movies = new ObservableCollection<MoviesItemViewModel>(Movies.AsQueryable().Where(FilterBuilder.Ref.BuildFilter(MovieFilter)));
+                        Movies = new ObservableCollection<MoviesItemViewModel>(Movies.AsQueryable().Where(FilterBuilder<MoviesItemViewModel>.Ref.BuildFilter(MovieFilter)));
                     }
                     catch (Exception ex)
                     {

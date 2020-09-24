@@ -14,6 +14,8 @@ namespace Moviekus.ServiceContracts
 
         Filter GetDefault();
 
+        Task<Filter> SetDefault(string filterId);
+        
         Task<Filter> SetDefault(Filter filter);
 
         Task ResetDefault();

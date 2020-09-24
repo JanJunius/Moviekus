@@ -1,23 +1,21 @@
 ﻿using Moviekus.Models;
-using Moviekus.ViewModels.Movies;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 
-namespace Moviekus.ViewModels.Filter
+namespace Moviekus.FilterBuilder
 {
-    public class FilterBuilder
+    public class FilterBuilder<T> where T : IFilterBuilderViewModel
     {
-        private static FilterBuilder TheInstance;
+        private static FilterBuilder<T> TheInstance;
 
-        public static FilterBuilder Ref
+        public static FilterBuilder<T> Ref
         {
             get
             {
                 if (TheInstance == null)
-                    TheInstance = new FilterBuilder();
+                    TheInstance = new FilterBuilder<T>();
                 return TheInstance;
             }
         }
@@ -26,9 +24,9 @@ namespace Moviekus.ViewModels.Filter
         {            
         }
 
-        public Expression<Func<MoviesItemViewModel, bool>> BuildFilter(Models.Filter filter)
+        public Expression<Func<T, bool>> BuildFilter(Filter filter)
         {
-            var predicates = new List<Expression<Func<MoviesItemViewModel, bool>>>();
+            var predicates = new List<Expression<Func<T, bool>>>();
 
             if (filter.FilterEntries.Any(v => v.FilterEntryType.Property == FilterEntryProperty.Title))
                 predicates.Add(BuildTitleFilter(filter.FilterEntries.Where(v => v.FilterEntryType.Property == FilterEntryProperty.Title)));
@@ -50,7 +48,7 @@ namespace Moviekus.ViewModels.Filter
                 predicates.Add(BuildGenreFilter(filter.FilterEntries.Where(v => v.FilterEntryType.Property == FilterEntryProperty.Genre)));
 
             if (predicates.Count == 0)
-                PredicateBuilder.False<MoviesItemViewModel>();
+                PredicateBuilder.False<T>();
 
             var predicate = predicates.First();
 
@@ -65,9 +63,9 @@ namespace Moviekus.ViewModels.Filter
             return predicate;
         }
 
-        private Expression<Func<MoviesItemViewModel, bool>> BuildTitleFilter(IEnumerable<FilterEntry> filterEntries)
+        private Expression<Func<T, bool>> BuildTitleFilter(IEnumerable<FilterEntry> filterEntries)
         {
-            var predicate = PredicateBuilder.False<MoviesItemViewModel>();
+            var predicate = PredicateBuilder.False<T>();
 
             foreach(var filterEntry in filterEntries)
             {
@@ -83,9 +81,9 @@ namespace Moviekus.ViewModels.Filter
             return predicate;
         }
 
-        private Expression<Func<MoviesItemViewModel, bool>> BuildRemarkFilter(IEnumerable<FilterEntry> filterEntries)
+        private Expression<Func<T, bool>> BuildRemarkFilter(IEnumerable<FilterEntry> filterEntries)
         {
-            var predicate = PredicateBuilder.False<MoviesItemViewModel>();
+            var predicate = PredicateBuilder.False<T>();
 
             foreach (var filterEntry in filterEntries)
             {
@@ -102,9 +100,9 @@ namespace Moviekus.ViewModels.Filter
             return predicate;
         }
 
-        private Expression<Func<MoviesItemViewModel, bool>> BuildDescriptionFilter(IEnumerable<FilterEntry> filterEntries)
+        private Expression<Func<T, bool>> BuildDescriptionFilter(IEnumerable<FilterEntry> filterEntries)
         {
-            var predicate = PredicateBuilder.False<MoviesItemViewModel>();
+            var predicate = PredicateBuilder.False<T>();
 
             foreach (var filterEntry in filterEntries)
             {
@@ -121,9 +119,9 @@ namespace Moviekus.ViewModels.Filter
             return predicate;
         }
 
-        private Expression<Func<MoviesItemViewModel, bool>> BuildReleaseDateFilter(IEnumerable<FilterEntry> filterEntries)
+        private Expression<Func<T, bool>> BuildReleaseDateFilter(IEnumerable<FilterEntry> filterEntries)
         {
-            var predicate = PredicateBuilder.False<MoviesItemViewModel>();
+            var predicate = PredicateBuilder.False<T>();
             foreach (var filterEntry in filterEntries)
             {
                 FilterEntry temp = filterEntry;
@@ -147,9 +145,9 @@ namespace Moviekus.ViewModels.Filter
             return predicate;
         }
 
-        private Expression<Func<MoviesItemViewModel, bool>> BuildLastSeenFilter(IEnumerable<FilterEntry> filterEntries)
+        private Expression<Func<T, bool>> BuildLastSeenFilter(IEnumerable<FilterEntry> filterEntries)
         {
-            var predicate = PredicateBuilder.False<MoviesItemViewModel>();
+            var predicate = PredicateBuilder.False<T>();
             foreach (var filterEntry in filterEntries)
             {
                 FilterEntry temp = filterEntry;
@@ -169,14 +167,13 @@ namespace Moviekus.ViewModels.Filter
                         break;
                     default: throw new InvalidFilterException($"Der Operator '{filterEntry.Operator}' ist für 'Zuletzt gesehen' nicht zulässig!");
                 }
-
             }
             return predicate;
         }
 
-        private Expression<Func<MoviesItemViewModel, bool>> BuildRatingFilter(IEnumerable<FilterEntry> filterEntries)
+        private Expression<Func<T, bool>> BuildRatingFilter(IEnumerable<FilterEntry> filterEntries)
         {
-            var predicate = PredicateBuilder.False<MoviesItemViewModel>();
+            var predicate = PredicateBuilder.False<T>();
             foreach (var filterEntry in filterEntries)
             {
                 FilterEntry temp = filterEntry;
@@ -192,14 +189,13 @@ namespace Moviekus.ViewModels.Filter
                     case FilterEntryOperator.Between: predicate = predicate.Or(p => p.Movie.Rating >= ratingFrom && p.Movie.Rating <= ratingTo); break;
                     default: throw new InvalidFilterException($"Der Operator '{filterEntry.Operator}' ist für die Bewertung nicht zulässig!");
                 }
-
             }
             return predicate;
         }
 
-        private Expression<Func<MoviesItemViewModel, bool>> BuildRuntimeFilter(IEnumerable<FilterEntry> filterEntries)
+        private Expression<Func<T, bool>> BuildRuntimeFilter(IEnumerable<FilterEntry> filterEntries)
         {
-            var predicate = PredicateBuilder.False<MoviesItemViewModel>();
+            var predicate = PredicateBuilder.False<T>();
             foreach (var filterEntry in filterEntries)
             {
                 FilterEntry temp = filterEntry;
@@ -224,9 +220,9 @@ namespace Moviekus.ViewModels.Filter
             return predicate;
         }
 
-        private Expression<Func<MoviesItemViewModel, bool>> BuildSourceFilter(IEnumerable<FilterEntry> filterEntries)
+        private Expression<Func<T, bool>> BuildSourceFilter(IEnumerable<FilterEntry> filterEntries)
         {
-            var predicate = PredicateBuilder.False<MoviesItemViewModel>();
+            var predicate = PredicateBuilder.False<T>();
 
             foreach (var filterEntry in filterEntries)
             {
@@ -242,9 +238,9 @@ namespace Moviekus.ViewModels.Filter
             return predicate;
         }
 
-        private Expression<Func<MoviesItemViewModel, bool>> BuildGenreFilter(IEnumerable<FilterEntry> filterEntries)
+        private Expression<Func<T, bool>> BuildGenreFilter(IEnumerable<FilterEntry> filterEntries)
         {
-            var predicate = PredicateBuilder.False<MoviesItemViewModel>();
+            var predicate = PredicateBuilder.False<T>();
             foreach (var filterEntry in filterEntries)
             {
                 string genreId = filterEntry.ValueFrom;

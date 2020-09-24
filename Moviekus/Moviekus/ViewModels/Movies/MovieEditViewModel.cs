@@ -65,7 +65,7 @@ namespace Moviekus.ViewModels.Movies
                 return;
             }
 
-            await OpenSelectionPage(MovieDbService.Ref);
+            await OpenSelectionPage(MovieProviderFactory.CreateMovieProvider(MovieProviders.MovieDb));
         });
 
         public ICommand CoverButtonCommand => new Command(async () =>
@@ -114,18 +114,7 @@ namespace Moviekus.ViewModels.Movies
 
         private async Task ApplyMovieSelection(MovieDbMovie movieDto)
         {
-            Movie.Title = movieDto.Title;
-            Movie.Description = movieDto.Overview;
-            Movie.ReleaseDate = movieDto.ReleaseDate;
-            Movie.LastSeen = MoviekusDefines.MinDate;
-            Movie.Rating = 0;
-            Movie.Runtime = movieDto.Runtime;
-            Movie.Cover = movieDto.Cover;
-            Movie.Homepage = movieDto.Homepage;
-            Movie.Trailer = movieDto.TrailerUrl;
-            Movie.MovieGenres = await MovieService.AddMovieGenres(Movie, movieDto.Genres);
-
-//            Validate();
+            Movie = await MovieService.ApplyDtoData(Movie, movieDto);
 
             OnMovieChanged?.Invoke(this, Movie);
             RaisePropertyChanged(nameof(Movie));

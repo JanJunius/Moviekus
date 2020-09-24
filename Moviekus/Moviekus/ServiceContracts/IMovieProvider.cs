@@ -10,6 +10,7 @@ namespace Moviekus.ServiceContracts
         string Name { get; }
 
         Task<IEnumerable<MovieDbMovie>> SearchMovieAsync(string title);
+        Task<MovieDbMovie> GetMovieAsync(string providerMovieId);
         Task FillMovieDetails(MovieDbMovie movieDto);
         Task FillMovieTrailer(MovieDbMovie movieDto);
         byte[] GetMovieCover(MovieDbMovie movieDto);

@@ -181,7 +181,7 @@ namespace Moviekus.ViewModels.Filter
             {
                 FilterEntry temp = filterEntry;
                 int ratingFrom = temp.ValueFrom != null ? int.Parse(temp.ValueFrom) : 0;
-                int ratingTo = temp.ValueTo != null ? int.Parse(temp.ValueTo) : 0;
+                int ratingTo = !string.IsNullOrEmpty(temp.ValueTo) ? int.Parse(temp.ValueTo) : 0;
 
                 switch (filterEntry.Operator)
                 {

@@ -95,7 +95,7 @@ namespace Moviekus.ViewModels.Movies
                         UserDialogs.Instance.Toast("Download erfolgreich");
                         LoadMoviesCommand.Execute(null);
                     }
-                    else await UserDialogs.Instance.AlertAsync("Datenbank konnte nicht auf OneDrive geladen werden (Details siehe Log).", "OneDrive-Upload");
+                    else await UserDialogs.Instance.AlertAsync("Datenbank konnte nicht von OneDrive geladen werden (Details siehe Log).", "OneDrive-Upload");
                 }
             }
         });

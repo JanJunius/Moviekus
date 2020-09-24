@@ -45,7 +45,7 @@
                     </StackLayout>
                     <StackLayout Orientation="Vertical">
                         <Label Text="Disk Nr." Style="{StaticResource HeadingLabelStyle}" />
-                        <Entry Text="{Binding Movie.DiscNumber}" Keyboard="Numeric" FontSize="Small" Unfocused="Control_Unfocused"/>
+                        <Entry Text="{Binding Movie.DiscNumber}" FontSize="Small" Unfocused="Control_Unfocused"/>
                         <Label x:Name="Movie_DiscNumberError" IsVisible="False" TextColor="Red" />
                     </StackLayout>
                     <StackLayout Orientation="Vertical" Padding="20,0,0,0">

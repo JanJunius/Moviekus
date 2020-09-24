@@ -1,0 +1,49 @@
+﻿@page
+@model Moviekus.Web.Pages.Movies.MovieSelectionModel
+@{
+}
+
+<table>
+    <tr>
+        <td style="padding-right:15px;"><img src="~/images/movie.png" style="width:48px;height:48px;"></td>
+        <td><h1>Filmauswahl</h1></td>
+    </tr>
+</table>
+
+<div>
+    <form method="post">
+        <input type="hidden" asp-for="MovieId" class="form-control" />
+
+        <table class="table table-bordered table-striped table-sm">
+            <thead>
+                <tr><th></th><th>Titel</th><th>Beschreibung</th><th>Jahr</th>Auswahl<th></th></tr>
+            </thead>
+            <tbody>
+                @foreach (var movieDto in Model.Movies)
+                {
+                <tr>
+                    <td>
+                        @{
+                            String img64Url = "";
+                            if (movieDto.Cover != null)
+                            {
+                                String img64 = Convert.ToBase64String(movieDto.Cover);
+                                img64Url = string.Format("data:image/png;base64,{0}", img64);
+                            }
+                        }
+                        <img src="@img64Url" style="width: 120px;height: 160px; padding:5px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);" />
+                    </td>
+
+                    <td>@movieDto.Title</td>
+                    <td>@movieDto.Overview</td>
+                    <td>@movieDto.ReleaseYear</td>
+                    <td><a asp-page="./Edit" asp-route-id="@Model.MovieId" asp-route-providerMovieId="@movieDto.ProviderMovieId" asp-page-handler="MovieSelection">Wählen</a></td>
+                </tr>
+                }
+            </tbody>
+        </table>
+
+        
+    </form>
+</div>
+

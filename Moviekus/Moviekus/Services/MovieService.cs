@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Moviekus.Dto;
+using Moviekus.Dto.MovieDb;
 using Moviekus.EntityFramework;
 using Moviekus.Models;
 using Moviekus.ServiceContracts;
@@ -117,40 +118,6 @@ namespace Moviekus.Services
             return new MovieDetailDto() { Movie = movie };
         }
 
-        /*
-        public async Task<MovieEditDto> GetMovieDtoAsync(Movie movie)
-        {
-            MovieEditDto dto = new MovieEditDto()
-            {
-                Id = movie.Id,
-                Cover = movie.Cover,
-                Description = movie.Description,
-                DiscNumber = movie.DiscNumber,
-                EpisodeNumber = movie.EpisodeNumber,
-                Homepage = movie.Homepage,
-                Rating = movie.Rating,
-                Remarks = movie.Remarks,
-                Runtime = movie.Runtime,
-                Source = movie.Source,
-                Title = movie.Title,
-                Trailer = movie.Trailer
-            };
-
-            if (movie.LastSeen != MoviekusDefines.MinDate)
-                dto.LastSeen = movie.LastSeen;
-            else dto.LastSeen = null;
-
-            if (movie.ReleaseDate != MoviekusDefines.MinDate)
-                dto.ReleaseDate = movie.ReleaseDate;
-            else dto.ReleaseDate = null;
-
-            var genreService = Resolver.Resolve<IGenreService>();
-            dto.Genres = await genreService.GetAsync();
-
-            return dto;
-        }
-        */
-
         public async Task<Movie> SaveMovieAsync(Movie movie)
         {
             await SaveChangesAsync(movie);
@@ -233,6 +200,22 @@ namespace Moviekus.Services
             movieGenres.AddRange(movie.MovieGenres);
 
             return movieGenres;
+        }
+
+        public async Task<Movie> ApplyDtoData(Movie movie, MovieDbMovie movieDto)
+        {
+            movie.Title = movieDto.Title;
+            movie.Description = movieDto.Overview;
+            movie.ReleaseDate = movieDto.ReleaseDate;
+            movie.LastSeen = MoviekusDefines.MinDate;
+            movie.Rating = 0;
+            movie.Runtime = movieDto.Runtime;
+            movie.Cover = movieDto.Cover;
+            movie.Homepage = movieDto.Homepage;
+            movie.Trailer = movieDto.TrailerUrl;
+            movie.MovieGenres = await AddMovieGenres(movie, movieDto.Genres);
+
+            return movie;
         }
 
         protected override async Task InsertAsync(MoviekusDbContext context, Movie movie)

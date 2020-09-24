@@ -36,6 +36,12 @@ namespace Moviekus.Services
             }
         }
 
+        public async Task<Filter> SetDefault(string filterId)
+        {
+            var filter = await GetAsync(filterId);
+            return await SetDefault(filter);
+        }
+
         public async Task<Filter> SetDefault(Filter filter)
         {
             try

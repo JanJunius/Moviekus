@@ -3,13 +3,11 @@ using Moviekus.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Xamarin.Forms.Internals;
+using System.Threading.Tasks;
 
-namespace Moviekus.ViewModels.Movies
+namespace Moviekus.Web.Pages.Movies
 {
-    // ViewModel für ein Element aus der ListView mit den Movies
-    public class MoviesItemViewModel : BaseViewModel, IFilterBuilderViewModel
+    public class MoviesItemViewModel : IFilterBuilderViewModel
     {
         public MoviesItemViewModel(Movie movie) => Movie = movie;
 
@@ -27,5 +25,6 @@ namespace Moviekus.ViewModels.Movies
         {
             return HashCode.Combine(Movie);
         }
+
     }
 }

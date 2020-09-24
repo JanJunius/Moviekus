@@ -1,4 +1,5 @@
 ﻿using Moviekus.Dto;
+using Moviekus.Dto.MovieDb;
 using Moviekus.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -18,6 +19,7 @@ namespace Moviekus.ServiceContracts
 
         Task<ICollection<MovieGenre>> AddMovieGenres(Movie movie, IList<string> genreNames);
         Task<ICollection<MovieGenre>> SyncMovieGenres(string movieId, IList<string> genreIds);
+        Task<Movie> ApplyDtoData(Movie movie, MovieDbMovie movieDto);
 
     }
 }

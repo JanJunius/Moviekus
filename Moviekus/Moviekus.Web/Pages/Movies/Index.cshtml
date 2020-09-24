@@ -21,6 +21,20 @@
     </table>
 </p>
 
+<form>
+    <div>
+        Schnellsuche: <input type="text" asp-for="QuickSearch" />
+        &nbsp;Filter
+        <select asp-for="SelectedFilterId" asp-items="Model.FilterList">
+            <option value="">Kein Filter</option>
+        </select>
+        &nbsp;Sortierung
+        <select asp-for="MovieSortOrder" asp-items="Html.GetEnumSelectList<Moviekus.ServiceContracts.MovieSortOrder>()">
+        </select>
+        &nbsp;<input type="submit" value="Anwenden" class="btn btn-primary" />
+    </div>
+</form>
+
 <table class="table">
     <thead>
         <tr>
